@@ -40,7 +40,7 @@
 		            $quien = array("TEXTO"=>"Quienes Somos","URL"=>Sistema::app()->generaURL(array("inicial","quien")),"SUBMENU"=>false,"ACTIVO"=>true,"ITEMS"=>array());
 					$registra = array("TEXTO"=>"Registrate","URL"=>Sistema::app()->generaURL(array("usuarios","registro")),"SUBMENU"=>false,"ACTIVO"=>$nologeado,"ITEMS"=>array());
 		            $login = array("TEXTO"=>"Login","URL"=>Sistema::app()->generaURL(array("inicial","login")),"SUBMENU"=>false,"ACTIVO"=>$nologeado,"ITEMS"=>array());
-					$logout = array("TEXTO"=>"Logout","URL"=>Sistema::app()->generaURL(array("inicial","logout")),"SUBMENU"=>false,"ACTIVO"=>$logeado,"ITEMS"=>array());
+					$logout = array("TEXTO"=>"Logout","URL"=>Sistema::app()->generaURL(array("inicial","cerrarSesion")),"SUBMENU"=>false,"ACTIVO"=>$logeado,"ITEMS"=>array());
 					$perfil = array("TEXTO"=>"Mi Perfil","URL"=>Sistema::app()->generaURL(array()),"SUBMENU"=>false,"ACTIVO"=>$logeado,"ITEMS"=>array());
 					$servicios = array("TEXTO"=>"Servicios","URL"=>Sistema::app()->generaURL(array()),"SUBMENU"=>false,"ACTIVO"=>true,"ITEMS"=>array());
 					$instalaciones = array("TEXTO"=>"Instalaciones","URL"=>Sistema::app()->generaURL(array()),"SUBMENU"=>false,"ACTIVO"=>true,"ITEMS"=>array());
