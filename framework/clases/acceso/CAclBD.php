@@ -27,7 +27,7 @@ class CAclBD extends CAcl
 		$nombre=str_replace("'", "''", strtoupper($nombre));
 		$nombre=substr($nombre, 0,30);
 		
-		$sentencia="SELECT codrol ". 
+		$sentencia="SELECT cod_role ". 
 					"	FROM roles ".
     				"	where nombre='$nombre'";
 		
@@ -40,7 +40,7 @@ class CAclBD extends CAcl
 		if (!$fila)
 		    return false;
 		
-		return ($fila["codrol"]);
+		return ($fila["cod_role"]);
 	}
 	
 	public function existeCodRole($codrole)
@@ -112,7 +112,7 @@ class CAclBD extends CAcl
 		
 		$nick=$this->convertirNick($nick);
 		$nombre=str_replace("'", "''", $nombre);
-		$nombre=substr($nombre, 0,30);
+		$nombre=substr($nombre, 0,50);
 		$contrasena=str_replace("'", "''", $contrasena);
 		$contrasena=substr($contrasena, 0,30);
 		$codRole=intval($codRole);
@@ -120,7 +120,7 @@ class CAclBD extends CAcl
 		    return false;
 		
 		$sentencia="insert into usuarios (".
-					"       nombre, nick, contrasenia, codrol".
+					"       nombre_apellidos, nick, contrasenia, codrol".
 					"			) values ( ".
 					"       '$nombre', '$nick', md5('$contrasena'), $codRole".
 					"			)";
@@ -135,14 +135,13 @@ class CAclBD extends CAcl
 
 
 
-	private function convertirNick($nick)
-	{
-		$nick=str_replace("'", "''", strtoupper($nick));
+	private function convertirNick($nick){
+		$nick=str_replace("'", "''", $nick);
 		$nick=substr($nick, 0,30);
 		return $nick;
 	}
-	public function existeUsuario($nick)
-	{
+	
+	public function existeUsuario($nick){
 		if (!$this->hayEnlace)
 		    return false;
 		$nick=$this->convertirNick($nick);
@@ -173,7 +172,7 @@ class CAclBD extends CAcl
 		
 		$nick=$this->convertirNick($nick);
 		$contrasena=str_replace("'", "''", $contrasena);
-		$contrasena=substr($contrasena, 0,30);
+		$contrasena=substr(trim($contrasena), 0,30);
 		 
 		$sentencia="SELECT nick ". 
 					"	FROM usuarios ".
@@ -203,7 +202,7 @@ class CAclBD extends CAcl
 		
 		$sentencia="select r.puedeacceder, r.puedeconfigurar ".
      				"		from usuarios u ".
-          			"			join roles r using (codrol) ".
+          			"			join roles r using (cod_role) ".
      				"		where u.nick='$nick'";
 		
 		$consulta=$this->enlaceBD->crearConsulta($sentencia);
@@ -244,7 +243,7 @@ class CAclBD extends CAcl
 		if (!$fila)
 		    return false;		
 		
-		return ($fila["nombre"]);
+		return ($fila["nombre_apellidos"]);
 		
 	}
 	
@@ -257,11 +256,11 @@ class CAclBD extends CAcl
 		
 		$nick=$this->convertirNick($nick);
 		$nombre=str_replace("'", "''", $nombre);
-		$nombre=substr($nombre, 0,30);
+		$nombre=substr($nombre, 0,50);
 		
 		
 		$sentencia="update usuarios set ".
-     				"		nombre='$nombre'";
+     				"		nombre_apellidos='$nombre'";
 		
 		$consulta=$this->enlaceBD->crearConsulta($sentencia);
 		if ($consulta->error()!=0)
@@ -276,11 +275,11 @@ class CAclBD extends CAcl
 	{
 		
 		$usu=array();
-		$sentencia="SELECT us.nombre,us.nick, ".
+		$sentencia="SELECT us.cod_usuario, us.nombre_apellidos, us.dni, us.email, us.tlf, us.nick, us.fecha_nac ".
 					"		r.nombre as nombre_rol ".
 					"	FROM usuarios us ".
-         			"		join roles r using (codrol)".
-					"	order by nombre";
+         			"		join roles r using (cod_role)".
+					"	order by nombre_apellidos";
 		
 		$consulta=$this->enlaceBD->crearConsulta($sentencia);
 		if ($consulta->error()!=0)
@@ -288,7 +287,12 @@ class CAclBD extends CAcl
 		
 		while ($fila=$consulta->fila())
 		{
-			$usu[]=array("NOMBRE"=>$fila["nombre"],
+			$usu[]=array("COD_USUARIO"=>$fila["cod_usuario"],
+						 "NOMBRE"=>$fila["nombre_apellidos"],
+						 "DNI"=>$fila["dni"],
+						 "EMAIL"=>$fila["email"],
+						 "TLF"=>$fila["tlf"],
+						 "FECHA_NAC"=>$fila["fecha_nac"],
 			             "NICK"=>$fila["nick"],
 						 "ROLE"=>$fila["nombre_rol"]);
 		}
