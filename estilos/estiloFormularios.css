@@ -1,0 +1,27 @@
+/* Contenedor del formulario */
+body{
+	padding-top: 40px;
+	padding-bottom: 40px;
+}
+
+.contForm{
+	background: white;
+	box-shadow: 0 0 20px #ccc;
+	border-radius: 8px;
+}
+
+.help-block{
+	color: #b5004d;
+}
+
+.form-group{
+	display: inline-block;
+	margin: 0 10px 10px 0;
+}
+
+/* formulario login */
+.form-signin{
+	max-width: 330px;
+	padding: 15px;
+	margin: 0 auto;
+}
