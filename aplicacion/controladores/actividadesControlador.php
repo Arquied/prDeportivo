@@ -95,13 +95,13 @@
             //si no existe filtrado se muestran todas las actividades
             
             //Filtro categoria
-            if(isset($_REQUEST["id_categoria"]) && $_REQUEST["id_categoria"]!==""){
-                $cadena.=" a.cod_categoria=".intval($_REQUEST["id_categoria"]);
+            if(isset($_REQUEST["categoria"]) && $_REQUEST["categoria"]!==""){
+                $cadena.=" t.cod_categoria=".intval($_REQUEST["categoria"]);
             }
             
             //Filtro nombre_actividad
             if(isset($_REQUEST["nombre"]) && $_REQUEST["nombre"]!==""){
-                $cadena.=" a.nombre=".CGeneral::addSlashes($_REQUEST["nombre"]);
+                $cadena.=" t.nombre='".CGeneral::addSlashes($_REQUEST["nombre"])."'";
             }
             
             $opciones["where"]=$cadena;         
