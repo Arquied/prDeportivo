@@ -21,10 +21,10 @@
 	text-align: center;
 }
 
-.contActividad h2, .contActividad .contBtn{
+.contActividad h2, .contActividad .contBtn, .contActividad .lead{
 	text-align: right;
 }
-.contActividad .col-md-push-5 h2, .contActividad .col-md-push-5 .contBtn{
+.contActividad .col-md-push-5 h2, .contActividad .col-md-push-5 .contBtn, .contActividad .col-md-push-5 .lead{
 	text-align: left;
 }
 
