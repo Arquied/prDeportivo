@@ -4,8 +4,8 @@
 	{
 		public function accionIndex()
 		{
-			$this->dibujaVista("index");
-			
+			//$this->dibujaVista("index");
+			Sistema::app()->irAPagina(array("actividades", "listaActividades"));		
 		}
 		
 		public function accionLogin(){
