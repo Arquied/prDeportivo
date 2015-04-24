@@ -6,7 +6,6 @@
 				              "servidor"=>"localhost",
 							  "usuario"=>"operario",
 							  "contra"=>"oper",
-							  "basedatos"=>"centro_deportivo"),
+							  "basedatos"=>"centrodeportivo"),
 				   "SESION"=>array("controlAutomatico"=>true),
 				   "ACCESO"=>array("controlAutomatico"=>true));
-
