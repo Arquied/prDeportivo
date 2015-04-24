@@ -81,7 +81,7 @@ class CAclBD extends CAcl
 		$nombre=substr($nombre, 0,30);
 		
 		$sentencia="INSERT INTO roles ( ".
-        			"		 NOMBRE, PUEDEACCEDER,PUEDECONFIGURAR ".
+        			"		 nombre, puede_acceder, puede_configurar ".
     				"				)VALUES ( ".
         			"		 '$nombre', $puedeAcceder,$puedeConfigurar ".
         			"				)";
@@ -120,7 +120,7 @@ class CAclBD extends CAcl
 		    return false;
 		
 		$sentencia="insert into usuarios (".
-					"       nombre_apellidos, nick, contrasenia, codrol".
+					"       nombre_apellidos, nick, contrasenia, cod_role".
 					"			) values ( ".
 					"       '$nombre', '$nick', md5('$contrasena'), $codRole".
 					"			)";
@@ -200,7 +200,7 @@ class CAclBD extends CAcl
 		  	return false;
 		$nick=$this->convertirNick($nick);
 		
-		$sentencia="select r.puedeacceder, r.puedeconfigurar ".
+		$sentencia="select r.puede_acceder, r.puede_configurar ".
      				"		from usuarios u ".
           			"			join roles r using (cod_role) ".
      				"		where u.nick='$nick'";
@@ -214,8 +214,8 @@ class CAclBD extends CAcl
 		if (!$fila)
 		    return false;		
 		
-		$puedeAdministrar=$fila["puedeconfigurar"];
-		$puedeAcceder=$fila["puedeacceder"];
+		$puedeAdministrar=$fila["puede_configurar"];
+		$puedeAcceder=$fila["puede_acceder"];
 		
 			
 		return true;
@@ -304,4 +304,3 @@ class CAclBD extends CAcl
 	}
 	
 }
-
