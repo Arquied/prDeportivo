@@ -38,7 +38,7 @@
     
     //ACTIVIDADES
     echo CHTML::dibujaEtiqueta("div", array("class"=>"container marketing"));
-        if(count($filas)==0){
+        if(!$filas && count($filas)==0){
             echo CHTML::dibujaEtiqueta("div");
                 echo CHTML::dibujaEtiqueta("h2", array(), "No existe resultado de busqueda", true);
             echo CHTML::dibujaEtiquetaCierre("div");
