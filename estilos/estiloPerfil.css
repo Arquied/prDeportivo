@@ -1,0 +1,46 @@
+/* Estilo panel del perfil */
+#contPerfil{
+	margin-top: 50px;
+}
+
+#contPerfil .contTitulo h3{
+	color: rgb(166, 3, 25);	
+	text-align: center;
+}
+
+#contPerfil h4{	
+	color: black;
+}
+
+#contPerfil .contInfoPerfil div{
+	margin: 20px 10px;
+	color: black;
+}
+
+#contPerfil a{
+	margin: 5px 10px;
+}
+
+#sinCompras{
+	text-align: center;
+}
+
+.container{
+	max-width: none !important;
+}
+.sidebar{
+	position:fixed !important;
+	top: 51px;
+	bottom: 0;
+	left: 0;
+	z-index: 1000;
+	display: block;
+	padding: 10px;
+	background: white;
+	box-shadow: 0 0 20px #ccc;
+}
+
+.main{
+	padding: 20px;	
+	top:51px;
+}
