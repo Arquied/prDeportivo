@@ -18,18 +18,19 @@
 		}
 			
 		protected function fijarAtributos(){
-			return array("cod_usuario", "nombre_apellidos", "dni", "email", "tlf", "nick", "contrasenia", "fecha_nac", "cod_role");
+			return array("cod_usuario", "nombre", "dni", "correo", "telefono", "nick", "contrasenia", "fecha_nac", "saldo", "cod_role");
 		}
 		
 		protected function fijarDescripciones(){
 			return array("cod_usuario"=>"Código del usuario",
-						"nombre_apellidos"=>"Nombre y apellidos",
+						"nombre"=>"Nombre y apellidos",
 						"dni"=>"DNI",
-						"email"=>"Correo electrónico",
-						"tlf"=>"Teléfono",
+						"correo"=>"Correo electrónico",
+						"telefono"=>"Teléfono",
 						"nick"=>"Nick",
 						"contrasenia"=>"Contraseña",
 						"fecha_nac"=>"Fecha de nacimiento",
+						"saldo"=>"Saldo disponible",
 						"cod_role"=>"Código del role"
 						);
 		}
@@ -39,71 +40,78 @@
 						array("ATRI"=>"cod_usuario", "TIPO"=>"ENTERO", "MIN"=>0, "MENSAJE"=>"El código del usuario debe ser positivo", "DEFECTO"=>0),
 						array("ATRI"=>"cod_role", "TIPO"=>"REQUERIDO"),
 						array("ATRI"=>"cod_role", "TIPO"=>"ENTERO", "MIN"=>0, "MENSAJE"=>"El código del role debe ser positivo", "DEFECTO"=>0),
-						array("ATRI"=>"nombre_apellidos", "TIPO"=>"CADENA", "TAMANIO"=>50, "MENSAJE"=>"El nombre y apellidos no puede ser tan largo"),
-						array("ATRI"=>"nombre_apellidos", "TIPO"=>"FUNCION", "FUNCION"=>"convertirMayuscula"),
+						array("ATRI"=>"nombre", "TIPO"=>"CADENA", "TAMANIO"=>80, "MENSAJE"=>"El nombre y apellidos no puede ser tan largo"),
+						array("ATRI"=>"nombre", "TIPO"=>"FUNCION", "FUNCION"=>"convertirMayuscula"),
 						array("ATRI"=>"dni", "TIPO"=>"CADENA", "TAMANIO"=>9, "MENSAJE"=>"El dni no puede ser tan largo"),
 						array("ATRI"=>"dni", "TIPO"=>"FUNCION", "FUNCION"=>"comprobarDni"),
-						array("ATRI"=>"email", "TIPO"=>"CADENA", "TAMANIO"=>30, "MENSAJE"=>"El email no puede ser tan largo"),
-						array("ATRI"=>"tlf", "TIPO"=>"CADENA", "TAMANIO"=>9, "MENSAJE"=>"El teléfono no puede ser tan largo"),
+						array("ATRI"=>"correo", "TIPO"=>"CADENA", "TAMANIO"=>30, "MENSAJE"=>"El email no puede ser tan largo"),
+						array("ATRI"=>"telefono", "TIPO"=>"CADENA", "TAMANIO"=>9, "MENSAJE"=>"El teléfono no puede ser tan largo"),
 						array("ATRI"=>"nick", "TIPO"=>"REQUERIDO"),
 						array("ATRI"=>"nick", "TIPO"=>"CADENA", "TAMANIO"=>30, "MENSAJE"=>"El nick no puede ser tan largo"),
 						array("ATRI"=>"contrasenia", "TIPO"=>"CADENA", "TAMANIO"=>30, "MENSAJE"=>"La contraseña no puede ser tan larga"),
-						array("ATRI"=>"fecha_nac", "TIPO"=>"CADENA", "TAMANIO"=>10)
+						array("ATRI"=>"fecha_nac", "TIPO"=>"FECHA"),
+						array("ATRI"=>"saldo", "TIPO"=>"REAL")
 						);
 		}
 		
 		protected function afterCreate(){
 			$this->cod_usuario=1;
 			$this->cod_role=0;
-			$this->nombre_apellidos="";
+			$this->nombre="";
 			$this->dni="";
-			$this->email="";
-			$this->tlf="";
+			$this->correo="";
+			$this->telefono="";
 			$this->nick="";
 			$this->contrasenia="";
 			$this->fecha_nac="";
+            $this->saldo=0;
 		}	
 		
 		protected function afterBuscar(){
-				
+			$fecha=$this->fecha_nac;
+            $fecha=CGeneral::fechaMysqlANormal($fecha);
+            $this->fecha_nac=$fecha;	
 		}	
 		
 		protected function fijarSentenciaInsert(){
 			$cod_role=$this->cod_role;
-			$nombre_apellidos=CGeneral::addSlashes($this->nombre_apellidos);
+			$nombre=CGeneral::addSlashes($this->nombre);
 			$dni=CGeneral::addSlashes($this->dni);
-			$email=CGeneral::addSlashes($this->email);
-			$tlf=CGeneral::addSlashes($this->tlf);
+			$correo=CGeneral::addSlashes($this->correo);
+			$telefono=CGeneral::addSlashes($this->telefono);
 			$nick=trim(CGeneral::addSlashes($this->nick));
 			$contrasenia=substr(trim(CGeneral::addSlashes($this->contrasenia)), 0, 30);
-			$fecha_nac=CGeneral::addSlashes($this->fecha_nac);
+			$fecha_nac=CGeneral::addSlashes(CGeneral::fechaNormalAMysql($this->fecha_nac));
+            $saldo=$this->saldo;
 								
 			return "insert into usuarios (".
-						" nombre_apellidos, dni, email, tlf, nick, contrasenia, fecha_nac, cod_role ".
+						" nombre, dni, correo, telefono, nick, contrasenia, fecha_nac, saldo, cod_role ".
 						" ) values ( ".
-						" '$nombre_apellidos', '$dni', '$email', '$tlf', '$nick', md5('$contrasenia'), '$fecha_nac', $cod_role ".
+						" '$nombre', '$dni', '$correo', '$telefono', '$nick', md5('$contrasenia'), '$fecha_nac', $saldo, $cod_role ".
 						" ) " ;
 		}
 		
 		protected function fijarSentenciaUpdate(){
 			$cod_role=$this->cod_role;
-			$nombre_apellidos=CGeneral::addSlashes($this->nombre_apellidos);
+			$nombre=CGeneral::addSlashes($this->nombre);
 			$dni=CGeneral::addSlashes($this->dni);
-			$email=CGeneral::addSlashes($this->email);
-			$tlf=CGeneral::addSlashes($this->tlf);
+			$correo=CGeneral::addSlashes($this->correo);
+			$telefono=CGeneral::addSlashes($this->telefono);
 			$nick=CGeneral::addSlashes($this->nick);
 			$contrasenia=CGeneral::addSlashes($this->contrasenia);
-			$fecha_nac=CGeneral::addSlashes($this->fecha_nac);
+			$fecha_nac=CGeneral::addSlashes(CGeneral::fechaNormalAMysql($this->fecha_nac));
+            $saldo=$this->saldo;
 			
 			return "update usuarios set ".
 							" cod_role=$cod_role, ".
-							" nombre_apellidos='$nombre_apellidos', ".
+							" nombre='$nombre', ".
 							" dni='$dni', ".
-							" email='$email', ".
-							" tlf='$tlf', ".
+							" correo='$correo', ".
+							" telefono='$telefono', ".
 							" nick='$nick', ".
 							" contrasenia=md5('$contrasenia'), ".
-							" fecha_nac='$fecha_nac' ".
+							" fecha_nac='$fecha_nac', ".
+							" saldo=$saldo ".
 							" where cod_usuario={$this->cod_usuario} ";																		
 		}
 		
@@ -111,8 +119,8 @@
 		 * METODOS PARA VALIDAR CAMPOS
 		 */
 		protected function convertirMayuscula(){
-			$cadena=strtoupper($this->titulo);
-			$this->titulo=$cadena;
+			$cadena=strtoupper($this->nombre);
+			$this->nombre=$cadena;
 		}
 		
 		protected function comprobarDni(){
