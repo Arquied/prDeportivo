@@ -1,6 +1,7 @@
 body {	
 	margin: auto;
 	background: rgb(247, 247, 247);
+	min-height: 100%;
 }
 
 #conte{	
@@ -9,7 +10,7 @@ body {
 }
 
 .navbar-default{
-	background-color: #CE0058;
+	background-color: rgb(166, 3, 25);
 }
 
 .navbar-default li>a, .navbar-default .navbar-header a{
@@ -17,11 +18,11 @@ body {
 }
 
 .navbar-default .active>a{
-	background: #b5004d !important;
+	background:  rgb(140, 3, 21) !important;
 }
 
 .navbar-default li:hover{
-	background: #b5004d !important;
+	background:  rgb(140, 3, 21) !important;
 }
 
 .navbar-default .dropdown-menu a{
@@ -31,17 +32,15 @@ body {
 .nav .open > a,
 .nav .open > a:hover,
 .nav .open > a:focus {
-  background-color: #b5004d !important;
-  border-color: #b5004d !important;
+  background-color:  rgb(140, 3, 21) !important;
+  border-color:  rgb(140, 3, 21) !important;
 }
-
-
 
 /* Boton */
 .btn-default {
   color: #fff;
-  background-color: #CE0058;
-  border-color: #CE0058;
+  background-color: rgb(166, 3, 25);
+  border-color: rgb(166, 3, 25);
 }
 .btn-default:hover,
 .btn-default:focus,
@@ -50,6 +49,6 @@ body {
 .btn-default.active,
 .open > .dropdown-toggle.btn-default {
   color: #fff;
-  background-color: #b5004d;
-  border-color: #b5004d;
+  background-color:  rgb(140, 3, 21);
+  border-color:  rgb(140, 3, 21);
 }
