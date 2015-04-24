@@ -1,0 +1,40 @@
+/* ESTILO FILTRADO */
+.contFiltrado{
+	box-shadow: 0 3px 0px #ccc;
+	border-radius: 1px;
+	background: white;
+	padding: 0 0 0 20px;
+}
+
+.contFiltrado h4{
+	color: rgb(140, 3, 21);
+}
+
+.form-group{
+	display: inline-block;
+	margin: 0 10px 10px 0;
+}
+
+/* ESTILO ACTIVIDAD */
+.contActividad h1{
+	color: rgb(140, 3, 21);
+	text-align: center;
+}
+
+.contActividad h2, .contActividad .contBtn{
+	text-align: right;
+}
+.contActividad .col-md-push-5 h2, .contActividad .col-md-push-5 .contBtn{
+	text-align: left;
+}
+
+.contActividad a.btn{
+	font-size: 20pt;
+	text-align: right;
+	padding: 0 20px;
+}
+
+.imagen img {
+	 max-width: 100%;
+	 height: 300px;
+}
