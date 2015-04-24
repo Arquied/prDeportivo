@@ -3,22 +3,25 @@
 	$errores=$modelo->getErrores();
 	
 	echo CHTML::cssFichero("/estilos/estiloFormularios.css");
-	
+
 	echo CHTML::dibujaEtiqueta("div", array("class"=>"container contForm"));
+                echo CHTML::dibujaEtiqueta("div", array("class"=>"contTitFormulario"));
+                    echo CHTML::dibujaEtiqueta("h2", array(), "Registrar usuario", true);                
+                echo CHTML::dibujaEtiquetaCierre("div");
 
 				//FORMULARIO DE REGISTRO
 				echo CHTML::iniciarForm("", "post", array("role"=>"form"));
 				
 					echo CHTML::dibujaEtiqueta("div");
-						//Campo nombre_apellidos					
+						//Campo nombre					
 						echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-							if(isset($errores["nombre_apellidos"])){
-							echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["nombre_apellidos"], true);
+							if(isset($errores["nombre"])){
+							echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["nombre"], true);
 							}
-							echo CHTML::modeloLabel($modelo, "nombre_apellidos");
+							echo CHTML::modeloLabel($modelo, "nombre");
 							echo CHTML::modeloText($modelo, 
-													"nombre_apellidos",					
-												 	array("class"=>"form-control", "maxlength"=>50, "size"=>"50"));
+													"nombre",					
+												 	array("class"=>"form-control", "maxlength"=>80, "size"=>"50"));
 						echo CHTML::dibujaEtiquetaCierre("div");
 						
 						//Campo dni
@@ -34,25 +37,25 @@
 					echo CHTML::dibujaEtiquetaCierre("div");
 					
 					echo CHTML::dibujaEtiqueta("div");
-						//Campo email
+						//Campo correo
 						echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-							if(isset($errores["email"])){
-								echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["email"], true);
+							if(isset($errores["correo"])){
+								echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["correo"], true);
 							}
-							echo CHTML::modeloLabel($modelo, "email");
+							echo CHTML::modeloLabel($modelo, "correo");
 							echo CHTML::modeloEmail($modelo, 
-													"email",										 	 
+													"correo",										 	 
 												 	array("class"=>"form-control", "maxlength"=>30, "size"=>30));
 						echo CHTML::dibujaEtiquetaCierre("div");
 						
-						//Campo tlf
+						//Campo telefono
 						echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-							if(isset($errores["tlf"])){
-							echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["tlf"], true);
+							if(isset($errores["telefono"])){
+							echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["telefono"], true);
 							}
-							echo CHTML::modeloLabel($modelo, "tlf");
+							echo CHTML::modeloLabel($modelo, "telefono");
 							echo CHTML::modeloText($modelo,
-													"tlf",
+													"telefono",
 												 	array("class"=>"form-control", "maxlength"=>9, "size"=>12));
 						echo CHTML::dibujaEtiquetaCierre("div");
 						
@@ -62,7 +65,7 @@
 							echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["fecha_nac"], true);
 							}
 							echo CHTML::modeloLabel($modelo, "fecha_nac");
-							echo CHTML::modeloDate($modelo,
+							echo CHTML::modeloText($modelo,
 													"fecha_nac",
 												 	array("class"=>"form-control", "maxlength"=>10, "size"=>12));
 						echo CHTML::dibujaEtiquetaCierre("div");
@@ -113,6 +116,3 @@
 				echo CHTML::finalizarForm();
 				
 	echo CHTML::dibujaEtiquetaCierre("div");
-
-	
-	
