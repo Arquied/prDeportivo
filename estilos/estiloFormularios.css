@@ -10,8 +10,15 @@ body{
 	border-radius: 8px;
 }
 
+.contTitFormulario h2{
+	display: inline-block;
+	box-shadow: 0 2px 0px #ccc;
+	border-radius: 1px;
+	color: rgb(140, 3, 21);
+}
+
 .help-block{
-	color: #b5004d;
+	color:  rgb(140, 3, 21);
 }
 
 .form-group{
@@ -25,3 +32,5 @@ body{
 	padding: 15px;
 	margin: 0 auto;
 }
+
+
