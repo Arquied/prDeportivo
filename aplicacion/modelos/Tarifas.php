@@ -50,7 +50,7 @@ class Tarifas extends CActiveRecord {
 		$this -> ocupacion = 0;
 	}
 	
-	protected function fijarSentenciaInsertar(){
+	protected function fijarSentenciaInsert(){
 		$cod_actividad = $this->cod_actividad;
 		$cod_tipo_cuota = $this->cod_tipo;
 		$precio = $this->precio;
