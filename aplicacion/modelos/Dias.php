@@ -56,7 +56,7 @@ class Dias extends CActiveRecord {
 		
 	}
 	
-	protected function fijarSentenciaInsertar(){
+	protected function fijarSentenciaInsert(){
 		$dia=CGeneral::addSlashes($this->dia);
 		return "insert into dias (".
 				" dia ".
