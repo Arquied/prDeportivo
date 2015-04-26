@@ -92,7 +92,7 @@ class Temporadas extends CActiveRecord {
 		}
 	}
 	
-	protected function fijarSentenciaInsertar(){
+	protected function fijarSentenciaInsert(){
 		$nombre=CGeneral::addSlashes($this->nombre);
 		$fecha_inicio=CGeneral::fechaNormalAMysql($this->fecha_inicio);
 		$fecha_fin=CGeneral::fechaNormalAMysql($this->fecha_fin);
