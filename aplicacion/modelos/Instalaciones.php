@@ -59,7 +59,7 @@ class Instalaciones extends CActiveRecord {
 		$this->nombre=$cadena;		
 	}
 
-	protected function fijarSentenciaInsertar(){
+	protected function fijarSentenciaInsert(){
 		$nombre=CGeneral::addSlashes($this->nombre);
 		$descripcion=CGeneral::addSlashes($this->descripcion);
 		$imagen = $this->imagen;
