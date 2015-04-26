@@ -105,7 +105,7 @@ class HorarioGeneral extends CActiveRecord {
 		}
 	}
 	
-	protected function fijarSentenciaInsertar(){
+	protected function fijarSentenciaInsert(){
 		$cod_temporada=$this->cod_temporada;
 		$cod_dia=$this->cod_dia;
 		$fecha_inicio=CGeneral::fechaNormalAMysql($this->fecha_inicio);
