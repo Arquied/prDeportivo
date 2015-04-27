@@ -59,10 +59,10 @@
         
         protected function fijarSentenciaInsert(){            
             $tipo=CGeneral::addSlashes($this->tipo);
-            $semanal=$this->semanal;
-            $quincenal=$this->quincenal;
-            $mensual=$this->mensual;
-            $diario=$this->diario;
+            $semanal=intval($this->semanal);
+            $quincenal=intval($this->quincenal);
+            $mensual=intval($this->mensual);
+            $diario=intval($this->diario);
                                 
             return "insert into tipo_cuota (".
                         " tipo, semanal, quincenal, mensual, diario ".
@@ -73,10 +73,10 @@
         
         protected function fijarSentenciaUpdate(){            
             $tipo=CGeneral::addSlashes($this->tipo);
-            $semanal=$this->semanal;
-            $quincenal=$this->quincenal;
-            $mensual=$this->mensual;
-            $diario=$this->diario;
+            $semanal=intval($this->semanal);
+            $quincenal=intval($this->quincenal);
+            $mensual=intval($this->mensual);
+            $diario=intval($this->diario);
             
             return "update tipo_cuota set ".
                             " tipo='$tipo', ".
@@ -94,9 +94,5 @@
             $cadena=strtoupper($this->tipo);
             $this->tipo=$cadena;
         }
-        
-       
-                
-        
     }
     
