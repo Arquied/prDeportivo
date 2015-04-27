@@ -82,7 +82,7 @@
             $fecha_reserva=CGeneral::fechaNormalAMysql($this->fecha_reserva);
             $fecha_inicio=CGeneral::fechaNormalAMysql($this->fecha_inicio);
             $fecha_fin=CGeneral::fechaNormalAMysql($this->fecha_fin);
-            $tarifa=intval($this->tarifa);
+            $tarifa=floatval($this->tarifa);
             
                                 
             return "insert into reservas (".
@@ -99,7 +99,7 @@
             $fecha_reserva=CGeneral::fechaNormalAMysql($this->fecha_reserva);
             $fecha_inicio=CGeneral::fechaNormalAMysql($this->fecha_inicio);
             $fecha_fin=CGeneral::fechaNormalAMysql($this->fecha_fin);
-            $tarifa=intval($this->tarifa);
+            $tarifa=floatval($this->tarifa);
                 
             return "update reservas set ".
                             " cod_usuario=$cod_usuario, ".
