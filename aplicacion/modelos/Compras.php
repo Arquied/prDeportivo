@@ -80,7 +80,7 @@
             $fecha_compra=CGeneral::fechaNormalAMysql($this->fecha_compra);
             $fecha_inicio=CGeneral::fechaNormalAMysql($this->fecha_inicio);
             $fecha_fin=CGeneral::fechaNormalAMysql($this->fecha_fin);
-            $importe=intval($this->importe);
+            $importe=floatval($this->importe);
                              
             return "insert into compras (".
                         " cod_reserva, importe_pagado, pendiente, fecha_compra, fecha_inicio, fecha_fin, importe ".
@@ -96,7 +96,7 @@
             $fecha_compra=CGeneral::fechaMysqlANormal($this->fecha_compra);
             $fecha_inicio=CGeneral::fechaNormalAMysql($this->fecha_inicio);
             $fecha_fin=CGeneral::fechaNormalAMysql($this->fecha_fin);
-            $importe=intval($this->importe);
+            $importe=floatval($this->importe);
                 
             return "update compras set ".
                             " cod_reserva=$cod_reserva, ".
