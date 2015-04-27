@@ -62,6 +62,17 @@
 			exit;
 		}
 		
+				
+		public function accionPrivacidad(){
+			
+			$this->dibujaVista("privacidad");
+			
+		}
 		
+		public function accionQuien(){
+			
+			$this->dibujaVista("quien");
+			
+		}
 		
 	}
