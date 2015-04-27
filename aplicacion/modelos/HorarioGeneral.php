@@ -30,43 +30,22 @@ class HorarioGeneral extends CActiveRecord {
 	}
 
 	protected function fijarRestricciones() {
-		Return array(array("ATRI"=>"cod_horario_general",
-							"TIPO"=>"REQUERIDO"),
-					 array("ATRI"=>"cod_horario_general",
-					 		"TIPO"=>"ENTERO",
-							"MIN"=>0),
-					 array("ATRI"=>"cod_temporada",
-						  "TIPO"=>"REQUERIDO"),
-					 array("ATRI"=>"cod_temporada",
-						  "TIPO"=>"ENTERO",
-						  "MIN"=>0),
-					 array("ATRI"=>"cod_dia",
-						  "TIPO"=>"REQUERIDO"),
-					 array("ATRI"=>"cod_dia",
-						  "TIPO"=>"ENTERO",
-						  "MIN"=>0),
-					 array("ATRI"=>"fecha_inicio",
-					 		"TIPO"=>"FECHA"),
-					 array("ATRI"=>"fecha_inicio",
-					 	   "TIPO"=>"REQUERIDO"),
-					 array("ATRI"=>"fecha_inicio",
-					 		"TIPO"=>"FUNCTION",
-							"FUNCTION"=>"validaFechaInicio"),
-							 array("ATRI"=>"fecha_fin",
-					 		"TIPO"=>"FECHA"),
-					 array("ATRI"=>"fecha_fin",
-					 	   "TIPO"=>"REQUERIDO"),
-					 array("ATRI"=>"fecha_fin",
-					 		"TIPO"=>"FUNCTION",
-							"FUNCTION"=>"validaFechaFin"),
-					 array("ATRI"=>"hora_inicio",
-						  "TIPO"=>"HORA"),
-				 	 array("ATRI"=>"hora_inicio",
-						  "TIPO"=>"REQUERIDO"),
-				     array("ATRI"=>"hora_fin",
-						  "TIPO"=>"HORA"),
-				 	 array("ATRI"=>"hora_fin",
-				 		  "TIPO"=>"REQUERIDO"));
+		Return array(array("ATRI"=>"cod_horario_general","TIPO"=>"REQUERIDO"),
+					 array("ATRI"=>"cod_horario_general","TIPO"=>"ENTERO","MIN"=>0,"MENSAJE"=>"El código del horario_general debe ser positivo","DEFECTO"=>0),
+					 array("ATRI"=>"cod_temporada","TIPO"=>"REQUERIDO"),
+					 array("ATRI"=>"cod_temporada","TIPO"=>"ENTERO","MIN"=>0,"MENSAJE"=>"El código de la temporada debe ser positivo","DEFECTO"=>0),
+					 array("ATRI"=>"cod_dia","TIPO"=>"REQUERIDO"),
+					 array("ATRI"=>"cod_dia", "TIPO"=>"ENTERO","MIN"=>0,"MENSAJE"=>"El código del dia debe ser positivo","DEFECTO"=>0),
+					 array("ATRI"=>"fecha_inicio","TIPO"=>"FECHA"),
+					 array("ATRI"=>"fecha_inicio","TIPO"=>"REQUERIDO"),
+					 array("ATRI"=>"fecha_inicio","TIPO"=>"FUNCTION","FUNCTION"=>"validaFechaInicio"),
+					 array("ATRI"=>"fecha_fin","TIPO"=>"FECHA"),
+					 array("ATRI"=>"fecha_fin","TIPO"=>"REQUERIDO"),
+					 array("ATRI"=>"fecha_fin","TIPO"=>"FUNCTION","FUNCTION"=>"validaFechaFin"),
+					 array("ATRI"=>"hora_inicio","TIPO"=>"HORA"),
+				 	 array("ATRI"=>"hora_inicio","TIPO"=>"REQUERIDO"),
+				     array("ATRI"=>"hora_fin","TIPO"=>"HORA"),
+				 	 array("ATRI"=>"hora_fin","TIPO"=>"REQUERIDO"));
 							
 	}
 
@@ -115,7 +94,7 @@ class HorarioGeneral extends CActiveRecord {
 		return "insert into horario_general (".
 				" cod_temporada, cod_dia, hora_inicio, hora_fin, fecha_inicio, fecha_fin ".
 				" ) values ( ".
-				" '$cod_temporada', '$cod_dia', '$hora_inicio', ".
+				" $cod_temporada, $cod_dia, '$hora_inicio', ".
 				" '$hora_fin' '$fecha_inicio', '$fecha_fin'".
 				" ) " ;
 	}
@@ -128,8 +107,8 @@ class HorarioGeneral extends CActiveRecord {
 		$hora_inicio=CGeneral::addSlashes($this->hora_inicio);
 		$hora_fin=CGeneral::addSlashes($this->hora_fin);
 		return "update horario_general set ".
-				" cod_temporada='$cod_temporada', ".
-				" cod_dia='$cod_dia', ".
+				" cod_temporada=$cod_temporada, ".
+				" cod_dia=$cod_dia, ".
 				" hora_inicio='$hora_inicio', ".
 				" hora_fin='$hora_fin', ".
 				" fecha_inicio='$fecha_inicio', ".
