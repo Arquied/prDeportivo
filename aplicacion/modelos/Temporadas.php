@@ -27,31 +27,16 @@ class Temporadas extends CActiveRecord {
 	}
 
 	protected function fijarRestricciones() {
-		Return array(array("ATRI"=>"cod_temporada",
-							"TIPO"=>"REQUERIDO"),
-					 array("ATRI"=>"cod_temporada",
-					 		"TIPO"=>"ENTERO",
-							"MIN"=>0),
-					 array("ATRI"=>"nombre",
-					 		"TIPO"=>"CADENA",
-							"TAMANIO"=>50),
-					 array("ATRI"=>"nombre",
-					 		"TIPO"=>"FUNCION",
-							"FUNCION"=>"convertirMayuscula"),
-					 array("ATRI"=>"fecha_inicio",
-					 		"TIPO"=>"FECHA"),
-					 array("ATRI"=>"fecha_inicio",
-					 	   "TIPO"=>"REQUERIDO"),
-					 array("ATRI"=>"fecha_inicio",
-					 		"TIPO"=>"FUNCTION",
-							"FUNCTION"=>"validaFechaInicio"),
-							 array("ATRI"=>"fecha_fin",
-					 		"TIPO"=>"FECHA"),
-					 array("ATRI"=>"fecha_fin",
-					 	   "TIPO"=>"REQUERIDO"),
-					 array("ATRI"=>"fecha_fin",
-					 		"TIPO"=>"FUNCTION",
-							"FUNCTION"=>"validaFechaFin"));
+		Return array(array("ATRI"=>"cod_temporada","TIPO"=>"REQUERIDO"),
+					 array("ATRI"=>"cod_temporada","TIPO"=>"ENTERO","MIN"=>0, "MENSAJE"=>"El código de la temporada debe ser positivo", "DEFECTO"=>0),
+					 array("ATRI"=>"nombre","TIPO"=>"CADENA","TAMANIO"=>50, "MENSAJE"=>"El tamaño del nombre no debe sobre para los 50 carecteres"),
+					 array("ATRI"=>"nombre","TIPO"=>"FUNCION","FUNCION"=>"convertirMayuscula"),
+					 array("ATRI"=>"fecha_inicio","TIPO"=>"FECHA"),
+					 array("ATRI"=>"fecha_inicio", "TIPO"=>"REQUERIDO"),
+					 array("ATRI"=>"fecha_inicio","TIPO"=>"FUNCTION","FUNCTION"=>"validaFechaInicio"),
+					 array("ATRI"=>"fecha_fin","TIPO"=>"FECHA"),
+					 array("ATRI"=>"fecha_fin","TIPO"=>"REQUERIDO"),
+					 array("ATRI"=>"fecha_fin","TIPO"=>"FUNCTION", "FUNCTION"=>"validaFechaFin"));
 							
 	}
 
