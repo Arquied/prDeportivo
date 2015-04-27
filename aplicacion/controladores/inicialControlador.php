@@ -2,10 +2,18 @@
 	 
 	class inicialControlador extends CControlador
 	{
-		public function accionIndex()
-		{
-			//$this->dibujaVista("index");
-			Sistema::app()->irAPagina(array("actividades", "listaActividades"));		
+		public function accionIndex(){
+			$actividades = new Actividades();
+			
+			$opciones = array();
+			$opciones["select"]=" t.*";
+			$opciones["from"]="";
+			$opciones["where"]=" t.novedad= 0";
+			
+			 $filas=$actividades->buscarTodos($opciones);
+			 
+			$this->dibujaVista("index",array("filas"=>$filas));
+			//Sistema::app()->irAPagina(array("actividades", "listaActividades"));		
 		}
 		
 		public function accionLogin(){
