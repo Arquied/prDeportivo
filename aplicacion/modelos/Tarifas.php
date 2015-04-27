@@ -28,17 +28,10 @@ class Tarifas extends CActiveRecord {
 	}
 
 	protected function fijarRestricciones() {
-		Return array(array("ATRI"=>"cod_tarifa",
-							"TIPO"=>"REQUERIDO"),
-					 array("ATRI"=>"cod_tarifa",
-					 		"TIPO"=>"ENTERO",
-							"MIN"=>0),
-					 array("ATRI"=>"cod_actividad",
-					 		"TIPO"=>"ENTERO",
-							"MIN"=>0),
-					 array("ATRI"=>"cod_tipo_cuota",
-					 		"TIPO"=>"ENTERO",
-							"MIN"=>0));
+		Return array(array("ATRI"=>"cod_tarifa","TIPO"=>"REQUERIDO"),
+					 array("ATRI"=>"cod_tarifa","TIPO"=>"ENTERO","MIN"=>0, "MENSAJE"=>"El código de la tarifa debe ser positivo", "DEFECTO"=>0),
+					 array("ATRI"=>"cod_actividad","TIPO"=>"ENTERO","MIN"=>0, "MENSAJE"=>"El código de la actividad debe ser positivo", "DEFECTO"=>0),
+					 array("ATRI"=>"cod_tipo_cuota","TIPO"=>"ENTERO","MIN"=>0, "MENSAJE"=>"El código de tipo_cuota debe ser positivo", "DEFECTO"=>0));
 							
 	}
 
@@ -58,8 +51,8 @@ class Tarifas extends CActiveRecord {
 		return "insert into tarifas (".
 				" cod_actividad, cod_tipo_cuota, precio, ocupacion ".
 				" ) values ( ".
-				" '$cod_actividad', '$cod_tipo_cuota', ".
-				" '$precio', '$ocupacion'".
+				" $cod_actividad, $cod_tipo_cuota, ".
+				" $precio, $ocupacion".
 				" ) " ;
 	}
 	
@@ -69,10 +62,10 @@ class Tarifas extends CActiveRecord {
 		$precio = $this->precio;
 		$ocupacion = $this->ocupacion;
 		return "update tarifas set ".
-				" cod_actividad='$cod_actividad', ".
-				" cod_tipo_cuota='$cod_tipo_cuota',".
-				" precio='$precio', ".
-				" ocupacion='$ocupacion' ".
+				" cod_actividad=$cod_actividad, ".
+				" cod_tipo_cuota=$cod_tipo_cuota,".
+				" precio=$precio, ".
+				" ocupacion=$ocupacion ".
 				" where cod_tarifa={$this->cod_tarifa} ";
 	}
 	
