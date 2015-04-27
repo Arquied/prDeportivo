@@ -28,20 +28,12 @@ class Instalaciones extends CActiveRecord {
 	}
 
 	protected function fijarRestricciones() {
-		Return array(array("ATRI"=>"cod_instalacion",
-							"TIPO"=>"REQUERIDO"),
-					 array("ATRI"=>"cod_instalacion",
-					 		"TIPO"=>"ENTERO",
-							"MIN"=>0),
-					 array("ATRI"=>"nombre",
-					 		"TIPO"=>"CADENA",
-							"TAMANIO"=>50),
-					 array("ATRI"=>"nombre",
-					 		"TIPO"=>"FUNCION",
-							"FUNCION"=>"convertirMayuscula"),
-					 array("ATRI"=>"descripcion",
-					 		"TIPO"=>"CADENA",
-							"TAMANIO"=>1000));
+		Return array(array("ATRI"=>"cod_instalacion","TIPO"=>"REQUERIDO"),
+					 array("ATRI"=>"cod_instalacion","TIPO"=>"ENTERO","MIN"=>0,"MENSAJE"=>"El código de la instalación debe ser positivo","DEFECTO"=>0),
+					 array("ATRI"=>"nombre","TIPO"=>"CADENA","TAMANIO"=>50,"MENSAJE"=>"El tamaño maximo debe ser 50"),                       
+					 array("ATRI"=>"descripcion", "TIPO"=>"CADENA", "TAMANIO"=>50000, "MENSAJE"=>"La descripcion no puede ser tan larga"),
+					 array("ATRI"=>"nombre","TIPO"=>"FUNCION","FUNCION"=>"convertirMayuscula"),
+					 array("ATRI"=>"imagen", "TIPO"=>"FUNCION", "FUNCION"=>"validaImagen"));
 							
 	}
 
@@ -58,17 +50,25 @@ class Instalaciones extends CActiveRecord {
 		$cadena=strtoupper($this->nombre);
 		$this->nombre=$cadena;		
 	}
+	
+	protected function validaImagen(){
+		$cadena=$this->imagen;
+		$correcto=preg_match('/\.(gif|jpg|png)$/', $cadena);
+		if($correcto===0 || $correcto===false){
+			$this->setError("imagen", "La imagen no es correcta");
+		}		
+	}
 
 	protected function fijarSentenciaInsert(){
 		$nombre=CGeneral::addSlashes($this->nombre);
 		$descripcion=CGeneral::addSlashes($this->descripcion);
-		$imagen = $this->imagen;
+		$imagen = CGeneral::addSlashes($this->imagen);
 		$capacidad=$this->capacidad;
-		return "insert into instalacion (".
+		return "insert into instalaciones (".
 				" nombre, descripcion, imagen, capacidad ".
 				" ) values ( ".
 				" '$nombre', '$descripcion', ".
-				" '$imagen', '$capacidad' ".
+				" '$imagen', $capacidad ".
 				" ) " ;
 	}
 	
@@ -77,11 +77,11 @@ class Instalaciones extends CActiveRecord {
 		$descripcion=CGeneral::addSlashes($this->descripcion);
 		$imagen = $this->imagen;
 		$capacidad=$this->capacidad;
-		return "update instalacion set ".
+		return "update instalaciones set ".
 				" nombre='$nombre', ".
 				" descripcion='$descripcion',".
 				" imagen='$imagen'".
-				" capacidad='$capacidad'".
+				" capacidad=$capacidad".
 				" where cod_instalacion={$this->cod_instalacion} ";
 	}
 	
