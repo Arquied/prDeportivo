@@ -10,7 +10,7 @@
 				<title><?php echo $titulo;?></title>
 				<!-- definiciones comunes a todo el sitio -->
 				<link type="text/css" href="/estilos/bootstrap.min.css" rel="stylesheet" />
-				<!--<link type="text/css" href="/estilos/carousel.css" rel="stylesheet" />-->
+				<link type="text/css" href="/estilos/carousel.css" rel="stylesheet" />
 				<link type="text/css" href="/estilos/principal.css" rel="stylesheet"/>
 			</head>
 			<body>
@@ -18,9 +18,10 @@
     		        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
     		          <div>
     		            <div class="navbar-header">
-    		              <a class="navbar-brand" href="<?php Sistema::app()->generaURL(array("inicial","inicio")) ?>">Centro Deportivo</a>
+    		              <a class="navbar-brand" href="<?php Sistema::app()->generaURL(array("inicial")) ?>">Centro Deportivo</a>
     		            </div>
     		            <?php
+    		            //Comprobar si se ha iniciado el usuario y si tienen permiso de administrar se mostrar el menu de administracion
     		            $nologeado = true;
     					$esAdmin=false;
     					$logeado=false;
@@ -43,10 +44,13 @@
     		            $login = array("TEXTO"=>"Login","URL"=>Sistema::app()->generaURL(array("inicial","login")),"SUBMENU"=>false,"ACTIVO"=>$nologeado,"ITEMS"=>array());
     					$logout = array("TEXTO"=>"Logout","URL"=>Sistema::app()->generaURL(array("inicial","cerrarSesion")),"SUBMENU"=>false,"ACTIVO"=>$logeado,"ITEMS"=>array());
     					$perfil = array("TEXTO"=>"Mi Perfil","URL"=>Sistema::app()->generaURL(array("usuarios", "miPerfil")),"SUBMENU"=>false,"ACTIVO"=>$logeado,"ITEMS"=>array());
-    					$servicios = array("TEXTO"=>"Servicios","URL"=>Sistema::app()->generaURL(array()),"SUBMENU"=>false,"ACTIVO"=>true,"ITEMS"=>array());
-    					$instalaciones = array("TEXTO"=>"Instalaciones","URL"=>Sistema::app()->generaURL(array()),"SUBMENU"=>false,"ACTIVO"=>true,"ITEMS"=>array());
+    					$instalaciones = array("TEXTO"=>"Instalaciones","URL"=>Sistema::app()->generaURL(array("instalaciones")),"SUBMENU"=>false,"ACTIVO"=>true,"ITEMS"=>array());
     					$usuarios = array("TEXTO"=>"Usuarios","URL"=>Sistema::app()->generaURL(array()),"SUBMENU"=>false,"ACTIVO","ITEMS"=>array());
-    					$administrar = array("TEXTO"=>"Administrar","URL"=>"","SUBMENU"=>true,"ACTIVO"=>true,"ITEMS"=>array($instalaciones,$servicios,$usuarios));
+						$temporadas = array("TEXTO"=>"Temporadas","URL"=>Sistema::app()->generaURL(array("temporadas")),"SUBMENU"=>false,"ACTIVO","ITEMS"=>array());
+						$cuotas = array("TEXTO"=>"Cuotas","URL"=>Sistema::app()->generaURL(array("cuotas")),"SUBMENU"=>false,"ACTIVO","ITEMS"=>array());
+						$horarios = array("TEXTO"=>"Horarios","URL"=>Sistema::app()->generaURL(array("horarios")),"SUBMENU"=>false,"ACTIVO","ITEMS"=>array());
+						$actividades = array("TEXTO"=>"Actividades","URL"=>Sistema::app()->generaURL(array("actividades","listaActividades")),"SUBMENU"=>false,"ACTIVO","ITEMS"=>array());
+    					$administrar = array("TEXTO"=>"Administrar","URL"=>"","SUBMENU"=>true,"ACTIVO"=>true,"ITEMS"=>array($actividades,$cuotas,$horarios,$instalaciones,$temporadas,$usuarios));
     		            $datos = array($quien,$registra,$login,$logout,$perfil,$administrar);
     		            $cbarra = new CBarraMenu($datos);
     					$cbarra->dibujate();
