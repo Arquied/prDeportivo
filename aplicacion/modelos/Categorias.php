@@ -60,6 +60,25 @@
             return "update categorias set ".
                             " nombre='$nombre' ".
                             " where cod_categoria={$this->cod_categoria} ";                                                                       
+        }
+		
+		public static function listaCategorias($codigo=null){
+            
+            $categorias = new Categorias();
+            if ($codigo == null) {
+                        
+                $lista = array();
+                foreach($categorias->buscarTodos() as $categoria)
+                    $lista[$categoria["cod_categoria"]] = $categoria["nombre"];
+                
+                return $lista;
+            }
+            
+            if ($categorias->buscarPorId($codigo))
+            return $categorias->nombre;
+            
+            return null;
+            
         }           
         
     }
