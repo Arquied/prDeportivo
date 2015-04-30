@@ -98,6 +98,24 @@
 							" fecha_inicio='$fecha_inicio', ".
 							" fecha_fin='$fecha_fin' ".
 							" where cod_calendario={$this->cod_calendario} ";																		
-		}			
+		}
+		
+		public static function listaCalendarios($codigo=null){            
+            $calendarios = new Calendarios();
+            if ($codigo == null) {
+                        
+                $lista = array();
+                foreach($calendarios->buscarTodos() as $calendario)
+                    $lista[$calendario["cod_calendario"]] = $calendario["nombre"];
+                
+                return $lista;
+            }
+            
+            if ($calendarios->buscarPorId($codigo))
+            return $calendarios->nombre;
+            
+            return null;
+            
+        }			
 		
 	}
