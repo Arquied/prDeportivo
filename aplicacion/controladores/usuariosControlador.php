@@ -62,36 +62,28 @@
                 $usuario=new Usuarios();      
                 if($usuario->buscarPorId($_GET["cod_usuario"])){
                     if(isset($_POST[$usuario->getNombre()])){
-                        $usuario -> setValores($_POST[$usuario->getNombre()]);                                               
-                                            
-                        if ($usuario -> validar()) {
-                            if($usuario->contrasenia==$_POST["con1"]){                                       
-                                if (!$usuario -> guardar()) {
-                                    $this -> dibujaVista("modificar", array("modelo" => $usuario), "Modificar usuario");
-                                    exit ;
-                                }
-                                //Reiniciar sesion con el nombre de usuario nuevo
-                                Sistema::app()->acceso()->quitarRegistroUsuario();
-                                $puedeAcceder=false;
-                                $puedeAdministrar=false;
-                                $nombre="";
-                                if (Sistema::app()->ACL()->getPermisos($usuario->nick, $puedeAcceder, $puedeAdministrar)){
-                                     $nombre=Sistema::app()->ACL()->getNombre($usuario->nick);
-                                     if (Sistema::app()->Acceso()-> registrarUsuario($usuario->nick, $nombre, $puedeAcceder, $puedeAdministrar)){          
-                                        Sistema::app()->irAPagina(array("usuarios", "miPerfil"));
-                                        exit ;
-                                     }
-                                     Sistema::app()->irAPagina(array("inicial", "login"));
-                                     exit;
-                                }
-                                Sistema::app()->irAPagina(array("inicial", "login"));
-                                exit;
-                            }
-                            else{
-                                $errorCont="Las contraseñas no coinciden";
-                                $this -> dibujaVista("registro", array("modelo" => $usuario, "errorCont"=>$errorCont), "Nuevo usuario");
+                        $usuario -> setValores($_POST[$usuario->getNombre()]);                                                                                         
+                        if ($usuario -> validar()) {                                  
+                            if (!$usuario -> guardar()) {
+                                $this -> dibujaVista("modificar", array("modelo" => $usuario), "Modificar usuario");
                                 exit ;
                             }
+                            //Reiniciar sesion con el nombre de usuario nuevo
+                            Sistema::app()->acceso()->quitarRegistroUsuario();
+                            $puedeAcceder=false;
+                            $puedeAdministrar=false;
+                            $nombre="";
+                            if (Sistema::app()->ACL()->getPermisos($usuario->nick, $puedeAcceder, $puedeAdministrar)){
+                                 $nombre=Sistema::app()->ACL()->getNombre($usuario->nick);
+                                 if (Sistema::app()->Acceso()-> registrarUsuario($usuario->nick, $nombre, $puedeAcceder, $puedeAdministrar)){          
+                                    Sistema::app()->irAPagina(array("usuarios", "miPerfil"));
+                                    exit ;
+                                 }
+                                 Sistema::app()->irAPagina(array("inicial", "login"));
+                                 exit;
+                            }
+                            Sistema::app()->irAPagina(array("inicial", "login"));
+                            exit;
                         }                         
                         else {
                             $this -> dibujaVista("modificar", array("modelo" => $usuario), "Modificar usuario");
@@ -104,5 +96,49 @@
                 Sistema::app()->paginaError(400, "El usuario no se encuentra");
             }
         }
+
+        public function accionCambiarContrasena(){
+             //Comprobar si se ha iniciado sesion y si el usuario tiene permiso de modificar         
+            if(!Sistema::app()->acceso()->hayUsuario()){
+                Sistema::app()->sesion()->set("pagPrevia", array("usuarios", "modificar"));
+                Sistema::app()->sesion()->set("parametrosAnt", array());
+                Sistema::app()->irAPagina(array("inicial", "login"));
+                exit;
+            }
+            else{
+                if(isset($_POST["contrasenaActual"])){
+                    //Validar si la contraseña actual es correcta
+                    if(Sistema::app()->ACL()->esValido(Sistema::app()->Acceso()->getNick(), $_POST["contrasenaActual"])){
+                        //Comprobar si las dos contraseña nuevas son iguales
+                        if($_POST["nuevaContrasena"]==$_POST["nuevaContrasenaRep"]){
+                            $nick=Sistema::app()->Acceso()->getNick();
+                            $sentencia=" update usuarios set ".
+                                        " contrasenia=md5('".CGeneral::addSlashes($_POST['nuevaContrasena'])."') ".
+                                        " where nick='$nick'";
+                            $resultado=Sistema::app()->BD()->crearConsulta($sentencia);
+                            if($resultado){
+                                Sistema::app()->irAPagina(array("usuarios", "miPerfil"));
+                                exit;
+                            }
+                        }
+                        else{
+                            $this->dibujaVista("cambiarContrasena", array("error"=>"Las contraseñas no coinciden"), "Cambiar Contraseña");
+                            exit ; 
+                        }      
+                    }
+                    else{
+                        $this->dibujaVista("cambiarContrasena", array("error"=>"La contraseña no es correcta"), "Cambiar Contraseña");
+                        exit ; 
+                    }                        
+                }
+                else{
+                    $this->dibujaVista("cambiarContrasena", array(), "Cambiar Contraseña");
+                    exit ;    
+                }         
+            }
+        }    
+                    
+                           
+        
 	
 }
