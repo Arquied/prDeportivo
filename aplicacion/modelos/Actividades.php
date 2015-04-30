@@ -125,18 +125,22 @@
 							" where cod_actividad={$this->cod_actividad} ";																		
 		}
 		
-		public function devuelveCategorias(){
-            $sentencia= "select cod_categoria, nombre ".
-                        " from categorias";
-            $filas=$this->ejecutarSentencia($sentencia);
-            if($filas!==false){
-                $categoria=array();
-                foreach ($filas as $fila) {
-                    $categoria[$fila["cod_categoria"]]=$fila["nombre"];
-                }
-                return $categoria;
-            }           
-            return false;
+		public static function listaActividades($codigo=null){            
+            $actividades = new Actividades();
+            if ($codigo == null) {
+                        
+                $lista = array();
+                foreach($actividades->buscarTodos() as $actividad)
+                    $lista[$actividad["cod_actividad"]] = $actividad["nombre"];
+                
+                return $lista;
+            }
+            
+            if ($actividades->buscarPorId($codigo))
+            return $actividades->nombre;
+            
+            return null;
+            
         }
 		
 		/**
@@ -149,12 +153,13 @@
 		
 		protected function validaImagen(){
 			$cadena=$this->imagen;
-			$correcto=preg_match('/\.(gif|jpg|png)$/', $cadena);
-			if($correcto===0 || $correcto===false){
-				$this->setError("imagen", "La imagen no es correcta");
-			}		
+			if($cadena!=""){
+				$correcto=preg_match('/\.(gif|jpg|png)$/', $cadena);
+				if($correcto===0 || $correcto===false){
+					$this->setError("imagen", "La imagen no es correcta");
+				}	
+			}	
 		}
 				
 		
 	}
-	
