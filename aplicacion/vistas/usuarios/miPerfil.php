@@ -3,7 +3,7 @@
    
    //Obtener compras realizadas
    $compras=new Compras();
-   
+   //$compras->obtenerCompras();
    
    
     echo CHTML::cssFichero("../../estilos/estiloPerfil.css");
@@ -32,7 +32,7 @@
                     echo CHTML::dibujaEtiquetaCierre("div");
                     
                     echo CHTML::dibujaEtiqueta("div", array("class"=>"text-center"));
-                        echo CHTML::dibujaEtiqueta("span", array(), "Tlf: ".$modelo->telefono, true);
+                        echo CHTML::dibujaEtiqueta("span", array(), "Teléfono: ".$modelo->telefono, true);
                     echo CHTML::dibujaEtiquetaCierre("div");
                     
                     echo CHTML::dibujaEtiqueta("div", array("class"=>"text-center"));
@@ -41,6 +41,7 @@
                     
                     echo CHTML::dibujaEtiqueta("div", array("class"=>"text-center"));
                         echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("usuarios", "modificar"), array("cod_usuario"=>$modelo->cod_usuario)), "class"=>"btn btn-default btn-block"), "Modificar mi perfil", true);
+                        echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("usuarios", "cambiarContrasena"), array("cod_usuario"=>$modelo->cod_usuario)), "class"=>"btn btn-default btn-block"), "Cambiar contraseña", true);
                         echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("inicial", "cerrarSesion")), "class"=>"btn btn-default btn-block"), "Cerrar sesión", true);
                     echo CHTML::dibujaEtiquetaCierre("div");
             
@@ -57,3 +58,6 @@
                         
         echo CHTML::dibujaEtiquetaCierre("div");
     echo CHTML::dibujaEtiquetaCierre("div");
+
+    
+ ?>   
