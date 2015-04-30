@@ -48,7 +48,8 @@
 						array("ATRI"=>"telefono", "TIPO"=>"CADENA", "TAMANIO"=>9, "MENSAJE"=>"El teléfono no puede ser tan largo"),
 						array("ATRI"=>"nick", "TIPO"=>"REQUERIDO"),
 						array("ATRI"=>"nick", "TIPO"=>"CADENA", "TAMANIO"=>30, "MENSAJE"=>"El nick no puede ser tan largo"),
-						array("ATRI"=>"contrasenia", "TIPO"=>"CADENA", "TAMANIO"=>30, "MENSAJE"=>"La contraseña no puede ser tan larga"),
+						array("ATRI"=>"nick", "TIPO"=>"FUNCION", "FUNCION"=>"nickUnico"),
+						array("ATRI"=>"contrasenia", "TIPO"=>"CADENA", "TAMANIO"=>32, "MENSAJE"=>"La contraseña no puede ser tan larga"),
 						array("ATRI"=>"fecha_nac", "TIPO"=>"FECHA"),
 						array("ATRI"=>"saldo", "TIPO"=>"REAL")
 						);
@@ -91,6 +92,7 @@
 						" ) " ;
 		}
 		
+        // Funcion modifica el usuario menos la contrasena
 		protected function fijarSentenciaUpdate(){
 			$cod_role=$this->cod_role;
 			$nombre=CGeneral::addSlashes($this->nombre);
@@ -98,7 +100,6 @@
 			$correo=CGeneral::addSlashes($this->correo);
 			$telefono=CGeneral::addSlashes($this->telefono);
 			$nick=CGeneral::addSlashes($this->nick);
-			$contrasenia=CGeneral::addSlashes($this->contrasenia);
 			$fecha_nac=CGeneral::addSlashes(CGeneral::fechaNormalAMysql($this->fecha_nac));
             $saldo=$this->saldo;
 			
@@ -109,11 +110,11 @@
 							" correo='$correo', ".
 							" telefono='$telefono', ".
 							" nick='$nick', ".
-							" contrasenia=md5('$contrasenia'), ".
 							" fecha_nac='$fecha_nac', ".
 							" saldo=$saldo ".
 							" where cod_usuario={$this->cod_usuario} ";																		
 		}
+        
 		
 		/**
 		 * METODOS PARA VALIDAR CAMPOS
@@ -135,8 +136,14 @@
             if(!strtoupper($letter) === $map[((int) $number) % 23]){
             	$this->setError("dni", "DNI incorrecto");
             } 
-       }
+        }
+       
+        protected function nickUnico(){
+            $existe=$this->buscarTodos(array("where"=>"nick='".$this->nick."'"));   
+            if(count($existe)!=0){
+                $this->setError("nick", "Nick ya existe");    
+            } 
+        }
 				
 		
 	}
-	
