@@ -12,6 +12,8 @@
 				<link type="text/css" href="/estilos/bootstrap.min.css" rel="stylesheet" />
 				<link type="text/css" href="/estilos/carousel.css" rel="stylesheet" />
 				<link type="text/css" href="/estilos/principal.css" rel="stylesheet"/>
+				<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+				<script src="script/bootstrap.min.js"></script>
 			</head>
 			<body>
 			    <div>	
@@ -64,7 +66,6 @@
     				</div>
 				</div>  
 					
-					<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-					<script src="script/bootstrap.min.js"></script>
+					
 			</body>
 </html>
