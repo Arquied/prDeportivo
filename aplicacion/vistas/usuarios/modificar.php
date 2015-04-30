@@ -70,6 +70,7 @@
                     echo CHTML::dibujaEtiquetaCierre("div");
                     
                     echo CHTML::dibujaEtiqueta("div");
+                    
                         //Campo nick                    
                         echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
                             if(isset($errores["nick"])){
@@ -79,32 +80,9 @@
                             echo CHTML::modeloText($modelo, 
                                                     "nick",
                                                     array("class"=>"form-control", "maxlength"=>30, "size"=>30));
-                        echo CHTML::dibujaEtiquetaCierre("div");
-                        
-                        //Campo contraseña
-                        echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-                            if(isset($errores["contrasenia"])){
-                            echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["contrasenia"], true);
-                            }
-                            if(isset($errorCont)){
-                            echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errorCont, true);
-                            }
-                            echo CHTML::modeloLabel($modelo, "contrasenia");
-                            echo CHTML::modeloPassword($modelo,
-                                                    "contrasenia",
-                                                    array("class"=>"form-control", "maxlength"=>30, "value"=>"", "size"=>30));
-                        echo CHTML::dibujaEtiquetaCierre("div");
-                        
-                        //Campo repite contraseña
-                        echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-                            echo CHTML::campoLabel("Repita contraseña", "con1");
-                            echo CHTML::campoPassword("con1",
-                                                    "", 
-                                                    array("class"=>"form-control", "maxlength"=>30, "size"=>30));
-                        echo CHTML::dibujaEtiquetaCierre("div");
-                    echo CHTML::dibujaEtiquetaCierre("div");
-                    
+                        echo CHTML::dibujaEtiquetaCierre("div");                    
                     echo CHTML::dibujaEtiqueta("div");
+                    
                         //Boton insertar
                         echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
                             echo CHTML::campoBotonSubmit("Guardar mis datos", array("class"=>"btn btn-default"));                 
