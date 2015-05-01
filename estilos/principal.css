@@ -4,6 +4,10 @@ body {
 	min-height: 100%;
 }
 
+a{
+	color: rgb(140, 3, 21);
+}
+
 #conte{	
 	position: relative;
 	top: 50px;	
@@ -51,4 +55,26 @@ body {
   color: #fff;
   background-color:  rgb(140, 3, 21);
   border-color:  rgb(140, 3, 21);
+}
+
+/* PIE DE PAGINA */
+footer{
+	margin-top: 500px;
+	
+}
+footer .featurette-divider{
+	border-top: 3px solid #eee;
+}
+
+/* VENTANA MODAL */
+.modal{
+	background-color: white;
+	width: 560px;
+	height: 225px;
+	left: 25%;
+	top: 25%;
+	padding-right: 0 !important;
+	border-radius: 6px;	
+	box-shadow: 10px 10px 5px #888888; 
+
 }
