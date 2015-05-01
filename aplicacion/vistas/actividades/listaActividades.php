@@ -1,11 +1,5 @@
 <?php
 
-    //Obtener la lista de categorías para el filtrado
-    $categoria=new Categorias();
-    $listaCat=array();
-    foreach ($categoria->buscarTodos() as $cat) {
-        $listaCat[$cat["cod_categoria"]]=$cat["nombre"];
-    }
     echo CHTML::cssFichero("/estilos/estiloActividades.css");
     
     //FILTRADO
@@ -19,7 +13,7 @@
                     //Campo categoria           
                     echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
                         echo CHTML::campoLabel("Categorías", "categoria");                            
-                        echo CHTML::campoListaDropDown("categoria", "", $listaCat, array("class"=>"form-control"));
+                        echo CHTML::campoListaDropDown("categoria", "", Categorias::listaCategorias(), array("class"=>"form-control"));
                     echo CHTML::dibujaEtiquetaCierre("div");
                     
                     //Campo nombre actividad
