@@ -30,7 +30,7 @@ echo CHTML::dibujaEtiqueta("div", array("class"=>"contActividad"));
     			echo CHTML::imagen("../../imagenes/actividades/".$fila["imagen"], "500x500", array("class"=>"featurette-image img-responsive center-block"));	
     		}    
 			else{
-				echo CHTML::imagen("../../imagenes/actividades/Imagen_no_disponible.svg.png", "500x500", array("class"=>"featurette-image img-responsive center-block"));
+				echo CHTML::imagen("../../imagenes/Imagen_no_disponible.svg.png", "500x500", array("class"=>"featurette-image img-responsive center-block"));
 			}
             
         echo CHTML::dibujaEtiquetaCierre("div");
