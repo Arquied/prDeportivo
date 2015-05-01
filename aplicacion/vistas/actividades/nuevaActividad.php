@@ -27,16 +27,13 @@
                                                     array("class"=>"form-control", "maxlength"=>50, "size"=>"50"));
                         echo CHTML::dibujaEtiquetaCierre("div");
                               
-                        //Campo categoria
-                        //Obtener lista categorias
-                        $listaCategorias=$modelo->devuelveCategorias();
-                        
+                        //Campo categoria                        
                         echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
                             if(isset($errores["cod_categoria"])){
                                 echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["cod_categoria"], true);
                             }
                             echo CHTML::campoLabel("Categorías", "categoria");                            
-                            echo CHTML::campoListaDropDown("categoria", "", $listaCategorias, array("class"=>"form-control"));
+                            echo CHTML::campoListaDropDown("categoria", "", Categorias::listaCategorias(), array("class"=>"form-control"));
                         echo CHTML::dibujaEtiquetaCierre("div");
                         
                         //Campo temporada
@@ -45,7 +42,7 @@
                                 echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["cod_temporada"], true);
                             }
                             echo CHTML::campoLabel("Temporada", "temporada");                            
-                            echo CHTML::campoListaDropDown("temporada", "", $listaTemporadas, array("class"=>"form-control"));
+                            echo CHTML::campoListaDropDown("temporada", "", Temporadas::listaTemporadas(), array("class"=>"form-control"));
                         echo CHTML::dibujaEtiquetaCierre("div");                        
                         
                         //Campo novedad
