@@ -18,7 +18,7 @@
 		}
 			
 		protected function fijarAtributos(){
-			return array("cod_actividad", "nombre", "mini_descripcion", "descripcion", "imagen", "capacidad", "fecha_inicio", "fecha_fin", "novedad", "cod_temporada", "cod_categoria");
+			return array("cod_actividad", "nombre", "mini_descripcion", "descripcion", "imagen", "capacidad", "fecha_inicio", "fecha_fin", "novedad", "disponible", "cod_temporada", "cod_categoria");
 		}
 		
 		protected function fijarDescripciones(){
@@ -31,6 +31,7 @@
 						"fecha_inicio"=>"Fecha inicio de la actividad",
 						"fecha_fin"=>"Fecha fin de la actividad",
 						"novedad" => "Es novedad",
+						"disponible"=>"Está disponible",
 						"cod_temporada"=>"Código de la temporada",
 						"cod_categoria" =>"Código de la categoria"
 						);
@@ -51,7 +52,8 @@
 						array("ATRI"=>"capacidad", "TIPO"=>"ENTERO", "MIN"=>0, "MENSAJE"=>"La capadicdad debe ser positiva"),
 						array("ATRI"=>"fecha_inicio", "TIPO"=>"FECHA"),
 						array("ATRI"=>"fecha_fin", "TIPO"=>"FECHA"),
-						array("ATRI"=>"novedad", "TIPO"=>"ENTERO", "MIN"=>0, "MAX"=>1)
+						array("ATRI"=>"novedad", "TIPO"=>"ENTERO", "MIN"=>0, "MAX"=>1),
+						array("ATRI"=>"disponible", "TIPO"=>"ENTERO", "MIN"=>0, "MAX"=>1)
 						);
 		}
 		
@@ -67,6 +69,7 @@
 			$this->fecha_inicio=date("d/m/Y");
 			$this->fecha_fin=date("d/m/Y");
 			$this->novedad=0;
+			$this->disponible=1;
 			
 		}	
 		
@@ -90,12 +93,13 @@
 			$capacidad=$this->capacidad;
 			$fecha_inicio=CGeneral::fechaNormalAMysql($this->fecha_inicio);
 			$fecha_fin=CGeneral::fechaNormalAMysql($this->fecha_fin);
-            $novedad=CGeneral::addSlashes($this->novedad);
+            $novedad=intval($this->novedad);
+			$disponible=intval($this->disponible);
 								
 			return "insert into actividades (".
-						" nombre, mini_descripcion, descripcion, imagen, capacidad, fecha_inicio, fecha_fin, novedad, cod_temporada, cod_categoria ".
+						" nombre, mini_descripcion, descripcion, imagen, capacidad, fecha_inicio, fecha_fin, novedad, disponible, cod_temporada, cod_categoria ".
 						" ) values ( ".
-						" '$nombre', '$mini_descripcion', '$descripcion', '$imagen', $capacidad, '$fecha_inicio', '$fecha_fin', $novedad, $cod_temporada, $cod_categoria ".
+						" '$nombre', '$mini_descripcion', '$descripcion', '$imagen', $capacidad, '$fecha_inicio', '$fecha_fin', $novedad, $disponible, $cod_temporada, $cod_categoria ".
 						" ) " ;
 		}
 		
@@ -109,7 +113,8 @@
 			$capacidad=$this->capacidad;
 			$fecha_inicio=CGeneral::fechaNormalAMysql($this->fecha_inicio);
 			$fecha_fin=CGeneral::fechaNormalAMysql($this->fecha_fin);
-            $novedad=CGeneral::addSlashes($this->novedad);
+           	$novedad=intval($this->novedad);
+			$disponible=intval($this->disponible);
 			
 			return "update actividades set ".
 							" cod_temporada=$cod_temporada, ".
@@ -121,7 +126,8 @@
 							" capacidad=$capacidad, ".
 							" fecha_inicio='$fecha_inicio', ".
 							" fecha_fin='$fecha_fin', ".
-							" novedad=$novedad ".
+							" novedad=$novedad, ".
+							" disponible=$disponible ".
 							" where cod_actividad={$this->cod_actividad} ";																		
 		}
 		
@@ -163,3 +169,4 @@
 				
 		
 	}
+	
