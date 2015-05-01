@@ -24,8 +24,15 @@ echo CHTML::dibujaEtiqueta("div", array("class"=>"contActividad"));
             echo CHTML::dibujaEtiqueta("div", array("class"=>"col-md-5 imagen"));
         else 
             echo CHTML::dibujaEtiqueta("div", array("class"=>"col-md-5 col-md-pull-7 imagen")); 
-        
-            echo CHTML::imagen("../../imagenes/actividades/".$fila["imagen"], "500x500", array("class"=>"featurette-image img-responsive center-block"));
+		
+			//si existe imagen si no se inserta una por defecto
+    		if($fila["imagen"]!=""){
+    			echo CHTML::imagen("../../imagenes/actividades/".$fila["imagen"], "500x500", array("class"=>"featurette-image img-responsive center-block"));	
+    		}    
+			else{
+				echo CHTML::imagen("../../imagenes/actividades/Imagen_no_disponible.svg.png", "500x500", array("class"=>"featurette-image img-responsive center-block"));
+			}
+            
         echo CHTML::dibujaEtiquetaCierre("div");
     echo CHTML::dibujaEtiquetaCierre("div");
     
