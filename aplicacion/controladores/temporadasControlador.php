@@ -4,10 +4,8 @@
 		
 		public function accionIndex(){
 			
-			$temporadas = new Temporadas();
-			
 		if (!Sistema::app() -> acceso() -> hayUsuario()) {
-              Sistema::app() -> sesion() -> set("pagPrevia", array("actividades", "nuevaActividad"));
+              Sistema::app() -> sesion() -> set("pagPrevia", array("temporadas"));
               Sistema::app() -> sesion() -> set("parametrosAnt", array());
               Sistema::app() -> irAPagina(array("inicial", "login"));
               exit ;
@@ -17,15 +15,18 @@
               exit ;
             } 
 		else {
+			$temporadas = new Temporadas();
 			
-			$this->dibujaVista("index",array("temporadas"=>$temporadas));
+			$filas = $temporadas->buscarTodos(array("select"=>" t.*"));
+			
+			$this->dibujaVista("indexTemporada",array("filas"=>$filas));
 		}
 		}
 		
 		public function accionNuevaTemporada() {
 			
 		if (!Sistema::app() -> acceso() -> hayUsuario()) {
-              Sistema::app() -> sesion() -> set("pagPrevia", array("actividades", "nuevaActividad"));
+              Sistema::app() -> sesion() -> set("pagPrevia", array("temporadas", "nuevaTemporada"));
               Sistema::app() -> sesion() -> set("parametrosAnt", array());
               Sistema::app() -> irAPagina(array("inicial", "login"));
               exit ;
@@ -43,6 +44,7 @@
 					
 				$temporada->setValores($_POST[$nombre]);
 				$temporada->cod_temporada=100;
+				$temporada->disponible=1;
 				
 				if ($temporada->validar()){
 					
@@ -51,24 +53,23 @@
 						exit;
 					}
 					
-					Sistema::app()->irAPagina("temporada","index");
+					Sistema::app()->irAPagina("temporadas");
 					exit;
 				}
 				
 				else {
-					$this->dibujaVista("nueva", array("modelo"=>$temporada));
+					$this->dibujaVista("nuevaTemporada", array("modelo"=>$temporada));
 				}
 				
 			}
 
-			$this->dibujaVista("nueva", array("modelo"=>$temporada));
+			$this->dibujaVista("nuevaTemporada", array("modelo"=>$temporada));
 		}
 		}
 
-		public function accionModificarTemporada(){
-			
+		public function accionModificaTemporada(){
 		if (!Sistema::app() -> acceso() -> hayUsuario()) {
-              Sistema::app() -> sesion() -> set("pagPrevia", array("actividades", "nuevaActividad"));
+              Sistema::app() -> sesion() -> set("pagPrevia", array("temporadas", "modificaTemporada"));
               Sistema::app() -> sesion() -> set("parametrosAnt", array());
               Sistema::app() -> irAPagina(array("inicial", "login"));
               exit ;
@@ -79,44 +80,71 @@
             } 
 		else {
 			
-			$id=-1;
-			if (isset($_REQUEST["id"]))
-			    $id=intval($_REQUEST["id"]);
-			
 			$temporada = new Temporadas();
 			
-			if(!$temporada->buscarPorId($id)){
-				
-				Sistema::app()->paginaError(404,"No tienes permiso para acceder a esta pagina");
-				
-		    	}
+			if($temporada->buscarPorId($_GET["cod_temporada"])){
+					
+				$nombre = $temporada->getNombre();
 			
-			$nombre = $temporada->getNombre();
-			
-			if (isset($_POST[$nombre])){
+				if (isset($_POST[$nombre])){
 				 	
-			 	$temporada->setValores($_POST[$nombre]);
+			 		$temporada->setValores($_POST[$nombre]);
 
-				if ($temporada->validar()) {
+					if ($temporada->validar()) {
 					 
 				    	if (!$temporada->guardar()){
 						   	  Sistema::app()->paginaError(404,"Se ha producido un error al guardar");
 						   	  exit;
 						   }
 						
-				    	Sistema::app()->irAPagina(array("temporada","index"));
+				    	Sistema::app()->irAPagina(array("temporadas"));
 				    	exit;
 				    }
 				   else { 
-						$this->dibujaVista("modificar",
+						$this->dibujaVista("modificaTemporada",
 										array("modelo"=>$temporada),"Modificaci&oacute; de temporada");
 				   	   	exit;			   	   
 				   	}	
 			}
-			
+				
+		    	}
 					
-			$this->dibujaVista("modificar",array("modelo"=>$temporada),"Modificaci&oacute; de temporada");
+			$this->dibujaVista("modificaTemporada",array("modelo"=>$temporada),"Modificaci&oacute; de temporada");
 			
 		}
 		}
+
+		public function accionBorraTemporada(){
+			
+			if(!Sistema::app()->acceso()->hayUsuario()){
+				Sistema::app()->sesion()->set("pagPrevia", array("temporadas", "borraTemporada"));
+				Sistema::app()->sesion()->set("parametrosAnt", array());
+				Sistema::app()->irAPagina(array("inicial", "login"));
+				exit;
+			}
+			else if(!Sistema::app()->acceso()->puedeConfigurar()){
+				Sistema::app()->paginaError(400, "No tiene permiso para acceder");	
+				exit;
+			}
+			else{
+				$temporada= new Temporadas();
+				if ($temporada->buscarPorId($_REQUEST["id"])){
+					$temporada -> disponible=0;
+					if (!$temporada->validar()) {
+						if(!$temporada->guardar()){
+							$this->dibujaVista("borraTemporada", array("modelo"=>$temporada),"Borrar temporada");
+							exit;
+						}
+						Sistema::app()->irAPagina(array("temporadas"));
+						exit;
+					}
+					else {
+						$this -> dibujaVista("borraTemporada", array("modelo"=>$temporada),"Borrar temporada");
+						exit;
+					}
+				}
+				Sistema::app()->paginaError(400,"La temporada no se encuentra");
+			} 
+		}
+
 	}
