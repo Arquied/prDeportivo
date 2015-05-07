@@ -31,7 +31,7 @@ echo CHTML::modeloLabel($modelo, "capacidad");
 echo CHTML::modeloNumber($modelo, "capacidad",array("class"=>"form-control",));
 echo CHTML::dibujaEtiquetaCierre("div");
 
-					echo CHTML::dibujaEtiqueta("div");
+echo CHTML::dibujaEtiqueta("div");
 echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
 echo CHTML::campoBotonSubmit("Modificar", array("class"=>"btn btn-default"));
 echo CHTML::dibujaEtiquetaCierre("div");
