@@ -1,4 +1,5 @@
 <?php
+
 class CBarraMenu extends CWidget{
 	private $_opciones=array();
 	
@@ -8,6 +9,7 @@ class CBarraMenu extends CWidget{
 							"URL"=>"",
 							"SUBMENU"=>false,
 							"ACTIVO"=>true,
+							"DERECHA"=>false,
 							"ITEMS"=>"");
 							
 			if (isset($opcion["TEXTO"]))
@@ -19,6 +21,8 @@ class CBarraMenu extends CWidget{
 					$fila["SUBMENU"]=$opcion["SUBMENU"];
 			if (isset($opcion["ACTIVO"]))
 				$fila["ACTIVO"]=$opcion["ACTIVO"];
+			if (isset($opcion["DERECHA"]))
+				$fila["DERECHA"]=$opcion["DERECHA"];
 			if (isset($opcion["ITEMS"]))
 				$fila["ITEMS"]=$opcion["ITEMS"];
 				
@@ -35,7 +39,7 @@ class CBarraMenu extends CWidget{
 		echo CHTML::dibujaEtiqueta("div",array("id"=>"navbar","class"=>"navbar-collapse collapse"),"",false);
 		echo CHTML::dibujaEtiqueta("ul",array("class"=>"nav navbar-nav"),"",false);
 		foreach($this->_opciones as $valor){
-			if ($valor["ACTIVO"]==true){
+			if ($valor["ACTIVO"]==true && $valor["DERECHA"]==false){
 				if ($valor["SUBMENU"]==false){
 					echo CHTML::dibujaEtiqueta("li",array(),"",false);
 					echo CHTML::dibujaEtiqueta("a",array("href"=>$valor["URL"]),$valor["TEXTO"]);
@@ -55,6 +59,18 @@ class CBarraMenu extends CWidget{
 			}	
 	    }
 		echo CHTML::dibujaEtiquetaCierre("ul");
+		
+		echo CHTML::dibujaEtiqueta("ul",array("class"=>"nav navbar-nav ul"),"",false);
+			
+		foreach($this->_opciones as $valor){
+			if ($valor["ACTIVO"]==true && $valor["DERECHA"]==true){
+				if ($valor["SUBMENU"]==false){
+					echo CHTML::dibujaEtiqueta("li",array("class"=>"li"),"",false);
+					echo CHTML::dibujaEtiqueta("a",array("href"=>$valor["URL"]),$valor["TEXTO"]);
+				}
+			}
+		}
+		
 		echo CHTML::dibujaEtiquetaCierre("div");
 		
 		$escrito=ob_get_contents();
