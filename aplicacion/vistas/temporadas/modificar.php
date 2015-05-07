@@ -24,6 +24,11 @@ echo CHTML::modeloLabel($modelo, "fecha_fin");
 echo CHTML::modeloDate($modelo, "fecha_fin");
 echo CHTML::dibujaEtiquetaCierre("div");
 
+echo CHTML::dibujaEtiqueta("div",array("class"=>"form-group"));
+echo CHTML::modeloLabel($modelo, "disponible");
+echo CHTML::modeloDate($modelo, "disponible	");
+echo CHTML::dibujaEtiquetaCierre("div");
+
 echo CHTML::dibujaEtiqueta("div");
 echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
 echo CHTML::campoBotonSubmit("Modificar", array("class"=>"btn btn-default"));
