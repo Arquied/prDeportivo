@@ -11,7 +11,7 @@
     echo CHTML::dibujaEtiquetaCierre("div");
 	
 	echo CHTML::dibujaEtiqueta("div");
-	echo CHTML::dibujaEtiqueta("a",array("href"=>Sistema::app()->generaURL(array("horarios", "nuevoHorario"))),"Nuevo");
+	echo CHTML::dibujaEtiqueta("a",array("href"=>Sistema::app()->generaURL(array("horarios", "nuevoHorario")), "class", "btn btn-default"),"Nuevo");
 	echo CHTML::dibujaEtiquetaCierre("div");
 	
     echo CHTML::dibujaEtiqueta("div", array("id"=>".contActividad"));
