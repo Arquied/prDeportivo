@@ -9,7 +9,7 @@ echo CHTML::dibujaEtiqueta("div", array("class"=>"contTitFormulario"));
 echo CHTML::dibujaEtiqueta("h2", array(),"Temporada Nueva", true);  
 echo CHTML::dibujaEtiquetaCierre("div");
 
- //FORMULARIO DE MODIFICA TEMPORADA
+ //FORMULARIO DE NUEVA TEMPORADA
 echo CHTML:: iniciarForm("#","POST",array("role"=>"form"));
 
 // Campo nombre
