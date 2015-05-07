@@ -130,7 +130,6 @@ class instalacionesControlador extends CControlador {
 		else {
 		
 		$instalacion = new Instalaciones();
-			echo "<br><br>";
 			if ($instalacion->buscarPorId($_GET["cod_instalacion"])){
 				if (isset($_POST[$instalacion->getNombre()])){
 					$instalacion -> setValores($_POST[$instalacion->getNombre()]);
