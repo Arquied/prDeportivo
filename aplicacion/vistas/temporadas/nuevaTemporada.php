@@ -1,11 +1,15 @@
 <?php
+ 
+ //OBTENER ERRORES
+ $errores=$modelo->getErrores();
 echo CHTML::cssFichero("/estilos/estiloFormularios.css");
 
 echo CHTML::dibujaEtiqueta("div", array("class"=>"container contForm"));
 echo CHTML::dibujaEtiqueta("div", array("class"=>"contTitFormulario"));
-echo CHTML::dibujaEtiqueta("h2", array(), "Temporada Nueva", true);                
- echo CHTML::dibujaEtiquetaCierre("div");
+echo CHTML::dibujaEtiqueta("h2", array(),"Temporada Nueva", true);  
+echo CHTML::dibujaEtiquetaCierre("div");
 
+ //FORMULARIO DE MODIFICA TEMPORADA
 echo CHTML:: iniciarForm("#","POST",array("role"=>"form"));
 
 // Campo nombre
