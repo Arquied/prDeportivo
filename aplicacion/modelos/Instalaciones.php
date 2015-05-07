@@ -13,43 +13,43 @@
             return "instalaciones";
         }
         
-        protected function fijarID(){
+        protected function fijarId(){
             return "cod_instalacion";
         }
         
         protected function fijarAtributos() {
             return array("cod_instalacion", "nombre",
                          "descripcion", "imagen",
-                         "capacidad");
+                         "capacidad","disponible");
         }
         
         protected function fijarDescripciones() {
             return array("cod_instalacion" => "Codigo instalacion:",
                             "nombre"=>"Nombre:",
                             "descripcion"=>"Descripcion:",
+                            "imagen"=>"Imagen de la instalación:",
                             "capacidad"=>"Capacidad:",
-                            "imagen"=>"Imagen de la instalación:");
+							"disponible"=>"Está disponible");
         }
         
-        protected function fijarRestricciones() {
-            Return array(array("ATRI"=>"cod_instalacion","TIPO"=>"REQUERIDO"),
-                         array("ATRI"=>"cod_instalacion","TIPO"=>"ENTERO","MIN"=>0,"MENSAJE"=>"El código de la instalación debe ser positivo","DEFECTO"=>0),
-                         array("ATRI"=>"nombre","TIPO"=>"CADENA","TAMANIO"=>50,"MENSAJE"=>"El tamaño máximo debe ser 50", "DEFECTO"=>""),                       
-                         array("ATRI"=>"descripcion", "TIPO"=>"CADENA", "TAMANIO"=>50000, "MENSAJE"=>"La descripción no puede ser tan larga", "DEFECTO"=>""),
-                         array("ATRI"=>"nombre","TIPO"=>"FUNCION","FUNCION"=>"convertirMayuscula"),
-                         array("ATRI"=>"imagen", "TIPO"=>"CADENA", "TAMANIO"=>50, "DEFECTO"=>"", "MENSAJE"=>"El tamaño máximo es de 50"),
-                         array("ATRI"=>"imagen", "TIPO"=>"FUNCION", "FUNCION"=>"validaImagen"),
-                         array("ATRI"=>"capacidad", "TIPO"=>"ENTERO", "MIN"=>0, "DEFECTO"=>0, "MENSAJE"=>"La capacidad debe ser positiva")
-                         );
-                                
-        }
+		protected function fijarRestricciones(){
+			return array(array("ATRI"=>"cod_instalacion", "TIPO"=>"REQUERIDO"),
+						array("ATRI"=>"cod_instalacion", "TIPO"=>"ENTERO", "MIN"=>0, "MENSAJE"=>"El código de la actividad debe ser positivo", "DEFECTO"=>0),
+						array("ATRI"=>"nombre", "TIPO"=>"CADENA", "TAMANIO"=>50, "MENSAJE"=>"El nombre no puede ser tan largo"),
+						array("ATRI"=>"nombre", "TIPO"=>"FUNCION", "FUNCION"=>"convertirMayuscula"),                       
+						array("ATRI"=>"descripcion", "TIPO"=>"CADENA", "TAMANIO"=>50000, "MENSAJE"=>"La descripcion no puede ser tan larga"),
+						array("ATRI"=>"capacidad", "TIPO"=>"ENTERO", "MIN"=>0, "MENSAJE"=>"La capadicdad debe ser positiva"),
+						array("ATRI"=>"disponible", "TIPO"=>"ENTERO", "MIN"=>0, "MAX"=>1)
+			);
+		}
         
         protected function afterCreate() {
-            $this -> cod_instalacion = 0;
+            $this -> cod_instalacion = 1;
             $this -> nombre = "";
             $this -> descripcion = "";
             $this -> imagen = "";
             $this -> capacidad = 0;
+			$this -> disponible = 1;
         }
         
         protected function convertirMayuscula(){
@@ -69,12 +69,13 @@
             $nombre = CGeneral::addSlashes($this->nombre);
             $descripcion = CGeneral::addSlashes($this->descripcion);
             $imagen = CGeneral::addSlashes($this->imagen);
-            $capacidad = intval($this->capacidad);
+            $capacidad = $this->capacidad;
+			$disponible=intval($this->disponible);
             return "insert into instalaciones (".
-                    " nombre, descripcion, imagen, capacidad ".
+                    " nombre, descripcion, imagen, capacidad, disponible ".
                     " ) values ( ".
                     " '$nombre', '$descripcion', ".
-                    " '$imagen', $capacidad ".
+                    " '$imagen', $capacidad, $disponible ".
                     " ) " ;
         }
         
@@ -82,12 +83,15 @@
             $nombre = CGeneral::addSlashes($this->nombre);
             $descripcion = CGeneral::addSlashes($this->descripcion);
             $imagen = CGeneral::addSlashes($this->imagen);
-            $capacidad = intval($this->capacidad);
+            $capacidad = $this->capacidad;
+            $disponible = intval($this->disponible);
+            
             return "update instalaciones set ".
                     " nombre='$nombre', ".
                     " descripcion='$descripcion', ".
-                    " imagen='$imagen' ".
-                    " capacidad=$capacidad ".
+                    " imagen='$imagen', ".
+                    " capacidad=$capacidad, ".
+                    " disponible=$disponible ".
                     " where cod_instalacion={$this->cod_instalacion} ";
         }
         
@@ -96,7 +100,7 @@
             if($codigo == null){
                 
                 $lista = array();
-                foreach($instalaciones->buscarTodos() as $instalcion)
+                foreach($instalaciones->buscarTodos() as $instalacion)
                     $lista[$instalacion["cod_instalacion"]] = $instalacion["nombre"];
                 
                 return $lista;
