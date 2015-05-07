@@ -14,8 +14,8 @@
 	echo CHTML::dibujaEtiqueta("a",array("href"=>Sistema::app()->generaURL(array("instalaciones", "nuevaInstalacion", )), "class"=>"btn btn-default"),"Nuevo");
 	echo CHTML::dibujaEtiquetaCierre("div");
 
-    echo CHTML::dibujaEtiqueta("div", array("id"=>"contListaInstalaciones"));
-        echo CHTML::dibujaEtiqueta("table", array("class"=>"table table-striped", "id"=>"tInstalaciones"));
+    echo CHTML::dibujaEtiqueta("div", array("id"=>"contActividades"));
+        echo CHTML::dibujaEtiqueta("table", array("class"=>"table table-striped", "id"=>"tActividades"));
             //DIBUJAR CABECERA DE LA TABLA
             echo CHTML::dibujaEtiqueta("thead");
                 echo CHTML::dibujaEtiqueta("tr");
@@ -51,7 +51,7 @@
         echo CHTML::dibujaEtiquetaCierre("table");
     echo CHTML::dibujaEtiquetaCierre("div");
 
-    echo CHTML::script("$('#tInstalaciones').dynatable();");
+    echo CHTML::script("$('#tActividades').dynatable();");
     
 	
 	//VENTANA MODAL MENSAJE BORRADO
