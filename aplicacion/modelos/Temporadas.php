@@ -40,7 +40,7 @@
                                 
         }
         protected function afterCreate() {
-            $this -> cod_temporada = 0;
+            $this -> cod_temporada = 1;
             $this -> nombre = "";
             
             $fech = new DateTime();
