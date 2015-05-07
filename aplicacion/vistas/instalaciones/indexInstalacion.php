@@ -22,6 +22,7 @@
                     echo CHTML::dibujaEtiqueta("th", array(), "CÓDIGO", TRUE);
                     echo CHTML::dibujaEtiqueta("th", array(), "NOMBRE", TRUE);
                     echo CHTML::dibujaEtiqueta("th", array(), "DISPONIBLE", TRUE);
+                    echo CHTML::dibujaEtiqueta("th", array(), "OPCIONES", TRUE);
                 echo CHTML::dibujaEtiquetaCierre("tr");
             echo CHTML::dibujaEtiquetaCierre("thead");
             
