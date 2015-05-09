@@ -213,7 +213,7 @@
 		public function accionListaActividadesCrud(){
             //Comprobar si se ha iniciado sesion y si el usuario tiene permiso de modificar
             if (!Sistema::app() -> acceso() -> hayUsuario()) {
-                Sistema::app() -> sesion() -> set("pagPrevia", array("actividades", "nuevaActividad"));
+                Sistema::app() -> sesion() -> set("pagPrevia", array("actividades", "listaActividadesCrud"));
                 Sistema::app() -> sesion() -> set("parametrosAnt", array());
                 Sistema::app() -> irAPagina(array("inicial", "login"));
                 exit ;
@@ -303,7 +303,17 @@
             $this->dibujaVista("listaActividades", array("filas"=>$filas, "paginador"=>$opcPaginador), "Lista de Actividades");
         }
 
-        
+        public function accionActividadJSON(){
+            if($_POST["cod_actividad"]){
+            	$actividad=new Actividades();
+				$datosActividad=$actividad->buscarTodos(array("where"=>"t.cod_actividad=".intval($_POST["cod_actividad"])));
+				
+				
+				$json=json_encode($datosActividad);
+				echo $json;				
+            }
+        }
  
     
     }
+        
