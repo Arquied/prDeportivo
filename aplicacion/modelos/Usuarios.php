@@ -114,6 +114,17 @@
 							" saldo=$saldo ".
 							" where cod_usuario={$this->cod_usuario} ";																		
 		}
+		
+		public static function listaRoles(){            
+            $resultadoSentencia=Sistema::app()->BD()->crearConsulta("select * from roles");
+            
+            $lista = array();
+            foreach($resultadoSentencia->filas() as $role)
+                $lista[$role["cod_role"]] = $role["nombre"];
+           
+            return $lista;
+            
+        }
         
 		
 		/**
@@ -147,3 +158,4 @@
 				
 		
 	}
+	
