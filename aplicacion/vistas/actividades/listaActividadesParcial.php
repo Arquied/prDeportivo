@@ -11,7 +11,7 @@ echo CHTML::dibujaEtiqueta("div", array("class"=>"contActividad"));
         else 
            echo CHTML::dibujaEtiqueta("div", array("class"=>"col-md-7 col-md-push-5")); 
             
-            echo CHTML::dibujaEtiqueta("h2", array("class"=>"featurette-heading"), CGeneral::fechaMysqlANormal($fila["fecha_inicio"])." a ".CGeneral::fechaMysqlANormal($fila["fecha_fin"]), true);
+            echo CHTML::dibujaEtiqueta("h2", array("class"=>""), CGeneral::fechaMysqlANormal($fila["fecha_inicio"])." a ".CGeneral::fechaMysqlANormal($fila["fecha_fin"]), true);
             echo CHTML::dibujaEtiqueta("div", array("class"=>"contBtn"));
                 echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array('reservas', 'nuevaReserva'), array("cod_actividad"=>$fila["cod_actividad"])),
                                                     "class"=>"btn btn-default btn-lg"), "Apuntarse");
