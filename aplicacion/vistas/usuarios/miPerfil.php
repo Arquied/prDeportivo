@@ -1,11 +1,8 @@
 <?php
-   // var_dump($modelo);
    
-   //Obtener compras realizadas
-   $compras=new Compras();
-   //$compras->obtenerCompras();
-   
-   
+   	echo CHTML::scriptFichero("../../script/jquery.dynatable.js");
+	echo CHTML::scriptFichero("../../script/scriptCrudActividades.js");
+    echo CHTML::cssFichero("../../estilos/jquery.dynatable.css");
     echo CHTML::cssFichero("../../estilos/estiloPerfil.css");
    
     echo CHTML::dibujaEtiqueta("div", array("class"=>"container-fluid"));
@@ -49,11 +46,68 @@
                 echo CHTML::dibujaEtiquetaCierre("div");
             echo CHTML::dibujaEtiquetaCierre("div");
             
-            //Compras
+            //Compras          
             echo CHTML::dibujaEtiqueta("div", array("class"=>"col-md-9 col-md-offset-3 main"));
-                echo CHTML::dibujaEtiqueta("div", array("id"=>"sinCompras"), "No se ha realizado compras"); 
+				//Titulo
+			    echo CHTML::dibujaEtiqueta("div", array("class"=>"contTitulo"));
+			        echo CHTML::dibujaEtiqueta("H1", array("class"=>"text-center"), "COMPRAS REALIZADAS", TRUE);
+			    echo CHTML::dibujaEtiquetaCierre("div");
+			
+				//SI NO EXISTEN COMPRAS 
+               	if(count($comprasRealizadas)==0){
+			    	echo CHTML::dibujaEtiqueta("div", array("id"=>"sinCompras"), "No se ha realizado compras"); 
+			    }
+				//SI EXISTEN
+				else{	
+					echo CHTML::dibujaEtiqueta("div", array("id"=>"contListaCompras"));
+				        echo CHTML::dibujaEtiqueta("table", array("class"=>"table table-striped", "id"=>"tCompras"));
+				            //DIBUJAR CABECERA DE LA TABLA
+				            echo CHTML::dibujaEtiqueta("thead");
+				                echo CHTML::dibujaEtiqueta("tr");
+				                    echo CHTML::dibujaEtiqueta("th", array(), "ACTIVIDAD", TRUE);
+				                    echo CHTML::dibujaEtiqueta("th", array(), "FECHA COMPRA", TRUE);
+				                    echo CHTML::dibujaEtiqueta("th", array(), "FECHA INICIO", TRUE);				                   
+				                    echo CHTML::dibujaEtiqueta("th", array(), "FECHA FIN", TRUE);
+				                    echo CHTML::dibujaEtiqueta("th", array(), "IMPORTE", TRUE);
+				                    echo CHTML::dibujaEtiqueta("th", array(), "PAGADO/PENDIENTE", TRUE);
+									echo CHTML::dibujaEtiqueta("th", array(), "IMPORTE PAGADO", TRUE);
+									echo CHTML::dibujaEtiqueta("th", array(), "FACTURA", TRUE);
+				                echo CHTML::dibujaEtiquetaCierre("tr");
+				            echo CHTML::dibujaEtiquetaCierre("thead");
+				            
+				            //DIBUJAR CUERPO DE LA TABLA
+				            echo CHTML::dibujaEtiqueta("tbody");
+				                foreach ($comprasRealizadas as $compra) {
+				                    echo CHTML::dibujaEtiqueta("tr");
+				                        echo CHTML::dibujaEtiqueta("td", array(), $compra["actividad"], true);
+										echo CHTML::dibujaEtiqueta("td", array(), CGeneral::fechaMysqlANormal($compra["fecha_compra"]), true);
+				                        echo CHTML::dibujaEtiqueta("td", array(), CGeneral::fechaMysqlANormal($compra["fecha_inicio"]), true);
+				                        echo CHTML::dibujaEtiqueta("td", array(), CGeneral::fechaMysqlANormal($compra["fecha_fin"]), true);
+										echo CHTML::dibujaEtiqueta("td", array(), $compra["importe"], true);
+										if($compra["pendiente"]){
+											echo CHTML::dibujaEtiqueta("td", array(), "Pendiente", true);
+										}
+										else{
+											echo CHTML::dibujaEtiqueta("td", array(), "Pagado", true);
+										}
+										echo CHTML::dibujaEtiqueta("td", array(), $compra["importe_pagado"], true);
+				                        echo CHTML::dibujaEtiqueta("td");
+				                            echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("compras", "facturaPDF"), array("cod_compra"=>$compra["cod_compra"]))));
+				                                echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico_pdf.png"));
+				                            echo CHTML::dibujaEtiquetaCierre("a");				                            
+				                        echo CHTML::dibujaEtiquetaCierre("td");
+				                    echo CHTML::dibujaEtiquetaCierre("tr");
+				                }            
+				            echo CHTML::dibujaEtiquetaCierre("tbody");
+				        echo CHTML::dibujaEtiquetaCierre("table");
+				    echo CHTML::dibujaEtiquetaCierre("div");
+				
+				    echo CHTML::script("$('#tCompras').dynatable();");
+				}
                 
                 
+				
+				
             echo CHTML::dibujaEtiquetaCierre("div");
                         
         echo CHTML::dibujaEtiquetaCierre("div");
@@ -61,3 +115,6 @@
 
     
  ?>   
+    
+    
+    
