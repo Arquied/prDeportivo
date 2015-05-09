@@ -2,6 +2,26 @@
 	 
 	class usuariosControlador extends CControlador{
 		
+		public function accionIndex(){
+			//Comprobar si se ha iniciado sesion y si el usuario tiene permiso de modificar
+	         if (!Sistema::app() -> acceso() -> hayUsuario()) {
+	              Sistema::app() -> sesion() -> set("pagPrevia", array("usuarios", "index"));
+	              Sistema::app() -> sesion() -> set("parametrosAnt", array());
+	              Sistema::app() -> irAPagina(array("inicial", "login"));
+	              exit ;
+	        } 
+	        else if (!Sistema::app() -> acceso() -> puedeConfigurar()) {
+	             Sistema::app() -> paginaError(400, "No tiene permiso para acceder");
+	             exit ;
+	       	} 
+			else {
+				$usuario=new Usuarios();				
+				$filas=$usuario->buscarTodos(array("select"=>"t.*, r.nombre as role ",
+													"from"=>" join roles r using(cod_role)"));				
+				$this->dibujaVista("indexUsuario",array("filas"=>$filas));			
+			}
+			
+		}
 		
 		public function accionRegistro(){
 			$usuario = new Usuarios();
@@ -32,12 +52,22 @@
         
         public function accionMiPerfil(){
             $usuario=new Usuarios();
+			$compra=new Compras();
             if(Sistema::app()->Acceso()->hayUsuario()){                
                 $nickUsuario=Sistema::app()->Acceso()->getNick(); 
                 
                 $usuario->buscarPor(array("where"=>"nick='".$nickUsuario."'"));
+				
+				//Obtener lista de compras realizadas
+				$compras=$compra->buscarTodos(array("select"=>" t.*, a.nombre as actividad ",
+											"from"=>" join reservas r using(cod_reserva) ".
+													" join actividades a using(cod_actividad) ",
+											"where"=>" r.cod_usuario=".$usuario->cod_usuario
+											)
+									);
+				
                 if($usuario->nick!==""){
-                    $this ->dibujaVista("miPerfil", array("modelo" => $usuario), "Mi perfil");
+                    $this ->dibujaVista("miPerfil", array("modelo" => $usuario, "comprasRealizadas"=>$compras), "Mi perfil");
                 }
                 else{
                    Sistema::app()->paginaError(400, "No existe usuario"); 
@@ -100,7 +130,7 @@
         public function accionCambiarContrasena(){
              //Comprobar si se ha iniciado sesion y si el usuario tiene permiso de modificar         
             if(!Sistema::app()->acceso()->hayUsuario()){
-                Sistema::app()->sesion()->set("pagPrevia", array("usuarios", "modificar"));
+                Sistema::app()->sesion()->set("pagPrevia", array("usuarios", "cambiarContrasena"));
                 Sistema::app()->sesion()->set("parametrosAnt", array());
                 Sistema::app()->irAPagina(array("inicial", "login"));
                 exit;
@@ -136,8 +166,41 @@
                     exit ;    
                 }         
             }
-        }    
-                    
+        }
+
+		public function accionCambiarRole(){
+			 //Comprobar si se ha iniciado sesion y si el usuario tiene permiso de modificar         
+            if(!Sistema::app()->acceso()->hayUsuario()){
+                Sistema::app()->sesion()->set("pagPrevia", array("usuarios", "indexUsuarios"));
+                Sistema::app()->sesion()->set("parametrosAnt", array());
+                Sistema::app()->irAPagina(array("inicial", "login"));
+                exit;
+            }
+            else{
+                if(isset($_POST["role"]) && isset($_POST["id_usuario"])){
+                	//Comprobar si existe usuario
+                	$usuario=new Usuarios();
+                	if($usuario->buscarPorId(intval($_POST["id_usuario"]))){
+                		$sentencia=" update usuarios set ".
+                                        " cod_role=".intval($_POST["role"]).
+                                        " where cod_usuario=".intval($_GET["id_usuario"]);
+                       	$resultado=Sistema::app()->BD()->crearConsulta($sentencia);
+						if($resultado){
+                            Sistema::app()->irAPagina(array("usuarios", "index"));
+                            exit;
+                       	}
+						else{
+							Sistema::app()->paginaError(400, "Error al modificar role al usuario");
+							exit;
+						}
+                	}
+					else{
+						Sistema::app()->irAPagina(array("usuarios", "index"));
+                        exit;
+					}			
+				  } 
+				}
+			}       
                            
         
 	
