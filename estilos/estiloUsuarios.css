@@ -1,0 +1,24 @@
+/* ESTILO MODAL MODIFICAR ROLE */
+.contTitulo{
+	margin: 20px 0;
+}
+.contTitulo h1{
+	color: rgb(166, 3, 25);
+}
+
+#tUsuarios th{
+	background: rgb(166, 3, 25);
+	color: white;	
+}
+
+#tUsuarios th a{
+	color: white;
+}
+
+#tUsuarios tbody a{
+	margin: 0 10px;
+}
+
+#modalRole{
+	height: 300px;
+}
