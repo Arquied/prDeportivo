@@ -57,6 +57,29 @@ a{
   border-color:  rgb(140, 3, 21);
 }
 
+.btn-default.disabled,
+.btn-default[disabled],
+fieldset[disabled] .btn-default,
+.btn-default.disabled:hover,
+.btn-default[disabled]:hover,
+fieldset[disabled] .btn-default:hover,
+.btn-default.disabled:focus,
+.btn-default[disabled]:focus,
+fieldset[disabled] .btn-default:focus,
+.btn-default.disabled.focus,
+.btn-default[disabled].focus,
+fieldset[disabled] .btn-default.focus,
+.btn-default.disabled:active,
+.btn-default[disabled]:active,
+fieldset[disabled] .btn-default:active,
+.btn-default.disabled.active,
+.btn-default[disabled].active,
+fieldset[disabled] .btn-default.active {
+  background-color: rgb(183, 62, 78);
+  border-color: rgb(183, 62, 78);
+}
+
+
 /* PIE DE PAGINA */
 footer{
 	margin-top: 500px;
@@ -78,3 +101,4 @@ footer .featurette-divider{
 	box-shadow: 10px 10px 5px #888888; 
 
 }
+
