@@ -44,3 +44,29 @@
 	padding: 20px;	
 	top:51px;
 }
+
+.contTitulo{
+	margin: 20px 0;
+}
+.contTitulo h1{
+	color: rgb(166, 3, 25);
+}
+
+#tCompras th{
+	background: rgb(166, 3, 25);
+	color: white;	
+}
+
+#tCompras th a{
+	color: white;
+}
+
+#tCompras tbody a{
+	margin: 0 10px;
+}
+
+#privacidad{
+	margin-left: 300px;
+}
+
+
