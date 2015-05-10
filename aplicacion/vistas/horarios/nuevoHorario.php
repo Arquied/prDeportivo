@@ -70,7 +70,7 @@ echo CHTML::cssFichero("/estilos/estiloFormularios.css");
 
                         //Boton insertar
                         echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-                            echo CHTML::campoBotonSubmit("Añadir horario", array("class"=>"btn btn-default"));                 
+                            echo CHTML::campoBotonSubmit("Añadir Horario", array("class"=>"btn btn-default"));                 
                         echo CHTML::dibujaEtiquetaCierre("div");
                     echo CHTML::dibujaEtiquetaCierre("div");
                     
