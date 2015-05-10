@@ -2,6 +2,7 @@
 
 	class temporadasControlador extends CControlador {
 		
+		// Función que muestra la lista de temporadas
 		public function accionIndex(){
 			
 		if (!Sistema::app() -> acceso() -> hayUsuario()) {
@@ -23,6 +24,7 @@
 		}
 		}
 		
+		// Función que añade una nueva temporada
 		public function accionNuevaTemporada() {
 			
 		if (!Sistema::app() -> acceso() -> hayUsuario()) {
@@ -53,7 +55,7 @@
 						exit;
 					}
 					
-					Sistema::app()->irAPagina("temporadas");
+					Sistema::app()->irAPagina(array("temporadas"));
 					exit;
 				}
 				
@@ -67,6 +69,7 @@
 		}
 		}
 
+		// Función que muestra una temporada
 		public function accionModificaTemporada(){
 		if (!Sistema::app() -> acceso() -> hayUsuario()) {
               Sistema::app() -> sesion() -> set("pagPrevia", array("temporadas", "modificaTemporada"));
@@ -114,6 +117,7 @@
 		}
 		}
 
+		// Función que borra una temporada
 		public function accionBorraTemporada(){
 			
 			if(!Sistema::app()->acceso()->hayUsuario()){
@@ -130,7 +134,7 @@
 				$temporada= new Temporadas();
 				if ($temporada->buscarPorId($_REQUEST["id"])){
 					$temporada -> disponible=0;
-					if (!$temporada->validar()) {
+					if ($temporada->validar()) {
 						if(!$temporada->guardar()){
 							$this->dibujaVista("borraTemporada", array("modelo"=>$temporada),"Borrar temporada");
 							exit;
