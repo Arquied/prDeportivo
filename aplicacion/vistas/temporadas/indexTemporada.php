@@ -1,7 +1,7 @@
 <?php
 
     echo CHTML::scriptFichero("../../script/jquery.dynatable.js");
-	echo CHTML::scriptFichero("../../script/scriptCrudActividades.js");
+	echo CHTML::scriptFichero("../../script/scriptCrudTemporadas.js");
     echo CHTML::cssFichero("../../estilos/jquery.dynatable.css");
     echo CHTML::cssFichero("../../estilos/estiloActividades.css");
 	
@@ -22,9 +22,9 @@
                     echo CHTML::dibujaEtiqueta("th", array(), "CÓDIGO", TRUE);
                     echo CHTML::dibujaEtiqueta("th", array(), "NOMBRE", TRUE);
                     echo CHTML::dibujaEtiqueta("th", array(), "FECHA INICIO", TRUE);
-		    echo CHTML::dibujaEtiqueta("th", array(), "FECHA FIN", TRUE);
-		    echo CHTML::dibujaEtiqueta("th", array(), "DISPONIBLE", TRUE);
-	 	    echo CHTML::dibujaEtiqueta("th", array(), "OPCIONES", TRUE);
+					echo CHTML::dibujaEtiqueta("th", array(), "FECHA FIN", TRUE);
+					echo CHTML::dibujaEtiqueta("th", array(), "DISPONIBLE", TRUE);
+					echo CHTML::dibujaEtiqueta("th", array(), "OPCIONES", TRUE);
                 echo CHTML::dibujaEtiquetaCierre("tr");
             echo CHTML::dibujaEtiquetaCierre("thead");
             
