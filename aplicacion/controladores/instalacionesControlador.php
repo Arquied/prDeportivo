@@ -220,7 +220,7 @@ class instalacionesControlador extends CControlador {
 				$instalacion= new Instalaciones();
 				if ($instalacion->buscarPorId($_REQUEST["id"])){
 					$instalacion -> disponible=0;
-					if (!$instalacion->validar()) {
+					if ($instalacion->validar()) {
 						if(!$instalacion->guardar()){
 							$this->dibujaVista("borraInstalacion", array("modelo"=>$instalacion),"Borrar instalacion");
 							exit;
