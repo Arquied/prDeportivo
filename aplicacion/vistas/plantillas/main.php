@@ -45,25 +45,25 @@
                         else {
                             $esAdmin=false; 
                         }
-                        $quien = array("TEXTO"=>"Quienes Somos","URL"=>Sistema::app()->generaURL(array("inicial","quien")),"SUBMENU"=>false,"ACTIVO"=>true,"ITEMS"=>array());
-                        $registra = array("TEXTO"=>"Registrate","URL"=>Sistema::app()->generaURL(array("usuarios","registro")),"SUBMENU"=>false,"ACTIVO"=>$nologeado,"ITEMS"=>array());
-                        $login = array("TEXTO"=>"Login","URL"=>Sistema::app()->generaURL(array("inicial","login")),"SUBMENU"=>false,"ACTIVO"=>$nologeado,"ITEMS"=>array());
-                        $logout = array("TEXTO"=>"Logout","URL"=>Sistema::app()->generaURL(array("inicial","cerrarSesion")),"SUBMENU"=>false,"ACTIVO"=>$logeado,"ITEMS"=>array());
-                        $perfil = array("TEXTO"=>"Mi Perfil","URL"=>Sistema::app()->generaURL(array("usuarios", "miPerfil")),"SUBMENU"=>false,"ACTIVO"=>$logeado,"ITEMS"=>array());
-                        $actividades = array("TEXTO"=>"Actividades","URL"=>Sistema::app()->generaURL(array("actividades","listaActividades")),"SUBMENU"=>false,"ACTIVO","ITEMS"=>array());
+                        $quien = array("TEXTO"=>"Quienes Somos","URL"=>Sistema::app()->generaURL(array("inicial","quien")),"SUBMENU"=>false,"ACTIVO"=>true,"DERECHA"=>false,"ITEMS"=>array());
+                        $registra = array("TEXTO"=>"Registrate","URL"=>Sistema::app()->generaURL(array("usuarios","registro")),"SUBMENU"=>false,"ACTIVO"=>$nologeado,"DERECHA"=>false,"ITEMS"=>array());
+                        $login = array("TEXTO"=>"Login","URL"=>Sistema::app()->generaURL(array("inicial","login")),"SUBMENU"=>false,"ACTIVO"=>$nologeado,"DERECHA"=>false,"ITEMS"=>array());
+                        $perfil = array("TEXTO"=>"Mi Perfil","URL"=>Sistema::app()->generaURL(array("usuarios", "miPerfil")),"SUBMENU"=>false,"ACTIVO"=>$logeado,"DERECHA"=>true,"ITEMS"=>array());						
+                        $logout = array("TEXTO"=>"Logout","URL"=>Sistema::app()->generaURL(array("inicial","cerrarSesion")),"SUBMENU"=>false,"ACTIVO"=>$logeado,"DERECHA"=>true,"ITEMS"=>array());
+                        $actividades = array("TEXTO"=>"Actividades","URL"=>Sistema::app()->generaURL(array("actividades","listaActividades")),"SUBMENU"=>false,"DERECHA"=>false,"ACTIVO","ITEMS"=>array());
+                        $mostrarCalendario = array("TEXTO"=>"Calendario","URL"=>Sistema::app()->generaURL(array("calendarios","mostrarCalendario")),"SUBMENU"=>false,"DERECHA"=>false,"ACTIVO","ITEMS"=>array());
                         
-						
-                        $instalaciones = array("TEXTO"=>"Instalaciones","URL"=>Sistema::app()->generaURL(array("instalaciones")),"SUBMENU"=>false,"ACTIVO"=>true,"ITEMS"=>array());
-                        $usuarios = array("TEXTO"=>"Usuarios","URL"=>Sistema::app()->generaURL(array()),"SUBMENU"=>false,"ACTIVO","ITEMS"=>array());
-                        $temporadas = array("TEXTO"=>"Temporadas","URL"=>Sistema::app()->generaURL(array("temporadas")),"SUBMENU"=>false,"ACTIVO","ITEMS"=>array());
-                        $cuotas = array("TEXTO"=>"Cuotas","URL"=>Sistema::app()->generaURL(array("cuotas")),"SUBMENU"=>false,"ACTIVO","ITEMS"=>array());
-                        $horarios = array("TEXTO"=>"Horarios","URL"=>Sistema::app()->generaURL(array("horarios")),"SUBMENU"=>false,"ACTIVO","ITEMS"=>array());
-                        $actividadesCrud = array("TEXTO"=>"Actividades","URL"=>Sistema::app()->generaURL(array("actividades","listaActividadesCrud")),"SUBMENU"=>false,"ACTIVO","ITEMS"=>array());
+						$calendarios = array("TEXTO"=>"Calendarios","URL"=>Sistema::app()->generaURL(array("calendarios")),"SUBMENU"=>false,"ACTIVO"=>true,"DERECHA"=>false,"ITEMS"=>array());
+                        $instalaciones = array("TEXTO"=>"Instalaciones","URL"=>Sistema::app()->generaURL(array("instalaciones")),"SUBMENU"=>false,"ACTIVO"=>true,"DERECHA"=>false,"ITEMS"=>array());
+                        $usuarios = array("TEXTO"=>"Usuarios","URL"=>Sistema::app()->generaURL(array()),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
+                        $temporadas = array("TEXTO"=>"Temporadas","URL"=>Sistema::app()->generaURL(array("temporadas")),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
+                        $horarios = array("TEXTO"=>"Horarios","URL"=>Sistema::app()->generaURL(array("horarios")),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
+                        $actividadesCrud = array("TEXTO"=>"Actividades","URL"=>Sistema::app()->generaURL(array("actividades","listaActividadesCrud")),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
                         
                         
-                        $administrar = array("TEXTO"=>"Administrar","URL"=>"","SUBMENU"=>true,"ACTIVO"=>true,"ITEMS"=>array($actividadesCrud,$cuotas,$horarios,$instalaciones,$temporadas,$usuarios));
+                        $administrar = array("TEXTO"=>"Administrar","URL"=>"","SUBMENU"=>true,"ACTIVO"=>true,"ITEMS"=>array($actividadesCrud,$calendarios,$horarios,$instalaciones,$temporadas,$usuarios));
                         
-                        $datos = array($quien, $actividades, $registra, $login, $logout, $perfil, $administrar);
+                        $datos = array($quien, $actividades, $mostrarCalendario, $registra, $login, $perfil, $logout, $administrar);
                         $cbarra = new CBarraMenu($datos);
                         $cbarra->dibujate();
                        ?>
