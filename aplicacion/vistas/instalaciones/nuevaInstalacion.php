@@ -10,7 +10,7 @@ echo CHTML::dibujaEtiqueta("div", array("class"=>"contTitFormulario"));
 echo CHTML::dibujaEtiqueta("h2", array(), "Instalacion Nueva", true);                
 echo CHTML::dibujaEtiquetaCierre("div");
 
- //FORMULARIO DE NUEVA INSTALACION
+// FORMULARIO DE NUEVA INSTALACION
 echo CHTML::iniciarForm("#","POST",array("role"=>"form"));
 echo CHTML::dibujaEtiqueta("div", array("class"=>"col-sm-offset-3 col-sm-6"));
 
@@ -41,7 +41,7 @@ echo CHTML::modeloLabel($modelo, "imagen");
 echo CHTML::modeloFile($modelo, "imagen");
 echo CHTML::dibujaEtiquetaCierre("div");
 
-// Campo capacidaad
+// Campo capacidad
 echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
 if (isset($errores["capacidad"])){
 	echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["capacidad"],true);
