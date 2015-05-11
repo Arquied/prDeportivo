@@ -42,7 +42,7 @@
                                 
         }
         protected function afterCreate() {
-            $this -> cod_dia = 0;
+            $this -> cod_dia = 1;
             $this -> dia = "";
         }
         
@@ -67,16 +67,18 @@
         }
         
         public static function listaDias($codigo = null){
-            
+ 
             $dias = new Dias();
             
-            if ($codigo = null){
+            if ($codigo == null){
                 
                 $lista = array();
                 foreach($dias->buscarTodos() as $dia)
                     $lista[$dia["cod_dia"]] = $dia["dia"];
+				
+				return $lista;
             }
-            
+			
             if ($dias->buscarPorId($codigo))
                 return $dias->nombre;
                 
