@@ -1,11 +1,6 @@
 /* GLOBAL STYLES
 -------------------------------------------------- */
 /* Padding below the footer and lighter body text */
-
-html{
- /* background-color: purple;*/
-}
-
 body {
   padding-bottom: 40px;
   color: #5a5a5a;
@@ -48,7 +43,6 @@ body {
 .carousel {
   height: 500px;
   margin-bottom: 60px;
-  background-color: purple;
 }
 /* Since positioning the image, we need to help out the caption */
 .carousel-caption {
@@ -56,6 +50,11 @@ body {
 }
 
 /* Declare heights because of positioning of img element */
+.contImg{
+	width: 500px;
+	height: 500px;
+	margin: 0 auto;
+}
 .carousel .item {
   height: 500px;
   background-color: #777;
@@ -65,7 +64,21 @@ body {
   top: 0;
   left: 0;
   min-width: 100%;
+  max-width: 500px;
   height: 500px;
+}
+
+.carousel-inner { 
+	text-align: center;
+}
+
+.carousel .item > img { 
+	display: inline-block; 
+}
+
+.carousel img{
+	max-width: 500px; 
+	max-height: 500px;
 }
 
 
@@ -140,3 +153,5 @@ body {
     margin-top: 120px;
   }
 }
+
+
