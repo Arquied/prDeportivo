@@ -49,15 +49,16 @@
                                 
         }
         protected function afterCreate() {
-            $this -> cod_horario_general = 0;
+            $this -> cod_horario_general = 1;
             $this -> cod_temporada = 0;
             $this -> cod_dia = 0;
-            
+ 
+            $fech = new DateTime();   
+			         
             $hora = $fech->format("H:i:s");
             $this->hora_inicio = $hora;
             $this->hora_fin = $hora;
-            
-            $fech = new DateTime();
+
             $fecha = $fech->format("d/m/Y");
             $this -> fecha_inicio = $fecha;
             $this -> fecha_fin = $fecha;    
@@ -99,7 +100,7 @@
             $hora_inicio=CGeneral::addSlashes($this->hora_inicio);
             $hora_fin=CGeneral::addSlashes($this->hora_fin);
             
-            return "insert into horario_general (".
+            return "insert into horarios_generales (".
                     " cod_temporada, cod_dia, hora_inicio, hora_fin, fecha_inicio, fecha_fin ".
                     " ) values ( ".
                     " $cod_temporada, $cod_dia, '$hora_inicio', ".
@@ -115,7 +116,7 @@
             $hora_inicio=CGeneral::addSlashes($this->hora_inicio);
             $hora_fin=CGeneral::addSlashes($this->hora_fin);
             
-            return "update horario_general set ".
+            return "update horarios_generales set ".
                     " cod_temporada=$cod_temporada, ".
                     " cod_dia=$cod_dia, ".
                     " hora_inicio='$hora_inicio', ".
