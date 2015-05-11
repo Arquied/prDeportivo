@@ -1,0 +1,9 @@
+/* ESTILO INFORMACION DE LA ACTIVIDAD */
+#contInformacionAct #nombreActividad{
+	color: rgb(140, 3, 21);	
+}
+
+.imagen img {
+	 max-width: 100%;
+	 height: 300px;
+}
