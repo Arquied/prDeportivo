@@ -131,7 +131,7 @@
                     echo CHTML::dibujaEtiqueta("div");
                         //Boton insertar
                         echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-                            echo CHTML::campoBotonSubmit("Añadir actividad", array("class"=>"btn btn-default"));                 
+                            echo CHTML::campoBotonSubmit("Modificar actividad", array("class"=>"btn btn-default"));                 
                         echo CHTML::dibujaEtiquetaCierre("div");
                     echo CHTML::dibujaEtiquetaCierre("div");
                     
