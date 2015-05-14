@@ -81,6 +81,13 @@ body {
 	max-height: 500px;
 }
 
+.carousel-control img{
+	margin-left: -15px;
+	margin-top: -15px;
+	position: absolute;
+	top: 50%;
+	display: inline-block;
+} 
 
 /* MARKETING CONTENT
 -------------------------------------------------- */
