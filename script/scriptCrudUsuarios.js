@@ -5,4 +5,15 @@ $(document).ready(function() {
 		$("#modalRole input[name='id_usuario']").val(id);
 		$('#modalRole').modal({show:true});	
 	});
+	//EVENTO ONCLICK PARA EL BOTON BORRAR, MUESTRA VENTANA MODAL ESTA SEGURO
+	$(".btnBorrar").on("click", function(){
+		console.log("pulsado");
+		$('#modalBorrado').modal({show:true});
+		var id=$(this).parent().siblings().first().html();
+		$("#modalBorrado").data('id_usuario', id);		
+	});
+	//EVENTO ONCLICK CONFIRMAR BORRADO REDIRECCIONA PASANDOLE EL ID_ACTIVIDAD
+	$("#seguroBorrar").on("click", function(){
+		window.location="index.php?co=usuarios&ac=borraUsuario&id="+$("#modalBorrado").data("id_usuario");
+	});
 });
