@@ -173,8 +173,8 @@
 			   {
 			   	return false;
 			   }	
-			$hora=substr("00".$partes[1],-2)."/".
-					substr("00".$partes[2],-2)."/".
+			$hora=substr("00".$partes[1],-2).":".
+					substr("00".$partes[2],-2).":".
 					substr("002".$partes[3],-2);
 			return true;
 			
