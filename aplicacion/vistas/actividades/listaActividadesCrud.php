@@ -10,6 +10,11 @@
         echo CHTML::dibujaEtiqueta("H1", array("class"=>"text-center"), "ADMINISTRACIÓN DE ACTIVIDADES", TRUE);
     echo CHTML::dibujaEtiquetaCierre("div");
 
+	//Bloque nueva actividad
+	echo CHTML::dibujaEtiqueta("div", array());
+		echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("actividades", "nuevaActividad")), "class"=>"btn btn-default"), "Nueva actividad", true);
+	echo CHTML::dibujaEtiquetaCierre("div");
+
     echo CHTML::dibujaEtiqueta("div", array("id"=>"contListaActividades"));
         echo CHTML::dibujaEtiqueta("table", array("class"=>"table table-striped", "id"=>"tActividades"));
             //DIBUJAR CABECERA DE LA TABLA
