@@ -3,7 +3,7 @@
 	echo CHTML::cssFichero("../../estilos/jquery.datetimepicker.css");
 	echo CHTML::scriptFichero("../../script/jquery.js");
 	echo CHTML::scriptFichero("../../script/jquery.datetimepicker.js");
-	echo CHTML::scriptFichero("../../script/scriptFecha.js");
+	echo CHTML::scriptFichero("../../script/scriptFechaCalendario.js");
 
     //obtener temporadas
     $listaDia=array();
@@ -31,7 +31,7 @@
                                 echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["cod_actividad"], true);
                             }
                             echo CHTML::campoLabel("Actividades", "actividad");                            
-                            echo CHTML::campoListaDropDown("actividad", "", Actividades::listaActividades(), array("class"=>"form-control"));
+                            echo CHTML::campoListaDropDown("actividad", $modelo->cod_actividad, Actividades::listaActividades(), array("class"=>"form-control"));
                         echo CHTML::dibujaEtiquetaCierre("div");
                         
                         //Campo dia                       
@@ -40,7 +40,7 @@
                                 echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["cod_dia"], true);
                             }
                             echo CHTML::campoLabel("Dias", "dias");                            
-                            echo CHTML::campoListaDropDown("dia", "", Dias::listaDias(), array("class"=>"form-control"));
+                            echo CHTML::campoListaDropDown("dia", $modelo->cod_dia, Dias::listaDias(), array("class"=>"form-control"));
                         echo CHTML::dibujaEtiquetaCierre("div");                     
                          
                          //Campo hora_inicio
@@ -90,7 +90,7 @@
 					// Campo instalacion
 					echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
 						$array = array("aire libre");
-						echo CHTML::campoListaDropDown("instalacion", "", Instalaciones::listaInstalacion(), array("class"=>"form-control"));
+						echo CHTML::campoListaDropDown("instalacion", $modelo->cod_instalacion, Instalaciones::listaInstalacion(), array("class"=>"form-control"));
 					
                         //Boton insertar
                         echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
