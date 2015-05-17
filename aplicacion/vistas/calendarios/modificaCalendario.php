@@ -3,7 +3,7 @@
 	echo CHTML::cssFichero("../../estilos/jquery.datetimepicker.css");
 	echo CHTML::scriptFichero("../../script/jquery.js");
 	echo CHTML::scriptFichero("../../script/jquery.datetimepicker.js");
-	echo CHTML::scriptFichero("../../script/scriptFechaCalendario.js");
+	echo CHTML::scriptFichero("../../script/scriptFecha.js");
 
     //obtener temporadas
     $listaDia=array();
