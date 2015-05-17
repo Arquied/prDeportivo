@@ -6,7 +6,7 @@
 	class CalendariosInstalaciones extends CActiveRecord {
 				
 		protected function fijarNombre(){
-			return "calendarios_instalaciones";
+			return "calendarios_instalacion";
 		}	
 		
 		public function fijarTabla(){
@@ -40,8 +40,8 @@
 		
 		protected function afterCreate(){
 			$this->cod_calendario_instalacion=1;
-			$this->cod_calendario=0;
-			$this->cod_instalacion=0;	
+			$this->cod_calendario=1;
+			$this->cod_instalacion=1;	
 		}	
 		
 		protected function afterBuscar(){
@@ -51,7 +51,7 @@
 		protected function fijarSentenciaInsert(){
 			$cod_calendario=$this->cod_calendario;
 			$cod_instalacion=$this->cod_instalacion;
-								
+			
 			return "insert into calendarios_instalaciones (".
 						" cod_calendario, cod_instalacion ".
 						" ) values ( ".
@@ -67,6 +67,11 @@
 							" cod_calendario=$cod_calendario, ".
 							" cod_instalacion=$cod_instalacion ".
 							" where cod_calendario_instalacion={$this->cod_calendario_instalacion} ";																		
-		}			
+		}
+		
+		public function borrarCaeldarioInstalacion($cod){
+			$sentencia = "delete from calendarios_instalaciones where cod_calendario=$cod";
+			return parent::ejecutarSentencia($sentencia);
+		}
 		
 	}
