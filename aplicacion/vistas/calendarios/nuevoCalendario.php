@@ -1,4 +1,10 @@
 <?php
+
+	echo CHTML::cssFichero("../../estilos/jquery.datetimepicker.css");
+	echo CHTML::scriptFichero("../../script/jquery.js");
+	echo CHTML::scriptFichero("../../script/jquery.datetimepicker.js");
+	echo CHTML::scriptFichero("../../script/scriptFechaCalendario.js");
+
     //obtener temporadas
     $listaDia=array();
 	$listaInstalacion=array();
@@ -38,22 +44,28 @@
                         echo CHTML::dibujaEtiquetaCierre("div");                     
                          
                          //Campo hora_inicio
+                        echo CHTML::dibujaEtiqueta("div");
                         echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
                             if(isset($errores["hora_inicio"])){
                                 echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["hora_inicio"], true);
                             }
                         echo CHTML::modeloLabel($modelo, "hora_inicio");
-                            echo CHTML::modeloText($modelo, "hora_inicio", array("class"=>"form-control", "maxlength"=>10, "size"=>10, "placeholder"=>"hh:mm:ss"));                        
-                        echo CHTML::dibujaEtiquetaCierre("div"); 
-						
+                        echo CHTML::modeloText($modelo, "hora_inicio", array("class"=>"form-control", "id"=>"hora_inicio", "maxlength"=>10, "size"=>10, "placeholder"=>"hh:mm:ss")); 
+						echo CHTML::dibujaEtiqueta("span", array("class"=>"add-on"));
+						echo CHTML::dibujaEtiqueta("i", array("data-time-icon"=>"icon-time", "data-date-icon"=>"icon-calendar"));
+						echo CHTML::dibujaEtiquetaCierre("i");
+						echo CHTML::dibujaEtiquetaCierre("span");                    
+                        echo CHTML::dibujaEtiquetaCierre("div");
+                      
                         //Campo hora_fin
                         echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
                             if(isset($errores["hora_fin"])){
                                 echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["hora_fin"], true);
                             }
                         echo CHTML::modeloLabel($modelo, "hora_fin");
-                            echo CHTML::modeloText($modelo, "hora_fin", array("class"=>"form-control", "maxlength"=>10, "size"=>10, "placeholder"=>"hh:mm:ss"));                        
+                            echo CHTML::modeloText($modelo, "hora_fin", array("class"=>"form-control", "id"=>"hora_fin", "maxlength"=>10, "size"=>10, "placeholder"=>"hh:mm:ss"));                        
                         echo CHTML::dibujaEtiquetaCierre("div"); 
+						echo CHTML::dibujaEtiquetaCierre("div"); 
 						
                         //Campo fecha_inicio
                         echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
@@ -61,7 +73,7 @@
                                 echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["fecha_inicio"], true);
                             }
                             echo CHTML::modeloLabel($modelo, "fecha_inicio");
-                            echo CHTML::modeloText($modelo, "fecha_inicio", array("class"=>"form-control", "maxlength"=>10, "size"=>10, "placeholder"=>"dd/mm/yyyy"));                        
+                            echo CHTML::modeloText($modelo, "fecha_inicio", array("class"=>"form-control", "id"=>"fecha_inicio", "maxlength"=>10, "size"=>10, "placeholder"=>"dd/mm/yyyy"));                        
                         echo CHTML::dibujaEtiquetaCierre("div");  
                         
                         //Campo fecha_fin
@@ -70,7 +82,7 @@
                                 echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["fecha_fin"], true);
                             }
                             echo CHTML::modeloLabel($modelo, "fecha_fin");
-                            echo CHTML::modeloText($modelo, "fecha_fin", array("class"=>"form-control", "maxlength"=>10, "size"=>10, "placeholder"=>"dd/mm/yyyy"));                        
+                            echo CHTML::modeloText($modelo, "fecha_fin", array("class"=>"form-control", "id"=>"fecha_fin", "maxlength"=>10, "size"=>10, "placeholder"=>"dd/mm/yyyy"));                        
                         echo CHTML::dibujaEtiquetaCierre("div");  
                     
                     echo CHTML::dibujaEtiqueta("div");
@@ -78,8 +90,7 @@
 					// Campo instalacion
 					echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
 						$array = array("aire libre");
-						echo CHTML::campoListaRadioButton("instalacion", "", $array);
-						echo CHTML::campoListaRadioButton("instalacion", "", Instalaciones::listaInstalacion());
+						echo CHTML::campoListaDropDown("instalacion", "", Instalaciones::listaInstalacion(), array("class"=>"form-control"));
 					
                         //Boton insertar
                         echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
