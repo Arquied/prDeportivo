@@ -6,7 +6,7 @@ $errores=$modelo->getErrores();
 	echo CHTML::cssFichero("../../estilos/jquery.datetimepicker.css");
 	echo CHTML::scriptFichero("../../script/jquery.js");
 	echo CHTML::scriptFichero("../../script/jquery.datetimepicker.js");
-	echo CHTML::scriptFichero("../../script/scriptFechaHorario.js");
+	echo CHTML::scriptFichero("../../script/scriptFecha.js");
     echo CHTML::cssFichero("/estilos/estiloFormularios.css");
 	
     echo CHTML::dibujaEtiqueta("div", array("class"=>"container contForm"));
