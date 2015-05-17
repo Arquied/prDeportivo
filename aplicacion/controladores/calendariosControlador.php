@@ -93,6 +93,68 @@
 			
 		}
 
+		public function accionModificaCalendario(){
+				
+			if (!Sistema::app() -> acceso() -> hayUsuario()) {
+            	Sistema::app() -> sesion() -> set("pagPrevia", array("calendarios", "modificaCalendario"));
+              	Sistema::app() -> sesion() -> set("parametrosAnt", array());
+              	Sistema::app() -> irAPagina(array("inicial", "login"));
+             	exit ;
+        	} 
+        	else if (!Sistema::app() -> acceso() -> puedeConfigurar()) {
+            	Sistema::app() -> paginaError(400, "No tiene permiso para acceder");
+              	exit ;
+            } 
+			else {
+				
+				$calendario = new Calendarios();
+				$calInstalacion = new CalendariosInstalaciones();
+				
+				if ($calendario->buscarPorId($_GET["cod_calendario"])){
+					
+					$nombre = $calendario->getNombre();
+					
+					if (isset($_POST[$nombre])){
+						
+						$calendario->setValores($nombre);
+						
+						$calInstalacion->borrarCaeldarioInstalacion($_GET["cod_calendario"]);
+						$valores["cod_calendario"]=$_GET["cod_calendario"];
+						$valoes["cod_instalacion"]=$_POST["instalacion"];
+						
+						$calInstalacion->setValores($valores);
+						if ($calInstalacion->validar()){
+							if (!$calInstalacion->guardar()){
+								Sistema::app()->paginaError(404,"Se ha producido un error al guardar");
+								exit;
+							}	
+						}
+						
+						
+						if ($calendario->validar()){
+							
+							if (!$calendario->guardar()){
+						   	  Sistema::app()->paginaError(404,"Se ha producido un error al guardar");
+						   	  exit;
+							}
+							
+							Sistema::app()->irAPagina(array("calendarios"));
+							exit;
+							
+						}
+						
+						else {
+							$this->dibujaVista("modificaCalendario", array("modelo"=>$calendario),"Modificaci&oacute; de calendario");
+							exit;
+						}
+					}
+					
+				}
+				$this->dibujaVista("modificaCalendario", array("modelo"=>$calendario),"Modificaci&oacute; de calendario");
+							
+			}
+		}
+
 	public function accionBorraCalendario(){
 			
 		if(!Sistema::app()->acceso()->hayUsuario()){
@@ -125,4 +187,17 @@
 			Sistema::app()->paginaError(400,"El Calendario no se encuentra");
 		} 
 			
+	}
+	
+	public function accionMostrarCalendario(){
+			
+	$time = strtotime('monday this week');
+	
+	echo(date('Y-m-d', strtotime('monday this week')));
+	echo(date('Y-m-d', strtotime('tuesday this week')));
+	
+	$this -> dibujaVista("calendario",array(),"Calendario");
+	
+	}
+		
 	}
