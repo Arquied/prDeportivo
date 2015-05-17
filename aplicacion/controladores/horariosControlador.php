@@ -51,12 +51,13 @@
 				$horarioGeneral -> cod_temporada = intval($_POST["temporada"]);
 				
 				$creado = false;
-				echo "<br><br><br>";
-				$cont = 0;				
-				while ($cont < count($_POST["dia"])){
+						
+				for ($cont=0; $cont < count($_POST["dia"]);$cont++){
 
 				$horarioGeneral -> cod_dia = intval($_POST["dia"][$cont]);
 				$horarioGeneral->setValores($_POST[$nombre]);
+				$horarioGeneral -> disponible = 1;
+				$horarioGeneral -> cod_temporada = intval($_POST["temporada"]);
 					
 					if ($horarioGeneral -> validar()){
 						if (!$horarioGeneral -> guardar()){
@@ -73,14 +74,13 @@
 							$this->dibujaVista("nuevoHorario", array("modelo" => $horarioGeneral), "Nuevo horario");
 							exit;
 						}				
-					
-					$codigo = $horarioGeneral ->__get("cod_horario_general");
-					$horarioGeneral -> cod_horario_general = $codigo++;
-					$cont++;
+
+						$horarioGeneral = new HorarioGeneral();
+						
 					}
 					
 					if ($creado == true){
-				//		Sistema::app() -> irAPagina(array("horarios"));
+						Sistema::app() -> irAPagina(array("horarios"));
 						exit;
 					}
 					
@@ -94,7 +94,7 @@
 		public function accionModificaHorario(){
 			
 			if (!Sistema::app() -> acceso() -> hayUsuario()) {
-              Sistema::app() -> sesion() -> set("pagPrevia", array("horarios", "modificaHorarios"));
+              Sistema::app() -> sesion() -> set("pagPrevia", array("horarios", "modificaHorario"));
               Sistema::app() -> sesion() -> set("parametrosAnt", array());
               Sistema::app() -> irAPagina(array("inicial", "login"));
               exit ;
@@ -109,26 +109,28 @@
 			if ($horarioGeneral->buscarPorId($_GET["cod_horario_general"])){
 				if (isset($_POST[$horarioGeneral->getNombre()])){
 					$horarioGeneral -> setValores($_POST[$horarioGeneral->getNombre()]);
-					$horarioGeneral ->cod_dia = intval($_POST["cod_dia"]);
-					$horarioGeneral -> cod_temporada = intval($_POST["cod_temporada"]);
+					$horarioGeneral ->cod_dia = intval($_POST["dia"]);
+					$horarioGeneral -> cod_temporada = intval($_POST["temporada"]);
 					
 					if ($horarioGeneral -> validar()){
 						if (!$horarioGeneral -> guardar()){
-							$this -> dibujaVista("modificaHorario", array("modelo" => $horarioGeneral), "Modificar Horario");
-							exit;
+							//$this -> dibujaVista("modificaHorario", array("modelo" => $horarioGeneral), "Modificar Horario");
+							//exit;
 						}
 						Sistema::app()->irAPagina(array("horarios"));
 						exit;
 					}
 					else {
-						$this -> dibujaVista("modificaHorario", array("modelo" => $horarioGeneral), "Modificar Horario");
-						exit;
+						
+						echo "sdfsf";
+					//	$this -> dibujaVista("modificaHorario", array("modelo" => $horarioGeneral), "Modificar Horario");
+					//	exit;
 					}
-					$this->dibujaVista("modificaHorario", array("modelo"=>$horarioGeneral), "Modificar Horario");
 				}
-				Sistema::app()->paginaError(400, "El horario no se encuentra");
+				$this->dibujaVista("modificaHorario", array("modelo"=>$horarioGeneral), "Modificar Horario");
+				exit;
 			}
-			$this->dibujaVista("modificaHorario", array("modelo"=>$horarioGeneral), "Modificar Horario");
+			Sistema::app()->paginaError(400, "El horario no se encuentra");
 		}
 		
 	}
