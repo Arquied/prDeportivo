@@ -19,7 +19,8 @@
 											"CAcl"=>"/acceso/CAcl.php",
 											"CAclBD"=>"/acceso/CAclBD.php",
 											"CCaja"=>"/widget/CCaja.php",
-											"CBarraMenu"=>"/widget/CBarraMenu.php"
+											"CBarraMenu"=>"/widget/CBarraMenu.php",
+											"HTML2PDF"=>"/html2pdf/html2pdf.class.php"
 										);
 		static private $_rutasInclude=array();
 		static private $_app;
