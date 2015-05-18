@@ -1,4 +1,14 @@
 $(document).ready(function() {	
+	//CARGA DATETIMEPICKER A FECHA DE NACIMIENTO
+	$("#usuario_fecha_nac").datetimepicker({
+				  format:'d/m/Y',
+				  inline:false,
+				  lang:'es',
+				  timepicker:false,
+				  dayOfWeekStart: 1	,
+				  scrollInput: false								  
+				});
+							
 	//EVENTO ONCLICK PARA BOTON CAMBIAR A ADMINISTRADOR, MUESTRA VENTANA MODAL CAMBIAR A ADMINISTRADOR
 	$(".cambiarAdministrador").on("click", function(){
 		var id=$(this).parent().siblings().first().html();
