@@ -122,17 +122,12 @@
 						"</page>";
 						
 						// convert to PDF
-					    try
-					    {
+					   
 					        $html2pdf = new HTML2PDF('P', 'A4', 'es');
 					        $html2pdf->pdf->SetDisplayMode('fullpage');
 					        $html2pdf->writeHTML($contenido);
 					        $html2pdf->Output('f.pdf');
-					    }
-					    catch(HTML2PDF_exception $e) {
-					        echo $e;
-					        exit;
-					    }	
+					   	
 				}
 				else{
 					Sistema::app()->paginaError(400, "La factura no se encuentra");
