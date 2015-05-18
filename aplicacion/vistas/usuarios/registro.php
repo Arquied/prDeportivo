@@ -3,6 +3,7 @@
 	$errores=$modelo->getErrores();
 	
 	echo CHTML::cssFichero("/estilos/estiloFormularios.css");
+	echo CHTML::scriptFichero("../../script/scriptCrudUsuarios.js");
 
 	echo CHTML::dibujaEtiqueta("div", array("class"=>"container contForm"));
                 echo CHTML::dibujaEtiqueta("div", array("class"=>"contTitFormulario"));
