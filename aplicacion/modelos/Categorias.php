@@ -1,107 +1,84 @@
 <?php
 
     /**
-     *  CLASE MODELO CONFIGURACION
+     *  CLASE MODELO CATEGORIAS
      */
-    class Configuracion extends CActiveRecord {
+    class Categorias extends CActiveRecord {
                 
         protected function fijarNombre(){
-            return "configuracion";
+            return "categoria";
         }   
         
         public function fijarTabla(){
-            return "configuracion";
+            return "categorias";
         }
         
         public function fijarId(){
-            return "cod_configuracion";
+            return "cod_categoria";
         }
             
         protected function fijarAtributos(){
-            return array("cod_configuracion", "nombre_empresa", "cif", "direccion", "logo", "url_facebook", "url_twitter", "correo", "telefono");
+            return array("cod_categoria", "nombre");
         }
         
         protected function fijarDescripciones(){
-            return array("cod_configuracion"=>"Código de configuración",
-                        "nombre_empresa"=>"Nombre de la empresa",
-                        "cif"=>"Cif empresa",
-                        "direccion"=>"Dirección",
-                        "logo"=>"Logo de la empresa",
-                        "url_facebook"=>"URL facebook",
-                        "url_twitter"=>"URL twitter",
-                        "correo"=> "Dirección de correo",
-                        "telefono"=> "Telefono"
+            return array("cod_categoria"=>"Código de categoría",
+                        "nombre"=>"Nombre de la categoría"
                         );
         }
         
         protected function fijarRestricciones(){
-            return array(array("ATRI"=>"cod_configuracion", "TIPO"=>"REQUERIDO"),
-                        array("ATRI"=>"cod_configuracion", "TIPO"=>"ENTERO", "MIN"=>0, "MENSAJE"=>"El código de la configuración debe ser positivo", "DEFECTO"=>0),
-                        array("ATRI"=>"nombre_empresa", "TIPO"=>"CADENA", "TAMANIO"=>50, "MENSAJE"=>"El nombre de empresa no puede ser tan largo", "DEFECTO"=>""),
-                        array("ATRI"=>"cif", "TIPO"=>"CADENA", "TAMANIO"=>9, "MENSAJE"=>"El cif no puede ser tan largo", "DEFECTO"=>""),
-                        array("ATRI"=>"direccion", "TIPO"=>"CADENA", "TAMANIO"=>50, "MENSAJE"=>"El direccion no puede ser tan largo", "DEFECTO"=>""),
-                        array("ATRI"=>"logo", "TIPO"=>"CADENA", "TAMANIO"=>100, "MENSAJE"=>"El logo no puede ser tan largo", "DEFECTO"=>""),
-                        array("ATRI"=>"url_facebook", "TIPO"=>"CADENA", "TAMANIO"=>100, "MENSAJE"=>"La url de facebook no puede ser tan larga", "DEFECTO"=>""),
-                        array("ATRI"=>"url_twitter", "TIPO"=>"CADENA", "TAMANIO"=>100, "MENSAJE"=>"La url de twitter no puede ser tan larga", "DEFECTO"=>""),
-						array("ATRI"=>"correo", "TIPO"=>"CADENA", "TAMANIO"=>30, "MENSAJE"=>"El email no puede ser tan largo"),
-						array("ATRI"=>"telefono", "TIPO"=>"CADENA", "TAMANIO"=>9, "MENSAJE"=>"El teléfono no puede ser tan largo")
+            return array(array("ATRI"=>"cod_categoria", "TIPO"=>"REQUERIDO"),
+                        array("ATRI"=>"cod_categoria", "TIPO"=>"ENTERO", "MIN"=>0, "MENSAJE"=>"El código de la categoría debe ser positivo", "DEFECTO"=>0),
+                        array("ATRI"=>"nombre", "TIPO"=>"REQUERIDO"),
+                        array("ATRI"=>"nombre", "TIPO"=>"CADENA", "TAMANIO"=>20, "MENSAJE"=>"El nombre no puede ser tan largo", "DEFECTO"=>"")
                         );
         }
         
         protected function afterCreate(){
-           $this->cod_configuracion=1;
-           $this->nombre_empresa="";
-           $this->cif="";
-		   $this->direccion="";
-           $this->logo="";
-           $this->url_facebook="";
-		   $this->url_twitter="";
-		   $this->coreo="";
-		   $this->telefono="";
-              
+           $this->cod_categoria=1;
+           $this->nombre="";              
         }   
         
         protected function afterBuscar(){
-    
+
         }   
         
         protected function fijarSentenciaInsert(){
-            $nombre_empresa=CGeneral::addSlashes($this->nombre_empresa);
-            $cif=CGeneral::addSlashes($this->cif);
-			$direccion=CGeneral::addSlashes($this->direccion);
-            $logo=CGeneral::addSlashes($this->logo);        
-            $url_facebook=CGeneral::addSlashes($this->url_facebook);
-			$url_twitter=CGeneral::addSlashes($this->url_twitter);
-			$correo=CGeneral::addSlashes($this->correo);
-			$telefono=CGeneral::addSlashes($this->telefono);
-                                
-            return "insert into configuracion (".
-                        " nombre_empresa, cif, direccion, logo, url_facebook, url_twitter, correo, telefono ".
+            $nombre=CGeneral::addSlashes($this->nombre);
+                                            
+            return "insert into categorias (".
+                        " nombre".
                         " ) values ( ".
-                        " '$nombre_empresa', '$cif', '$direccion', '$logo', '$url_facebook', '$url_twitter', '$correo', $telefono ".
+                        " '$nombre' ".
                         " ) " ;
         }
         
         protected function fijarSentenciaUpdate(){
-            $nombre_empresa=CGeneral::addSlashes($this->nombre_empresa);
-            $cif=CGeneral::addSlashes($this->cif);
-			$direccion=CGeneral::addSlashes($this->direccion);
-            $logo=CGeneral::addSlashes($this->logo);
-			$url_facebook=CGeneral::addSlashes($this->url_facebook);
-			$url_twitter=CGeneral::addSlashes($this->url_twitter);
-			$correo=CGeneral::addSlashes($this->correo);
-			$telefono=CGeneral::addSlashes($this->telefono);
+            $nombre=CGeneral::addSlashes($this->nombre);
                 
-            return "update configuracion set ".
-                            " nombre_empresa='$nombre_empresa', ".
-                            " cif='$cif', ".
-                            " direccion='$direccion', ".
-                            " logo='$logo', ".
-                            " url_facebook='$url_facebook', ".
-                            " url_twitter='$url_twitter', ".
-                            " correo='$correo', ".
-                            " telefono='$telefono'".
-                            " where cod_configuracion={$this->cod_configuracion} ";                                                                       
+            return "update categorias set ".
+                            " nombre='$nombre' ".
+                            " where cod_categoria={$this->cod_categoria} ";                                                                       
+        }
+		
+		public static function listaCategorias($codigo=null){
+            
+            $categorias = new Categorias();
+            if ($codigo == null) {
+                        
+                $lista = array();
+                foreach($categorias->buscarTodos() as $categoria)
+                    $lista[$categoria["cod_categoria"]] = $categoria["nombre"];
+                
+                return $lista;
+            }
+            
+            if ($categorias->buscarPorId($codigo))
+            return $categorias->nombre;
+            
+            return null;
+            
         }           
         
     }
