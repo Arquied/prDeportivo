@@ -16,8 +16,13 @@
                 <link type="text/css" href="/estilos/bootstrap.min.css" rel="stylesheet" />
                 <link type="text/css" href="/estilos/carousel.css" rel="stylesheet" />
                 <link type="text/css" href="/estilos/principal.css" rel="stylesheet"/>
+                <link type="text/css" href="/estilos/jquery.datetimepicker.css" rel="stylesheet"/>
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
                 <script src="script/bootstrap.min.js"></script>
+                <script src="script/obtenerParametroGET.js"></script>
+                <script src="script/jquery.js"></script>
+                <script src="script/jquery.datetimepicker.js"></script>
+                
             </head>
             <body>
                 <div>   
@@ -52,11 +57,12 @@
                         $logout = array("TEXTO"=>"Logout","URL"=>Sistema::app()->generaURL(array("inicial","cerrarSesion")),"SUBMENU"=>false,"ACTIVO"=>$logeado,"DERECHA"=>true,"ITEMS"=>array());
                         $actividades = array("TEXTO"=>"Actividades","URL"=>Sistema::app()->generaURL(array("actividades","listaActividades")),"SUBMENU"=>false,"DERECHA"=>false,"ACTIVO","ITEMS"=>array());
                         $mostrarCalendario = array("TEXTO"=>"Calendario","URL"=>Sistema::app()->generaURL(array("calendarios","mostrarCalendario")),"SUBMENU"=>false,"DERECHA"=>false,"ACTIVO","ITEMS"=>array());
-                        $reservar = array("TEXTO"=>"Apúntate","URL"=>Sistema::app()->generaURL(array("reservas","nuevaReserva")),"SUBMENU"=>false,"ACTIVO","ITEMS"=>array());
-                       
+                      	$reservar = array("TEXTO"=>"Apúntate","URL"=>Sistema::app()->generaURL(array("reservas","nuevaReserva")),"SUBMENU"=>false,"ACTIVO", "DERECHA"=>false, "ITEMS"=>array());
+                        
+						
 						$calendarios = array("TEXTO"=>"Calendarios","URL"=>Sistema::app()->generaURL(array("calendarios")),"SUBMENU"=>false,"ACTIVO"=>true,"DERECHA"=>false,"ITEMS"=>array());
                         $instalaciones = array("TEXTO"=>"Instalaciones","URL"=>Sistema::app()->generaURL(array("instalaciones")),"SUBMENU"=>false,"ACTIVO"=>true,"DERECHA"=>false,"ITEMS"=>array());
-                        $usuarios = array("TEXTO"=>"Usuarios","URL"=>Sistema::app()->generaURL(array()),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
+                        $usuarios = array("TEXTO"=>"Usuarios","URL"=>Sistema::app()->generaURL(array("usuarios", "index")),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
                         $temporadas = array("TEXTO"=>"Temporadas","URL"=>Sistema::app()->generaURL(array("temporadas")),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
                         $horarios = array("TEXTO"=>"Horarios","URL"=>Sistema::app()->generaURL(array("horarios")),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
                         $actividadesCrud = array("TEXTO"=>"Actividades","URL"=>Sistema::app()->generaURL(array("actividades","listaActividadesCrud")),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
@@ -64,7 +70,7 @@
                         
                         $administrar = array("TEXTO"=>"Administrar","URL"=>"","SUBMENU"=>true,"ACTIVO"=>true,"ITEMS"=>array($actividadesCrud,$calendarios,$horarios,$instalaciones,$temporadas,$usuarios));
                         
-                        $datos = array($quien, $actividades, $mostrarCalendario, $registra, $login, $perfil, $logout, $administrar);
+                        $datos = array($quien, $actividades, $mostrarCalendario, $reservar, $registra, $login, $perfil, $logout, $administrar);
                         $cbarra = new CBarraMenu($datos);
                         $cbarra->dibujate();
                        ?>
