@@ -199,5 +199,23 @@
 	$this -> dibujaVista("calendario",array(),"Calendario");
 	
 	}
+	
+	//Funcion que devuelve un objeto json con el caledanrio de la actividad
+	public function accionCalendarioActividad(){
+		if($_POST["cod_actividad"]){
+        	$calendario=new Calendarios();
+			$sentSelect=" t.cod_calendario, t.hora_inicio, t.hora_fin, d.dia, d.cod_dia ";
+            $sentFrom=" join dias d using(cod_dia) ";
+            $sentWhere=" t.cod_actividad=".intval($_POST["cod_actividad"]).
+                        " and t.fecha_inicio<='".date("Y-m-d", strtotime("monday this week"))."'".
+                        " and t.fecha_fin>='".date("y-m-d", strtotime("sunday this week"))."'";
+			$sentOrder=" d.cod_dia, t.hora_inicio ";
+            
+			$datosCalendario=$calendario->buscarTodos(array("select"=>$sentSelect, "from"=>$sentFrom, "where"=>$sentWhere, "order"=>$sentOrder));			
+			
+			$json=json_encode($datosCalendario);
+			echo $json;	
+		}	
+	}
 		
 	}
