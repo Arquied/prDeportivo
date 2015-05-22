@@ -41,7 +41,7 @@
                                 
         }
         protected function afterCreate() {
-            $this -> cod_tarifa = 0;
+            $this -> cod_tarifa = 1;
             $this -> cod_actividad = 0;
             $this -> cod_tipo_cuota = 0;
             $this -> precio = 0.0;
@@ -50,7 +50,7 @@
         
         protected function fijarSentenciaInsert(){
             $cod_actividad = intval($this->cod_actividad);
-            $cod_tipo_cuota = intval($this->cod_tipo);
+            $cod_tipo_cuota = intval($this->cod_tipo_cuota);
             $precio = floatval($this->precio);
             $ocupacion = intval($this->ocupacion);
             
@@ -64,7 +64,7 @@
         
         protected function fijarSentenciaUpdate(){
             $cod_actividad = intval($this->cod_actividad);
-            $cod_tipo_cuota = intval($this->cod_tipo);
+            $cod_tipo_cuota = intval($this->cod_tipo_cuota);
             $precio = floatval($this->precio);
             $ocupacion = intval($this->ocupacion);
             
@@ -75,5 +75,7 @@
                     " ocupacion=$ocupacion ".
                     " where cod_tarifa={$this->cod_tarifa} ";
         }
+        
+        
         
     }
