@@ -65,6 +65,10 @@
 	margin: 0 10px;
 }
 
+#tCompras th, #tCompras td{
+	text-align: center;
+}
+
 #privacidad{
 	margin-left: 300px;
 }
