@@ -31,21 +31,6 @@
             }  
         }
         
-        public function accionDevuelveTarifas(){
-            if(isset($_POST["cod_actividad"])){
-                $tarifa=new Tarifas();
-                $listaTarifa=$tarifa->buscarTodos(array("select"=>" t.cod_tarifa, tc.tipo ", 
-                                            "from"=>" join tipos_cuotas tc using(cod_tipo_cuota) ",
-                                            "where"=>" t.cod_actividad=".intval($_POST["cod_actividad"])));
-                if($listaTarifa){
-                    $json=json_encode($listaTarifa);
-                    echo $json;    
-                }
-                else{
-                    echo json_encode(0);
-                }
-                
-            }
-        }     
+            
     }
         
