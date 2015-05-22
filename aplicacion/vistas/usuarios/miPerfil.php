@@ -2,10 +2,13 @@
    
    	echo CHTML::scriptFichero("../../script/jquery.dynatable.js");
 	echo CHTML::scriptFichero("../../script/scriptCrudActividades.js");
+    echo CHTML::scriptFichero("../../script/scriptPerfil.js");
     echo CHTML::cssFichero("../../estilos/jquery.dynatable.css");
     echo CHTML::cssFichero("../../estilos/estiloPerfil.css");
+    
    
-    echo CHTML::dibujaEtiqueta("div", array("class"=>"container-fluid"));
+    echo CHTML::dibujaEtiqueta("div", array("class"=>"container-fluid"));    
+        
         echo CHTML::dibujaEtiqueta("div", array("class"=>"row"));
             //Perfil
             echo CHTML::dibujaEtiqueta("div", array("class"=>"col-md-3 sidebar"));
@@ -47,7 +50,7 @@
             echo CHTML::dibujaEtiquetaCierre("div");
             
             //Compras          
-            echo CHTML::dibujaEtiqueta("div", array("class"=>"col-md-9 col-md-offset-3 main"));
+            echo CHTML::dibujaEtiqueta("div", array("class"=>"col-md-9 col-md-offset-3 main"));               
 				//Titulo
 			    echo CHTML::dibujaEtiqueta("div", array("class"=>"contTitulo"));
 			        echo CHTML::dibujaEtiqueta("H1", array("class"=>"text-center"), "COMPRAS REALIZADAS", TRUE);
@@ -60,6 +63,13 @@
 				//SI EXISTEN
 				else{	
 					echo CHTML::dibujaEtiqueta("div", array("id"=>"contListaCompras"));
+                        echo CHTML::iniciarForm("#", "POST", array("role"=>"form"));                        
+                            echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group")); 
+                                echo CHTML::campoCheckBox("temporada_actual", $tem);                          
+                                echo CHTML::campoLabel("Temporada Actual", "temporada_actual");
+                            echo CHTML::dibujaEtiquetaCierre("div");
+                        echo CHTML::finalizarForm();
+                        
 				        echo CHTML::dibujaEtiqueta("table", array("class"=>"table table-striped", "id"=>"tCompras"));
 				            //DIBUJAR CABECERA DE LA TABLA
 				            echo CHTML::dibujaEtiqueta("thead");
