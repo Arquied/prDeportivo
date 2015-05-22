@@ -3,7 +3,7 @@
     /**
      *  CLASE MODELO TIPO DE CUOTA
      */
-    class Tipos_cuota extends CActiveRecord {
+    class TiposCuota extends CActiveRecord {
                 
         protected function fijarNombre(){
             return "tipo_cuotas";
@@ -87,6 +87,24 @@
                             " where cod_tipo_cuota={$this->cod_tipo_cuota} ";                                                                     
         }
         
+        public static function listaTiposCuota($codigo=null){            
+            $tipoCuota=new TiposCuota();
+            if ($codigo == null) {
+                        
+                $lista = array();
+                foreach($tipoCuota->buscarTodos() as $tipo)
+                    $lista[$tipo["cod_tipo_cuota"]] = $tipo["tipo"];
+                
+                return $lista;
+            }
+            
+            if ($tipoCuota->buscarPorId($codigo))
+            return $tipoCuota->tipo;
+            
+            return null;
+            
+        }
+        
         /**
          * METODOS PARA VALIDAR CAMPOS
          */
@@ -94,5 +112,9 @@
             $cadena=strtoupper($this->tipo);
             $this->tipo=$cadena;
         }
+        
+       
+                
+        
     }
     
