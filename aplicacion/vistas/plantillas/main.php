@@ -20,16 +20,14 @@
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
                 <script src="script/bootstrap.min.js"></script>
                 <script src="script/obtenerParametroGET.js"></script>
-                <script src="script/jquery.js"></script>
                 <script src="script/jquery.datetimepicker.js"></script>
-                
             </head>
             <body>
                 <div>   
                     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
                       <div>
                         <div class="navbar-header">
-                          <a class="navbar-brand" href="<?php Sistema::app()->generaURL(array("inicial")) ?>">Centro Deportivo</a>
+                          <a class="navbar-brand" href="<?php echo Sistema::app()->generaURL(array("inicial")) ?>">Centro Deportivo</a>
                         </div>
                         <?php
                         //Comprobar si se ha iniciado el usuario y si tienen permiso de administrar se mostrar el menu de administracion
@@ -51,8 +49,8 @@
                             $esAdmin=false; 
                         }
                         $quien = array("TEXTO"=>"Quienes Somos","URL"=>Sistema::app()->generaURL(array("inicial","quien")),"SUBMENU"=>false,"ACTIVO"=>true,"DERECHA"=>false,"ITEMS"=>array());
-                        $registra = array("TEXTO"=>"Registrate","URL"=>Sistema::app()->generaURL(array("usuarios","registro")),"SUBMENU"=>false,"ACTIVO"=>$nologeado,"DERECHA"=>false,"ITEMS"=>array());
-                        $login = array("TEXTO"=>"Login","URL"=>Sistema::app()->generaURL(array("inicial","login")),"SUBMENU"=>false,"ACTIVO"=>$nologeado,"DERECHA"=>false,"ITEMS"=>array());
+                        $registra = array("TEXTO"=>"Registrate","URL"=>Sistema::app()->generaURL(array("usuarios","registro")),"SUBMENU"=>false,"ACTIVO"=>$nologeado,"DERECHA"=>true,"ITEMS"=>array());
+                        $login = array("TEXTO"=>"Login","URL"=>Sistema::app()->generaURL(array("inicial","login")),"SUBMENU"=>false,"ACTIVO"=>$nologeado,"DERECHA"=>true,"ITEMS"=>array());
                         $perfil = array("TEXTO"=>"Mi Perfil","URL"=>Sistema::app()->generaURL(array("usuarios", "miPerfil")),"SUBMENU"=>false,"ACTIVO"=>$logeado,"DERECHA"=>true,"ITEMS"=>array());						
                         $logout = array("TEXTO"=>"Logout","URL"=>Sistema::app()->generaURL(array("inicial","cerrarSesion")),"SUBMENU"=>false,"ACTIVO"=>$logeado,"DERECHA"=>true,"ITEMS"=>array());
                         $actividades = array("TEXTO"=>"Actividades","URL"=>Sistema::app()->generaURL(array("actividades","listaActividades")),"SUBMENU"=>false,"DERECHA"=>false,"ACTIVO","ITEMS"=>array());
@@ -69,8 +67,10 @@
                         
                         
                         $administrar = array("TEXTO"=>"Administrar","URL"=>"","SUBMENU"=>true,"ACTIVO"=>true,"ITEMS"=>array($actividadesCrud,$calendarios,$horarios,$instalaciones,$temporadas,$usuarios));
-                        
-                        $datos = array($quien, $actividades, $mostrarCalendario, $reservar, $registra, $login, $perfil, $logout, $administrar);
+                        if($logeado && $esAdmin)
+                        	$datos = array($quien, $actividades, $mostrarCalendario, $reservar, $registra, $login, $perfil, $logout, $administrar);
+						else
+							$datos = array($quien, $actividades, $mostrarCalendario, $reservar, $registra, $login, $perfil, $logout);
                         $cbarra = new CBarraMenu($datos);
                         $cbarra->dibujate();
                        ?>
