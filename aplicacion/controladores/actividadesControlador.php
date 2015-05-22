@@ -89,7 +89,7 @@
             //Comprobar si se ha iniciado sesion y si el usuario tiene permiso de modificar
             if (!Sistema::app() -> acceso() -> hayUsuario()) {
                 Sistema::app() -> sesion() -> set("pagPrevia", array("actividades", "modificaActividad"));
-                Sistema::app() -> sesion() -> set("parametrosAnt", array());
+                Sistema::app() -> sesion() -> set("parametrosAnt", array("cod_actividad"=>$_GET["cod_actividad"]));
                 Sistema::app() -> irAPagina(array("inicial", "login"));
                 exit ;
             } 
@@ -181,7 +181,7 @@
 			//Comprobar si se ha iniciado sesion y si el usuario tiene permiso de borrar		
 			if(!Sistema::app()->acceso()->hayUsuario()){
 				Sistema::app()->sesion()->set("pagPrevia", array("actividades", "borraActividad"));
-				Sistema::app()->sesion()->set("parametrosAnt", array());
+				Sistema::app()->sesion()->set("parametrosAnt", array("id"=>$_REQUEST["id"]));
 				Sistema::app()->irAPagina(array("inicial", "login"));
 				exit;
 			}
@@ -238,10 +238,10 @@
             
             //establezco las opciones de filtrado
             $opciones=array();
-            $cadena=" t.disponible=1 ";
+            $cadena=" t.disponible=1  and tem.nombre REGEXP '".date('Y')."$'";
             $filtrado=array();
             $opciones["select"]=" t.*"; 
-            $opciones["from"]="";
+            $opciones["from"]=" join temporadas tem using(cod_temporada) ";
             $opciones["order"]= " t.nombre ";
             //filtrado 
             //si no existe filtrado se muestran todas las actividades
@@ -303,17 +303,17 @@
             $this->dibujaVista("listaActividades", array("filas"=>$filas, "paginador"=>$opcPaginador), "Lista de Actividades");
         }
 
+        //Accion que devuelve la informacion de la actividad junto con el horario de esa semana
+        //en un objeto JSON
         public function accionActividadJSON(){
             if($_POST["cod_actividad"]){
-            	$actividad=new Actividades();
-				$datosActividad=$actividad->buscarTodos(array("where"=>"t.cod_actividad=".intval($_POST["cod_actividad"])));
-				
+            	$actividad=new Actividades();                
+				$datosActividad=$actividad->buscarTodos(array("where"=>"cod_actividad=".intval($_POST["cod_actividad"])));			
 				
 				$json=json_encode($datosActividad);
 				echo $json;				
             }
         }
  
-    
     }
         
