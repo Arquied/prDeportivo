@@ -46,10 +46,13 @@
 							echo CHTML::dibujaEtiqueta("td", array(), "No disponible", true);
 						}
                         echo CHTML::dibujaEtiqueta("td");
-                            echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("actividades", "modificaActividad"), array("cod_actividad"=>$fila["cod_actividad"]))));
+							echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("tarifas", "nuevaTarifa"), array("cod_actividad"=>$fila["cod_actividad"])), "title"=>"Añadir tarifa"));
+                                echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico_money.png"));
+                            echo CHTML::dibujaEtiquetaCierre("a");
+                            echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("actividades", "modificaActividad"), array("cod_actividad"=>$fila["cod_actividad"])), "title"=>"Modificar actividad"));
                                 echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico_edit.png"));
                             echo CHTML::dibujaEtiquetaCierre("a");
-                            echo CHTML::dibujaEtiqueta("a", array("href"=>"#", "class"=>"btnBorrar"));
+                            echo CHTML::dibujaEtiqueta("a", array("href"=>"#", "class"=>"btnBorrar", "title"=>"Borrar actividad"));
                                 echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico_borrar.png"));
                             echo CHTML::dibujaEtiquetaCierre("a");
                         echo CHTML::dibujaEtiquetaCierre("td");
