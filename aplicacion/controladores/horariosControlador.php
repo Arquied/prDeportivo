@@ -47,6 +47,8 @@
 			$nomDias = $dias->getNombre();
 			if(isset($_POST[$nombre])){
 				$horarioGeneral->setValores($_POST[$nombre]);
+				echo  $hora_inicio = $horarioGeneral -> hora_inicio;
+				echo $hora_fin = $horarioGeneral -> hora_fin;
 				$horarioGeneral -> disponible = 1;
 				$horarioGeneral -> cod_temporada = intval($_POST["temporada"]);
 				
@@ -55,7 +57,9 @@
 				for ($cont=0; $cont < count($_POST["dia"]);$cont++){
 
 				$horarioGeneral -> cod_dia = intval($_POST["dia"][$cont]);
-				$horarioGeneral->setValores($_POST[$nombre]);
+				$horarioGeneral -> hora_inicio = $hora_inicio;
+				$horarioGeneral -> hora_fin = $hora_fin;
+				$horarioGeneral-> setValores($_POST[$nombre]);
 				$horarioGeneral -> disponible = 1;
 				$horarioGeneral -> cod_temporada = intval($_POST["temporada"]);
 					
@@ -80,7 +84,7 @@
 					}
 					
 					if ($creado == true){
-						Sistema::app() -> irAPagina(array("horarios"));
+					//	Sistema::app() -> irAPagina(array("horarios"));
 						exit;
 					}
 					
@@ -114,17 +118,15 @@
 					
 					if ($horarioGeneral -> validar()){
 						if (!$horarioGeneral -> guardar()){
-							//$this -> dibujaVista("modificaHorario", array("modelo" => $horarioGeneral), "Modificar Horario");
-							//exit;
+							$this -> dibujaVista("modificaHorario", array("modelo" => $horarioGeneral), "Modificar Horario");
+							exit;
 						}
 						Sistema::app()->irAPagina(array("horarios"));
 						exit;
 					}
 					else {
-						
-						echo "sdfsf";
-					//	$this -> dibujaVista("modificaHorario", array("modelo" => $horarioGeneral), "Modificar Horario");
-					//	exit;
+						$this -> dibujaVista("modificaHorario", array("modelo" => $horarioGeneral), "Modificar Horario");
+						exit;
 					}
 				}
 				$this->dibujaVista("modificaHorario", array("modelo"=>$horarioGeneral), "Modificar Horario");
