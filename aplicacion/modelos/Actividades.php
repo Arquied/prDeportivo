@@ -18,7 +18,7 @@
 		}
 			
 		protected function fijarAtributos(){
-			return array("cod_actividad", "nombre", "mini_descripcion", "descripcion", "imagen", "capacidad", "fecha_inicio", "fecha_fin", "novedad", "disponible", "cod_temporada", "cod_categoria");
+			return array("cod_actividad", "nombre", "mini_descripcion", "descripcion", "imagen", "capacidad", "fecha_inicio", "fecha_fin", "novedad", "disponible", "cod_temporada", "cod_categoria", "seleccionable_horas");
 		}
 		
 		protected function fijarDescripciones(){
@@ -31,7 +31,8 @@
 						"fecha_inicio"=>"Fecha inicio de la actividad",
 						"fecha_fin"=>"Fecha fin de la actividad",
 						"novedad" => "Es novedad",
-						"disponible"=>"Está disponible",
+						"disponible"=>"Está disponible",						
+                        "seleccionable_horas" => "¿Puede selecciona horas concretas?",
 						"cod_temporada"=>"Código de la temporada",
 						"cod_categoria" =>"Código de la categoria"
 						);
@@ -53,7 +54,8 @@
 						array("ATRI"=>"fecha_inicio", "TIPO"=>"FECHA"),
 						array("ATRI"=>"fecha_fin", "TIPO"=>"FECHA"),
 						array("ATRI"=>"novedad", "TIPO"=>"ENTERO", "MIN"=>0, "MAX"=>1),
-						array("ATRI"=>"disponible", "TIPO"=>"ENTERO", "MIN"=>0, "MAX"=>1)
+						array("ATRI"=>"disponible", "TIPO"=>"ENTERO", "MIN"=>0, "MAX"=>1),
+						array("ATRI"=>"seleccionable_horas", "TIPO"=>"ENTERO", "MIN"=>0, "MAX"=>1)
 						);
 		}
 		
@@ -70,6 +72,7 @@
 			$this->fecha_fin=date("d/m/Y");
 			$this->novedad=0;
 			$this->disponible=1;
+			$this->seleccionable_horas=0;
 			
 		}	
 		
@@ -95,11 +98,12 @@
 			$fecha_fin=CGeneral::fechaNormalAMysql($this->fecha_fin);
             $novedad=intval($this->novedad);
 			$disponible=intval($this->disponible);
+            $seleccionable_horas=intval($this->seleccionable_horas);
 								
 			return "insert into actividades (".
-						" nombre, mini_descripcion, descripcion, imagen, capacidad, fecha_inicio, fecha_fin, novedad, disponible, cod_temporada, cod_categoria ".
+						" nombre, mini_descripcion, descripcion, imagen, capacidad, fecha_inicio, fecha_fin, novedad, disponible, seleccionable_horas, cod_temporada, cod_categoria ".
 						" ) values ( ".
-						" '$nombre', '$mini_descripcion', '$descripcion', '$imagen', $capacidad, '$fecha_inicio', '$fecha_fin', $novedad, $disponible, $cod_temporada, $cod_categoria ".
+						" '$nombre', '$mini_descripcion', '$descripcion', '$imagen', $capacidad, '$fecha_inicio', '$fecha_fin', $novedad, $disponible, $seleccionable_horas, $cod_temporada, $cod_categoria ".
 						" ) " ;
 		}
 		
@@ -115,6 +119,7 @@
 			$fecha_fin=CGeneral::fechaNormalAMysql($this->fecha_fin);
            	$novedad=intval($this->novedad);
 			$disponible=intval($this->disponible);
+			$seleccionable_horas=intval($this->seleccionable_horas);
 			
 			return "update actividades set ".
 							" cod_temporada=$cod_temporada, ".
@@ -127,7 +132,8 @@
 							" fecha_inicio='$fecha_inicio', ".
 							" fecha_fin='$fecha_fin', ".
 							" novedad=$novedad, ".
-							" disponible=$disponible ".
+							" disponible=$disponible, ".
+							" seleccionable_horas=$seleccionable_horas ".
 							" where cod_actividad={$this->cod_actividad} ";																		
 		}
 		
