@@ -50,11 +50,7 @@
                                 echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["hora_inicio"], true);
                             }
                         echo CHTML::modeloLabel($modelo, "hora_inicio");
-                        echo CHTML::modeloText($modelo, "hora_inicio", array("class"=>"form-control", "id"=>"hora_inicio", "maxlength"=>10, "size"=>10, "placeholder"=>"hh:mm:ss")); 
-						echo CHTML::dibujaEtiqueta("span", array("class"=>"add-on"));
-						echo CHTML::dibujaEtiqueta("i", array("data-time-icon"=>"icon-time", "data-date-icon"=>"icon-calendar"));
-						echo CHTML::dibujaEtiquetaCierre("i");
-						echo CHTML::dibujaEtiquetaCierre("span");                    
+                        echo CHTML::modeloText($modelo, "hora_inicio", array("class"=>"form-control", "id"=>"hora_inicio", "maxlength"=>10, "size"=>10, "placeholder"=>"hh:mm:ss"));                 
                         echo CHTML::dibujaEtiquetaCierre("div");
                       
                         //Campo hora_fin
