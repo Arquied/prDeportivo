@@ -18,18 +18,20 @@
         }
             
         protected function fijarAtributos(){
-            return array("cod_reserva", "cod_usuario", "cod_tarifa", "cod_actividad", "fecha_reserva", "fecha_inicio", "fecha_fin", "tarifa");
+            return array("cod_reserva", "cod_usuario", "cod_tarifa", "cod_actividad", "fecha_reserva", "fecha_inicio", "fecha_fin", "tarifa", "anulado", "fecha_anulacion");
         }
         
         protected function fijarDescripciones(){
             return array("cod_reserva"=>"Código de reserva",
                         "cod_usuario"=>"Código de usuario",
-                        "cod_tarifa"=>"Código de tarifa",
-                        "cod_actividad"=>"Código de actividad",
+                        "cod_tarifa"=>"Tarifa",
+                        "cod_actividad"=>"Actividad",
                         "fecha_reserva"=>"Fecha de la reserva",
                         "fecha_inicio"=>"Fecha inicio",
                         "fecha_fin"=>"Fecha fin",
-                        "tarifa"=>"Precio total de la reserva"
+                        "tarifa"=>"Precio total de la reserva",
+                        "anulado"=>"Anular reserva",
+                        "fecha_anulacion" =>"Fecha de anulación"
                         );
         }
         
@@ -45,7 +47,9 @@
                         array("ATRI"=>"fecha_reserva", "TIPO"=>"FECHA"),
                         array("ATRI"=>"fecha_inicio", "TIPO"=>"FECHA"),
                         array("ATRI"=>"fecha_fin", "TIPO"=>"FECHA"),
-                        array("ATRI"=>"tarifa", "TIPO"=>"REAL", "MIN"=>0.0, "MENSAJE"=>"El precio total debe ser positivo")
+                        array("ATRI"=>"tarifa", "TIPO"=>"REAL", "MIN"=>0.0, "MENSAJE"=>"El precio total debe ser positivo"),
+                        array("ATRI"=>"anulado", "TIPO"=>"ENTERO", "MIN"=>0, "MAX"=>1),
+                        array("ATRI"=>"fecha_anulacion", "TIPO"=>"FECHA"),
                         );
         }
         
@@ -58,6 +62,8 @@
            $this->fecha_inicio=date("d/m/Y");
            $this->fecha_fin=date("d/m/Y");
            $this->tarifa=0.0;
+           $this->anulado=0;
+           $this->fecha_anulacion=date("d/m/Y");
               
         }   
         
@@ -73,6 +79,10 @@
             $fecha=$this->fecha_fin;
             $fecha=CGeneral::fechaMysqlANormal($fecha);
             $this->fecha_fin=$fecha;
+            
+            $fecha=$this->fecha_anulacion;
+            $fecha=CGeneral::fechaMysqlANormal($fecha);
+            $this->fecha_anulacion=$fecha;
         }   
         
         protected function fijarSentenciaInsert(){
@@ -83,12 +93,13 @@
             $fecha_inicio=CGeneral::fechaNormalAMysql($this->fecha_inicio);
             $fecha_fin=CGeneral::fechaNormalAMysql($this->fecha_fin);
             $tarifa=floatval($this->tarifa);
-            
+            $anulado=intval($this->anulado);
+            $fecha_anulacion=CGeneral::fechaNormalAMysql($this->fecha_anulacion);
                                 
             return "insert into reservas (".
-                        " cod_usuario, cod_tarifa, cod_actividad, fecha_reserva, fecha_inicio, fecha_fin, tarifa ".
+                        " cod_usuario, cod_tarifa, cod_actividad, fecha_reserva, fecha_inicio, fecha_fin, tarifa, anulado, fecha_anulacion ".
                         " ) values ( ".
-                        " $cod_usuario, $cod_tarifa, $cod_actividad, '$fecha_reserva', '$fecha_inicio', '$fecha_fin', $tarifa ".
+                        " $cod_usuario, $cod_tarifa, $cod_actividad, '$fecha_reserva', '$fecha_inicio', '$fecha_fin', $tarifa, $anulado, '$fecha_anulacion' ".
                         " ) " ;
         }
         
@@ -100,6 +111,8 @@
             $fecha_inicio=CGeneral::fechaNormalAMysql($this->fecha_inicio);
             $fecha_fin=CGeneral::fechaNormalAMysql($this->fecha_fin);
             $tarifa=floatval($this->tarifa);
+            $anulado=intval($this->anulado);
+            $fecha_anulacion=CGeneral::fechaNormalAMysql($this->fecha_anulacion);
                 
             return "update reservas set ".
                             " cod_usuario=$cod_usuario, ".
@@ -108,7 +121,9 @@
                             " fecha_reserva='$fecha_reserva', ".
                             " fecha_inicio='$fecha_inicio',".
                             " fecha_fin='$fecha_fin', ".
-                            " tarifa=$tarifa ".
+                            " tarifa=$tarifa, ".
+                            " anulado=$anulado, ".
+                            " fecha_anulacion='$fecha_anulacion' ".
                             " where cod_reserva={$this->cod_reserva} ";                                                                       
         }           
         
