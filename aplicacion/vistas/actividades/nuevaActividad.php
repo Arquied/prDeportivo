@@ -53,6 +53,15 @@
                             echo CHTML::modeloLabel($modelo, "novedad");
                             echo CHTML::modeloCheckBox($modelo, "novedad");
                         echo CHTML::dibujaEtiquetaCierre("div");
+                        
+                        //Campo seleccionable horas
+                        echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
+                            if(isset($errores["seleccionable_horas"])){
+                                echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["seleccionable_horas"], true);
+                            }
+                            echo CHTML::modeloLabel($modelo, "seleccionable_horas");
+                            echo CHTML::modeloCheckBox($modelo, "seleccionable_horas");
+                        echo CHTML::dibujaEtiquetaCierre("div");
                     echo CHTML::dibujaEtiquetaCierre("div");    
                     
                     echo CHTML::dibujaEtiqueta("div");
