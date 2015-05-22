@@ -29,6 +29,7 @@
 			if (isset($_POST[$nombre])) {
 				$usuario -> setValores($_POST[$nombre]);
 				$usuario -> cod_role = 2;
+				$usuario -> disponible = 1;
 				if ($usuario -> validar()) {
 					if($usuario->contrasenia==$_POST["con1"]){
 						if (!$usuario -> guardar()) { //guarda el usuario
@@ -57,17 +58,29 @@
                 $nickUsuario=Sistema::app()->Acceso()->getNick(); 
                 
                 $usuario->buscarPor(array("where"=>"nick='".$nickUsuario."'"));
+			    if(isset($_POST["temporada_actual"])){
+			         //Obtener lista de compras realizadas
+                     $compras=$compra->buscarTodos(array("select"=>" t.*, a.nombre as actividad ",
+                                            "from"=>" join reservas r using(cod_reserva) ".
+                                                    " join actividades a using(cod_actividad) ".
+                                                    " join temporadas tem using(cod_temporada)",
+                                            "where"=>" r.cod_usuario=".$usuario->cod_usuario." and tem.nombre REGEXP '[[:alnum:]]*".date("Y")."[[:alnum:]]*'"
+                                            )
+                                    );   
+			    }
+			    else{
+    			     //Obtener lista de compras realizadas
+                    $compras=$compra->buscarTodos(array("select"=>" t.*, a.nombre as actividad ",
+                                                "from"=>" join reservas r using(cod_reserva) ".
+                                                        " join actividades a using(cod_actividad) ",
+                                                "where"=>" r.cod_usuario=".$usuario->cod_usuario
+                                                )
+                                        );    
+			    }
 				
-				//Obtener lista de compras realizadas
-				$compras=$compra->buscarTodos(array("select"=>" t.*, a.nombre as actividad ",
-											"from"=>" join reservas r using(cod_reserva) ".
-													" join actividades a using(cod_actividad) ",
-											"where"=>" r.cod_usuario=".$usuario->cod_usuario
-											)
-									);
 				
                 if($usuario->nick!==""){
-                    $this ->dibujaVista("miPerfil", array("modelo" => $usuario, "comprasRealizadas"=>$compras), "Mi perfil");
+                    $this ->dibujaVista("miPerfil", array("modelo" => $usuario, "comprasRealizadas"=>$compras, "tem"=>(isset($_POST["temporada_actual"])?$_POST["temporada_actual"]:0)), "Mi perfil");
                 }
                 else{
                    Sistema::app()->paginaError(400, "No existe usuario"); 
@@ -167,6 +180,33 @@
                 }         
             }
         }
+
+		public function accionBorraUsuario(){
+			//Comprobar si se ha iniciado sesion y si el usuario tiene permiso de borrar		
+			if(!Sistema::app()->acceso()->hayUsuario()){
+				Sistema::app()->sesion()->set("pagPrevia", array("usuarios", "borraUsuario"));
+				Sistema::app()->sesion()->set("parametrosAnt", array());
+				Sistema::app()->irAPagina(array("inicial", "login"));
+				exit;
+			}
+			else if(!Sistema::app()->acceso()->puedeConfigurar()){
+				Sistema::app()->paginaError(400, "No tiene permiso para acceder");	
+				exit;
+			}
+			else{
+				$usuario=new Usuarios();		
+				if($usuario->buscarPorId($_REQUEST["id"])){					
+					$usuario -> disponible=0;											
+					if(!$usuario->guardar()){
+						Sistema::app()->paginaError(400, "Error al eliminar usuario");
+						exit ;
+					}
+					Sistema::app()->irAPagina(array("usuarios", "index"));
+					exit ;							
+				}
+				Sistema::app()->paginaError(400, "El usuario no se encuentra");
+			}
+		}
 
 		public function accionCambiarRole(){
 			 //Comprobar si se ha iniciado sesion y si el usuario tiene permiso de modificar         
