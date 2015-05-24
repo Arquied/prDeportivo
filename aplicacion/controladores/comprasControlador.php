@@ -134,6 +134,103 @@
 				}
 			}
 		}
+
+		public function accionListaCompras(){
+				
+			if (!Sistema::app() -> acceso() -> hayUsuario()) {
+        	      Sistema::app() -> sesion() -> set("pagPrevia", array("compras","listaCompras"));
+        	      Sistema::app() -> sesion() -> set("parametrosAnt", array());
+        	      Sistema::app() -> irAPagina(array("inicial", "login"));
+        	      exit ;
+        	} 
+        	else if (!Sistema::app() -> acceso() -> puedeConfigurar()) {
+        	      Sistema::app() -> paginaError(400, "No tiene permiso para acceder");
+            	  exit ;
+            } 
+			else {
+				$reservas = new Reservas();
+				$filas = $reservas -> buscarTodos(array("select c.*","from"=>"inner join compras as c on c.cod_reserva=t.cod_reserva"));									
+				$this->dibujaVista("listaCompras",array("filas"=>$filas), "Lista de Compras");
+				
+			}
+		}
+		
+		public function accionPagarCompra(){
+			
+			//Comprobar si se ha iniciado sesion y si el usuario tiene permiso de modificar         
+            if(!Sistema::app()->acceso()->hayUsuario()){
+                Sistema::app()->sesion()->set("pagPrevia", array("compras", "CompraPagado"));
+                Sistema::app()->sesion()->set("parametrosAnt", array());
+                Sistema::app()->irAPagina(array("inicial", "login"));
+                exit;
+            }
+			
+        	else if (!Sistema::app() -> acceso() -> puedeConfigurar()) {
+        	      Sistema::app() -> paginaError(400, "No tiene permiso para acceder");
+            	  exit ;
+            } 
+            else{
+            	
+				$reserva = new Reservas();
+            	$compra = new Compras();
+            	
+                if($compra->buscarPorId($_REQUEST["id"])){
+                	$compra -> pendiente = 0;
+                	$compra -> importe_pagado = $compra -> importe;
+                	$reserva -> buscarPorId($compra -> cod_reserva);
+					
+					if ($compra->validar()) {
+						if(!$compra->guardar()){
+							$this->dibujaVista("anularCompra", array("modelo"=>$compra),"Anular Compra");
+							exit;
+						}
+						Sistema::app()->irAPagina(array("compras", "listaCompras"), array("cod_usuario"=>$reserva->cod_usuario));
+						exit;
+					}
+					else {
+						$this -> dibujaVista("anularCompra", array("modelo"=>$compra),"Anular Compra");
+						exit;
+					}
+				}
+				 Sistema::app()->paginaError(400,"La Compra no se encuentra");
+			}
+		}
+
+		public function accionAnularCompra(){
+			
+			if(!Sistema::app()->acceso()->hayUsuario()){
+				Sistema::app()->sesion()->set("pagPrevia", array("compras", "AnularCompra"));
+				Sistema::app()->sesion()->set("parametrosAnt", array());
+				Sistema::app()->irAPagina(array("inicial", "login"));
+				exit;
+			}
+			else if(!Sistema::app()->acceso()->puedeConfigurar()){
+				Sistema::app()->paginaError(400, "No tiene permiso para acceder");	
+				exit;
+			}
+			else{
+				$compra = new Compras();
+				$reserva = new Reservas();
+				if ($compra->buscarPorId($_REQUEST["id"])){
+					$compra -> anulado=0;
+					$reserva -> buscarPorId($compra -> cod_reserva);
+					if ($compra->validar()) {
+						if(!$compra->guardar()){
+							$this->dibujaVista("anularCompra", array("modelo"=>$compra),"Anular Compra");
+							exit;
+						}
+						Sistema::app()->irAPagina(array("compras", "listaCompras"), array("cod_usuario"=>$reserva->cod_usuario));
+						exit;
+					}
+					else {
+						$this -> dibujaVista("anularCompra", array("modelo"=>$compra),"Anular Compra");
+						exit;
+					}
+				}
+				Sistema::app()->paginaError(400,"La Compra no se encuentra");
+			} 
+			
+		}
 		
 	}
 			
