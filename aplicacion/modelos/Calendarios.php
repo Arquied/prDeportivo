@@ -1,5 +1,4 @@
 <?php
-
 	/**
 	 *  CLASE MODELO CALENDARIOS
 	 */
@@ -25,10 +24,10 @@
 			return array("cod_calendario"=>"Código calendario actividad",
 						"cod_dia"=>"Código dia semana",
 						"cod_actividad"=>"Código de la actividad",
-                            "hora_inicio"=>"Hora de inicio:",
-                            "hora_fin"=>"Hora de finalización:",
-                            "fecha_inicio"=>"Fecha de inicio:",
-                            "fecha_fin"=>"Fecha de fin:",
+                        "hora_inicio"=>"Hora de inicio:",
+                        "hora_fin"=>"Hora de finalización:",
+                        "fecha_inicio"=>"Fecha de inicio:",
+                        "fecha_fin"=>"Fecha de fin:",
 						"disponible"=>"Está disponible"
 						);
 		}
@@ -43,11 +42,11 @@
 						array("ATRI"=>"hora_inicio", "TIPO"=>"HORA"),
 						array("ATRI"=>"hora_fin", "TIPO"=>"HORA"),
 						array("ATRI"=>"fecha_inicio", "TIPO"=>"FECHA"),
-                         array("ATRI"=>"fecha_inicio", "TIPO"=>"REQUERIDO"),
-                         array("ATRI"=>"fecha_inicio","TIPO"=>"FUNCTION","FUNCTION"=>"validaFechaInicio"),
+                        array("ATRI"=>"fecha_inicio", "TIPO"=>"REQUERIDO"),
+                        array("ATRI"=>"fecha_inicio","TIPO"=>"FUNCTION","FUNCTION"=>"validaFechaInicio"),
 						array("ATRI"=>"fecha_fin", "TIPO"=>"FECHA"),
-                         array("ATRI"=>"fecha_fin","TIPO"=>"REQUERIDO"),
-                         array("ATRI"=>"fecha_fin","TIPO"=>"FUNCTION", "FUNCTION"=>"validaFechaFin"),
+                        array("ATRI"=>"fecha_fin","TIPO"=>"REQUERIDO"),
+                        array("ATRI"=>"fecha_fin","TIPO"=>"FUNCTION", "FUNCTION"=>"validaFechaFin"),
 						array("ATRI"=>"disponible", "TIPO"=>"ENTERO", "MIN"=>0, "MAX"=>1)
 						);
 		}
@@ -56,7 +55,6 @@
 			$this->cod_calendario=1;
 			$this->cod_actividad=0;
 			$this->cod_dia=0;
-
             $fech = new DateTime();   
 			         
             $hora = $fech->format("H:i:s");
@@ -123,7 +121,7 @@
             $hora_fin=CGeneral::addSlashes($this->hora_fin);
 			$disponible=intval($this->disponible);
 			
-			return "update calendario_actividad set ".
+			return "update calendarios set ".
 							" cod_actividad=$cod_actividad, ".
 							" cod_dia=$cod_dia, ".
 							" hora_inicio='$hora_inicio', ".
