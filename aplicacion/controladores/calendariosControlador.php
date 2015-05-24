@@ -91,12 +91,13 @@
             }       
             
         }
-
-        public function accionModificaCalendario(){
-                
+        
+        //Funcion que añade modifica calendario
+        public function accionModificaCalendario(){            
+            //Comprobar si se ha iniciado sesion y si el usuario tiene permiso de modificar
             if (!Sistema::app() -> acceso() -> hayUsuario()) {
                 Sistema::app() -> sesion() -> set("pagPrevia", array("calendarios", "modificaCalendario"));
-                Sistema::app() -> sesion() -> set("parametrosAnt", array());
+                Sistema::app() -> sesion() -> set("parametrosAnt", array("cod_calendario"=>$_GET["cod_calendario"]));
                 Sistema::app() -> irAPagina(array("inicial", "login"));
                 exit ;
             } 
@@ -105,53 +106,55 @@
                 exit ;
             } 
             else {
+               	$calendario=new Calendarios();
+                if($calendario->buscarPorId($_GET["cod_calendario"])){
+                	$calendarioInstalacion=new CalendariosInstalaciones();
+					$codInstalacion=$calendarioInstalacion->buscarTodos(array("where"=>"cod_calendario=".intval($_GET["cod_calendario"])));
+					if($codInstalacion){
+						$calendarioInstalacion->buscarPorId($codInstalacion[0]["cod_calendario_instalacion"]);
+					}
+                    if(isset($_POST[$calendario->getNombre()])){
+                    $calendario -> setValores($_POST[$calendario->getNombre()]); 
+                   
+                    if ($calendario -> validar()) {                                       
+                        if (!$calendario -> guardar()) { //guarda el calendario
+                            $this -> dibujaVista("modificaCalendario", array("modelo" => $calendario, "calendarioInstalacion"=>$calendarioInstalacion), "Modificar calendario");
+                            exit ;
+                        }
+						//si todo es correcto pasa a guardar la instalacion si la hay
+                        if($_POST["instalacion"]!=""){
+                        	$calendarioInstalacion->setValores(array("cod_calendario"=>$_GET["cod_calendario"], "cod_instalacion"=>$_POST["instalacion"]));
+                        	if($calendarioInstalacion->validar()){
+                        		if(!$calendarioInstalacion->guardar()){
+                        			$this -> dibujaVista("modificaCalendario", array("modelo" => $calendario, "calendarioInstalacion"=>$calendarioInstalacion), "Modificar calendario");
+                            		exit ;
+                        		}
+								else{
+									Sistema::app()->irAPagina(array("calendarios", "indexCalendario"));
+                        			exit ;	
+								}	
+                        	}
+							else{
+								$this -> dibujaVista("modificaCalendario", array("modelo" => $calendario, "calendarioInstalacion"=>$calendarioInstalacion), "Modificar calendario");
+                            	exit ;	
+							}		
+                        }
+						//si no la hay borra por si se ha querido eliminar
+						$calendarioInstalacion->borrarCalendarioInstalacion(intval($_GET["cod_calendario"]));
+                        Sistema::app()->irAPagina(array("calendarios", "indexCalendario"));
+                        exit ;
+                    } 
+                    else {
+                        $this -> dibujaVista("modificaCalendario", array("modelo" => $calendario, "calendarioInstalacion"=>$calendarioInstalacion), "Modificar calendario");
+                        exit ;
+                    }       
+                }               
+                $this->dibujaVista("modificaCalendario", array("modelo" => $calendario, "calendarioInstalacion"=>$calendarioInstalacion), "Modificar Calendario");
+                exit;
+            }   
+            Sistema::app()->paginaError(400, "El calendario no se encuentra");
                 
-                $calendario = new Calendarios();
-                $calInstalacion = new CalendariosInstalaciones();
-                
-                if ($calendario->buscarPorId($_GET["cod_calendario"])){
-                    
-                    $nombre = $calendario->getNombre();
-                    
-                    if (isset($_POST[$nombre])){
-                        
-                        $calendario->setValores($nombre);
-                        
-                        $calInstalacion->borrarCaeldarioInstalacion($_GET["cod_calendario"]);
-                        $valores["cod_calendario"]=$_GET["cod_calendario"];
-                        $valoes["cod_instalacion"]=$_POST["instalacion"];
-                        
-                        $calInstalacion->setValores($valores);
-                        if ($calInstalacion->validar()){
-                            if (!$calInstalacion->guardar()){
-                                Sistema::app()->paginaError(404,"Se ha producido un error al guardar");
-                                exit;
-                            }   
-                        }
-                        
-                        
-                        if ($calendario->validar()){
-                            
-                            if (!$calendario->guardar()){
-                              Sistema::app()->paginaError(404,"Se ha producido un error al guardar");
-                              exit;
-                            }
-                            
-                            Sistema::app()->irAPagina(array("calendarios"));
-                            exit;
-                            
-                        }
-                        
-                        else {
-                            $this->dibujaVista("modificaCalendario", array("modelo"=>$calendario),"Modificaci&oacute; de calendario");
-                            exit;
-                        }
-                    }
-                    
-                }
-                $this->dibujaVista("modificaCalendario", array("modelo"=>$calendario),"Modificaci&oacute; de calendario");
-                            
-            }
+            }        
         }
 
     public function accionBorraCalendario(){
@@ -217,5 +220,5 @@
 		}	
 	}
     
-    
+ 
 }
