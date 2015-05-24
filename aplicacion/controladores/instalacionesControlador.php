@@ -237,4 +237,68 @@ class instalacionesControlador extends CControlador {
 			} 
 			
 		}
+
+		
+		public function accionListaInstalaciones(){
+			
+			$instalaciones = new Instalaciones();
+			
+			$opciones=array();
+			$cadena="t.disponible = 1";
+			$filtrado = array();
+			$opciones["select"] = "t.*";
+			$opciones["from"] = "";
+			$opciones["where"] = "t.cod_instalacion != 0";
+			$opciones["order"] = "t.nombre";
+			
+			if (isset($_REQUEST["nombre"]) && $_REQUEST["nombre"] !=="")
+				$cadena.= "and t.nombre='".CGeneral::addSlashes($_REQUEST["nombre"])."'";
+			
+			$opciones["where"]=$cadena;
+			
+			$regPag=5;
+            $pag=1;
+            
+            if (isset($_REQUEST["reg_pag"]))
+               $regPag=intval($_REQUEST["reg_pag"]);
+            
+            if (isset($_REQUEST["pag"]))
+               $pag=intval($_REQUEST["pag"]);
+  
+            //compruebo cuantos registros hay
+            $filas=$instalaciones->buscarTodos($opciones);          
+            
+            $regTotal=count($filas);
+            
+            $nPaginas=intval($regTotal/$regPag);
+            if ($regTotal%$regPag>0)
+                $nPaginas++;
+            
+            //compruebo que la pagina sea correcta
+            if ($pag<1 || $pag>$nPaginas)
+               $pag=1;
+            
+            $primero=($pag-1)*$regPag;
+            $opciones["limit"]="$primero,$regPag";
+                 
+            $filas=$instalaciones->buscarTodos($opciones);                               
+            //opciones del paginador
+            $opcPaginador= array("URL" => Sistema::app()->generaURL(array("instalaciones", "listaInstalaciones"), $filtrado),
+                                "TOTAL_REGISTROS" => $regTotal,
+                                "PAGINA_ACTUAL" => $pag,
+                                "REGISTROS_PAGINA" => $regPag,
+                                "TAMANIOS_PAGINA"=>array(
+                                                  5=>"5",
+                                                 10=>"10",
+                                                 20=>"20",
+                                                 30=>"30",
+                                                 40=>"40",
+                                                 50=>"50"),
+                                "MOSTRAR_TAMANIOS"=>true,
+                                "PAGINAS_MOSTRADAS"=>7,
+                            );
+            $this->dibujaVista("listaInstalaciones", array("filas"=>$filas, "paginador"=>$opcPaginador), "Lista de Intalaciones");
+			
+		}
+
 	}
