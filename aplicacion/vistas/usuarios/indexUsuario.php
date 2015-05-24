@@ -46,6 +46,9 @@
 							echo CHTML::dibujaEtiqueta("a", array("href"=>"#", "class"=>"btnBorrar"));
                                 echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico_borrar.png"));
                             echo CHTML::dibujaEtiquetaCierre("a");
+							echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("compras","listaCompras"), array("cod_usuario"=>$fila["cod_usuario"]))));
+								echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico_compra.jpg"));
+							echo CHTML::dibujaEtiquetaCierre("a");
                         echo CHTML::dibujaEtiquetaCierre("td");
                     echo CHTML::dibujaEtiquetaCierre("tr");
                 }            
