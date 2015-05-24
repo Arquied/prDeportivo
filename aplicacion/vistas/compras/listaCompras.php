@@ -46,10 +46,10 @@
                         echo CHTML::dibujaEtiqueta("td", array(), CGeneral::fechaMysqlANormal($fila["fecha_fin"]), true);
 						echo CHTML::dibujaEtiqueta("td", array(), $fila["importe"], true);
 						if($fila["anulado"]){
-							echo CHTML::dibujaEtiqueta("td", array(), "ACTIVO", true);
+							echo CHTML::dibujaEtiqueta("td", array(), "ANULADO", true);
 						}
 						else{
-							echo CHTML::dibujaEtiqueta("td", array(), "ANULADO", true);
+							echo CHTML::dibujaEtiqueta("td", array(), "ACTIVO", true);
 						}
                         echo CHTML::dibujaEtiqueta("td");
                             echo CHTML::dibujaEtiqueta("a", array("href"=>"#", "class"=>"btnPagar"));
