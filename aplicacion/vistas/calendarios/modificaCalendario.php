@@ -1,10 +1,8 @@
 <?php
-
 	echo CHTML::cssFichero("../../estilos/jquery.datetimepicker.css");
 	echo CHTML::scriptFichero("../../script/jquery.js");
 	echo CHTML::scriptFichero("../../script/jquery.datetimepicker.js");
 	echo CHTML::scriptFichero("../../script/scriptFecha.js");
-
     //obtener temporadas
     $listaDia=array();
 	$listaInstalacion=array();
@@ -19,7 +17,6 @@
                 echo CHTML::dibujaEtiqueta("div", array("class"=>"contTitFormulario"));
                     echo CHTML::dibujaEtiqueta("h2", array(), "Modifica calendario", true);                
                 echo CHTML::dibujaEtiquetaCierre("div");
-
                 //FORMULARIO DE NUEVO CALENDARIO
                 echo CHTML::iniciarForm("", "post", array("role"=>"form", "enctype"=>"multipart/form-data"));
                 
@@ -81,18 +78,19 @@
                             echo CHTML::modeloText($modelo, "fecha_fin", array("class"=>"form-control", "id"=>"fecha_fin", "maxlength"=>10, "size"=>10, "placeholder"=>"dd/mm/yyyy"));                        
                         echo CHTML::dibujaEtiquetaCierre("div");  
                     
-                    echo CHTML::dibujaEtiqueta("div");
-					
-					// Campo instalacion
-					echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-						$array = array("aire libre");
-						echo CHTML::campoListaDropDown("instalacion", $modelo->cod_instalacion, Instalaciones::listaInstalacion(), array("class"=>"form-control"));
+                    echo CHTML::dibujaEtiqueta("div");					
+						// Campo instalacion					
+						echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
+							$array = array("aire libre");
+							echo CHTML::campoLabel("Instalación", "instalacion");
+							echo CHTML::campoListaDropDown("instalacion", $calendarioInstalacion->cod_instalacion, Instalaciones::listaInstalacion(), array("class"=>"form-control"));
+						echo CHTML::dibujaEtiquetaCierre("div");
+					echo CHTML::dibujaEtiquetaCierre("div");
 					
                         //Boton insertar
                         echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-                            echo CHTML::campoBotonSubmit("Modicia calendario", array("class"=>"btn btn-default"));                 
+                            echo CHTML::campoBotonSubmit("Modifica calendario", array("class"=>"btn btn-default"));                 
                         echo CHTML::dibujaEtiquetaCierre("div");
-                    echo CHTML::dibujaEtiquetaCierre("div");
                     
                 echo CHTML::finalizarForm();
                 
