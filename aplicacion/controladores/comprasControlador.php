@@ -148,8 +148,9 @@
             	  exit ;
             } 
 			else {
+				
 				$reservas = new Reservas();
-				$filas = $reservas -> buscarTodos(array("select c.*","from"=>"inner join compras as c on c.cod_reserva=t.cod_reserva"));									
+				$filas = $reservas -> buscarTodos(array("select c.*","from"=>"inner join compras as c on c.cod_reserva=t.cod_reserva", "where"=>"t.cod_usuario=$_GET[cod_usuario]"));									
 				$this->dibujaVista("listaCompras",array("filas"=>$filas), "Lista de Compras");
 				
 			}
@@ -212,7 +213,7 @@
 				$compra = new Compras();
 				$reserva = new Reservas();
 				if ($compra->buscarPorId($_REQUEST["id"])){
-					$compra -> anulado=0;
+					$compra -> anulado=1;
 					$reserva -> buscarPorId($compra -> cod_reserva);
 					if ($compra->validar()) {
 						if(!$compra->guardar()){
