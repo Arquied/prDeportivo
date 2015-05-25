@@ -73,4 +73,28 @@
 	margin-left: 300px;
 }
 
+/* ESTILO RESERVAS DEL USUARIO */
+.contTitulo{
+	margin: 20px 0;
+}
+.contTitulo h1{
+	color: rgb(166, 3, 25);
+}
+
+#tReservas th{
+	background: rgb(166, 3, 25);
+	color: white;	
+}
+
+#tReservas th a{
+	color: white;
+}
+
+#tReservas tbody a{
+	margin: 0 10px;
+}
+
+#tReservas th, #tReservas td{
+	text-align: center;
+}
 
