@@ -18,6 +18,19 @@
 
         //FORMULARIO DE NUEVA RESERVA
         echo CHTML::dibujaEtiqueta("div", array("id"=>"contNuevaReserva"));
+            echo CHTML::dibujaEtiqueta("div", array("id"=>"camposForm"));
+                echo CHTML::dibujaEtiqueta("div");
+                    //Campo actividades                 
+                    echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
+                        if(isset($errores["cod_actividad"])){
+                            echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["cod_actividad"], true);
+                        }
+                        echo CHTML::modeloLabel($modelo, "cod_actividad");
+                        echo CHTML::modeloListaDropDown($modelo, "cod_actividad", Actividades::listaActividades(), array("class"=>"form-control"));
+                    echo CHTML::dibujaEtiquetaCierre("div");    
+                echo CHTML::dibujaEtiquetaCierre("div");               
+            echo CHTML::dibujaEtiquetaCierre("div");
+        
 			//Informacion de la actividad				
 			echo CHTML::dibujaEtiqueta("div", array("id"=>"contInformacionAct"));
 				echo CHTML::dibujaEtiqueta("div", array("class"=>"row featurette"));
@@ -36,39 +49,18 @@
 			  	
 				//Horario semanal
 				echo CHTML::dibujaEtiqueta("div", array("id"=>"contHorario"), "", true);			
-			echo CHTML::dibujaEtiquetaCierre("div");
-			
-	       	echo CHTML::dibujaEtiqueta("div", array("id"=>"camposForm"));
-	            echo CHTML::dibujaEtiqueta("div");
-	                //Campo actividades                 
-	                echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-	                    if(isset($errores["cod_actividad"])){
-	                        echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["cod_actividad"], true);
-	                    }
-	                    echo CHTML::modeloLabel($modelo, "cod_actividad");
-	                    echo CHTML::modeloListaDropDown($modelo, "cod_actividad", Actividades::listaActividades(), array("class"=>"form-control"));
-	                echo CHTML::dibujaEtiquetaCierre("div");	
-				echo CHTML::dibujaEtiquetaCierre("div");
-				echo CHTML::dibujaEtiqueta("div");
-					//Tipo de reserva: si es para un periodo o solo una fecha en concreto
-					echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-						echo CHTML::campoLabel("Reservar para: ", "tipo_reserva");
-						echo CHTML::campoListaRadioButton("tipo_reserva", "periodo", array("periodo"=>"Período", "dia"=>"Fecha concreta"), "");
-					echo CHTML::dibujaEtiquetaCierre("div");
-				echo CHTML::dibujaEtiquetaCierre("div");
-			echo CHTML::dibujaEtiquetaCierre("div");
-
-                //Boton insertar
+			echo CHTML::dibujaEtiquetaCierre("div");   
+        echo CHTML::dibujaEtiquetaCierre("div");
+        
+		//Boton insertar
            	echo CHTML::dibujaEtiqueta("div");
-                echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group pull-right"));
+                echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group pull-right", "id"=>"contBtn"));
                 	if($modelo->cod_actividad==0){
                 		echo CHTML::boton("Siguiente", array("class"=>"btn btn-default", "id"=>"reserva2paso", "disabled"=>"disabled"));	
                 	}
 					else{
 						echo CHTML::boton("Siguiente", array("class"=>"btn btn-default", "id"=>"reserva2paso"));	
-					}
-                                    
+					}                                    
                 echo CHTML::dibujaEtiquetaCierre("div");
         	echo CHTML::dibujaEtiquetaCierre("div");
-        echo CHTML::dibujaEtiquetaCierre("div");
     echo CHTML::dibujaEtiquetaCierre("div");
