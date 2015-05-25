@@ -12,19 +12,65 @@
 }
 
 #camposForm{
-	margin-top: 50px;
+	margin-top: 20px;
 }
 
 /* ESTILO HORARIO DE LA ACTIVIDAD */
-table{
+#contHorario{
+	margin-top: 20px;
+}
+#tHorarioAct{
 	width: 100%;
 }
-table th{
+#tHorarioAct th{
 	background: rgb(140, 3, 21);	
 	color: white;
 	padding: 10px;
 }
 
-th, td{
+#tHorarioAct th, #tHorarioAct td{
 	text-align:center;
+}
+
+#tHorarioAct p{
+	padding: 10px 5px;	
+}
+
+#tHorarioAct.tSeleccionable p:hover{
+	cursor: pointer;
+	background: rgb(163, 4, 23);
+	border-radius: 5px;
+	color: white;	
+}
+
+#tHorarioAct.tSeleccionable p.reserva{
+	background: rgb(163, 4, 23);
+	color: white;	
+	border-radius: 5px;	
+}
+
+/* ESTILO MENSAJE ERROR*/
+span.error{
+	display: block;
+	color: rgb(163, 4, 23);
+}
+
+/* ESTILO INFORMACIÓN DE LA RESERVA */
+#inforReservaTotal{
+	width: 100%;
+}
+
+#inforReservaTotal th{
+	background: rgb(140, 3, 21);	
+	color: white;
+	padding: 10px;	
+}
+
+#inforReservaTotal th, #inforReservaTotal td{
+	text-align: center;
+	padding: 10px 0;	
+}
+
+.well h1{
+	color: rgb(163, 4, 23);
 }
