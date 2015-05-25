@@ -42,6 +42,7 @@
                     echo CHTML::dibujaEtiqueta("div", array("class"=>"text-center"));
                         echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("usuarios", "modificar"), array("cod_usuario"=>$modelo->cod_usuario)), "class"=>"btn btn-default btn-block"), "Modificar mi perfil", true);
                         echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("usuarios", "cambiarContrasena"), array("cod_usuario"=>$modelo->cod_usuario)), "class"=>"btn btn-default btn-block"), "Cambiar contraseña", true);
+                        echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("reservas", "listaReservas"), array("cod_usuario"=>$modelo->cod_usuario)), "class"=>"btn btn-default btn-block"), "Reservas realizadas", true);
                         echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("inicial", "cerrarSesion")), "class"=>"btn btn-default btn-block"), "Cerrar sesión", true);
                     echo CHTML::dibujaEtiquetaCierre("div");
             
@@ -102,7 +103,7 @@
 										}
 										echo CHTML::dibujaEtiqueta("td", array(), $compra["importe_pagado"], true);
 				                        echo CHTML::dibujaEtiqueta("td");
-				                            echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("compras", "facturaPDF"), array("cod_compra"=>$compra["cod_compra"]))));
+				                            echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("compras", "facturaPDF"), array("cod_compra"=>$compra["cod_compra"])), "title"=>"Imprimir factura"));
 				                                echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico_pdf.png"));
 				                            echo CHTML::dibujaEtiquetaCierre("a");				                            
 				                        echo CHTML::dibujaEtiquetaCierre("td");
