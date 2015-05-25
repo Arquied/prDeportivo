@@ -1,4 +1,4 @@
-var actividad;
+var actividad; var reservas=new Array(); var tarifa;
 var fecha=new Date();
 $(document).ready(function() {
 	if($_GET("cod_actividad")){
@@ -24,14 +24,16 @@ $(document).ready(function() {
 		//Si seleccionable_horas=1 ---- muestra fecha_inicio y fecha fin ya marcado (informar)
 		//Y muestra el tipo de tarifas a seleccionar
 	$("#reserva2paso").on("click", function(){
-		$("#tituloPaso").html("<em>Paso 2 - Fechas de reserva</em>");
+		$("#tituloPaso").html("<em>Paso 2 - Fechas de reserva y tarifa</em>");
 		$("#camposForm").empty();
+		//Cambiar boton a informacion reserva
+		$("#contBtn").html("<input type='button' class='btn btn-default' id='reserva3paso' value='Siguiente'>");
 		//Si seleccionable_horas=1 --- obtener los p con reserva
-		if(actividad["seleccionable_horas"]==1){
-			var reservas=new Array();			
+		if(actividad["seleccionable_horas"]==1){						
 			$("p.reserva").each(function(ind, elem){
 				reservas.push({"cod_calendario" : $(elem).data("cod_calendario"),
 								"fecha_inicio" : $(elem).data("fecha"),
+								"fecha_fin" : $(elem).data("fecha"),
 								"horario" : $(elem).html()
 							});
 				$("#camposForm").append($("<div>"+
@@ -76,7 +78,18 @@ $(document).ready(function() {
 										  scrollMonth: false,
 										  scrollTime: false,
 										  minDate: fecha.getDate()+"/"+fecha.getMonth()+1+"/"+fecha.getFullYear()
+										});
+			$("input[name=fecha_fin]").datetimepicker({
+										  format:'d/m/Y',
+										  lang:'es',
+										  timepicker:false,
+										  dayOfWeekStart: 1,
+										  scrollInput: false,
+										  scrollMonth: false,
+										  scrollTime: false,
+										  minDate: fecha.getDate()+"/"+fecha.getMonth()+1+"/"+fecha.getFullYear()
 										});	
+										
 			/*$("input.fecha").on("change", function(){
 				var $this=$(this);
 				if($this.attr("name")=="fecha_inicio"){	
@@ -94,32 +107,21 @@ $(document).ready(function() {
 				}
 			});*/
 			
+			//Evento change para reserva hasta fin de temporada, deshabilita el campo fecha fin
+			$("input[name=finTemporada]").on("change", eventFinTemporada);	
 		}
 		//Cargar tarifa
 		muestraTarifa();
 		//Borrar horario
 		$("#contHorario").remove();
-		//Cambiar boton a informacion reserva
-		$(this).attr({
-					id: "reserva3paso",
-					disabled: true
-				});			
-	});
-	
-	
-	//EVENTO CHANGE PARA LAS ACTIVIDADES, RELLENA EL COMBO CON LAS POSIBLES TARIFAS
-	/*$("#formReserva #reserva_cod_actividad").on("change", function(){
-		var cod_actividad=$(this).val();
-		$.ajax({
-			url: "index.php?co=reservas&ac=devuelveTarifas",
-			data: { cod_actividad: cod_actividad},
-			type: "post",
-			dataType: 'json',
-			success: function(json){
-				cargaComboTarifas(json);
+		
+		//Evento para habilitar el boton 3paso cuando la reserva es normal
+		$("#reserva3paso").on("click", function(){
+			if(comprobarReserva()){
+				informacionReserva();
 			}
-		});
-	});*/
+		});					
+	});	
 });
 
 /** FUNCION PETICION AJAX PARA OBTENER ACTIVIDAD **/
@@ -161,8 +163,8 @@ function obtenerHorario(cod_actividad){
 function muestraActividadSeleccionada(actividad){
 	var $divContInfo=$("#contInformacionAct");
 	$("#camposForm").find($("input[name='fechaHorario']")).parent().remove();
-	$("#contHorario").empty();
-	
+	$("#contHorario").empty();	
+	$("#reserva2paso").attr("disabled", true);
 	if(actividad!=0){
 		//Añadir campo para seleccionar semana		
 		if(actividad[0]["seleccionable_horas"]==1){
@@ -271,8 +273,8 @@ function muestraTarifa(){
 			type: "post",
 			dataType: 'json',
 			success: function(json){
-				console.log(json);
-				var $comboTarifas=$("<select name='cod_tarifa' class='form-control'></select>")
+				//console.log(json);
+				var $comboTarifas=$("<select name='cod_tarifa' id='cod_tarifa' class='form-control'></select>")
 				for(tarifa in json){
 					if(actividad["seleccionable_horas"]==1){ //Si es seleccionable muestra solo las tarifa diaria
 						if(json[tarifa]["diario"]==1){
@@ -283,7 +285,7 @@ function muestraTarifa(){
 					}
 					else{ //Si no es seleccionable muestra todas las tarifas disponibles
 						var $option=$("<option value='"+json[tarifa]["cod_tarifa"]+"'>"+
-										json[tarifa]["precio"]+"-"+json[tarifa]["tipo"]+
+										json[tarifa]["precio"]+"€ -"+json[tarifa]["tipo"]+
 									"</option>");
 					}	
 					$comboTarifas.append($option);
@@ -294,12 +296,132 @@ function muestraTarifa(){
 														.append($("<label for='cod_tarifa'>Tarifas disponibles</label>"))
 														.append($comboTarifas)
 											)
-										);
-				
-				
+										);	
 			}
-		});
-	
-	
+		});	
 }
 
+/** FUNCION PARA EL EVENTO CHANGE DE RESERVA HASTA FIN DE TEMPORADA **/
+	//	DESHABILITA EL CAMPO FECHA FIN Y LO PONE CON VALOR DE FIN DE ACTIVIDAD
+function eventFinTemporada(){
+	if($(this).prop("checked")==true){
+		var fecha_fin=actividad["fecha_fin"].split("-")
+		$("input[name=fecha_fin]").val(fecha_fin[2]+"/"+fecha_fin[1]+"/"+fecha_fin[0]);
+		$("input[name=fecha_fin]").prop("disabled", true);	
+	}
+	else{
+		$("input[name=fecha_fin]").val("");
+		$("input[name=fecha_fin]").prop("disabled", false);
+	}
+}
+
+/** FUNCION COMPRUEBA LOS CAMPOS DE LA RESERVA, SI SON CORRECTOS LOS AÑADE AL ARRAY RESERVAS Y DEVUELVE TRUE, SI NO FALSE **/
+function comprobarReserva(){
+	//Si seleccionable_horas=1, las fechas estan en reserva, lo unico que guardar seria la tarifa
+	if(actividad["seleccionable_horas"]==1){
+		tarifa={
+			"cod_tarifa" : $("#cod_tarifa").val(),
+			"nombre" : $("#cod_tarifa option[value="+$("#cod_tarifa").val()+"]").html()
+		}
+		return true;
+	}	
+	//Si seleccionable_horas=0, comprueba las fechas y la tarifa y lo guarda en reservas
+	else{
+		var respuesta=true;
+		$("span.error").remove();
+		if($("input[name=fecha_inicio]").val()==""){
+			$("<span class='error'>Debe introducir una fecha</span>").insertBefore($("label[for=fecha_inicio]"));
+			respuesta=false;
+		}
+		if($("input[name=fecha_fin]").val()==""){
+			$("<span class='error'>Debe introducir una fecha</span>").insertBefore($("label[for=fecha_fin]"));
+			respuesta=false;
+		}
+		if($("#cod_tarifa").val()==""){
+			$("<span class='error'>Debe introducir una fecha</span>").insertBefore($("label[for=cod_tarifa]"));
+			respuesta=false;
+		}
+		if(respuesta==true){
+			reservas.push(
+				{
+					"fecha_inicio" : $("input[name=fecha_inicio]").val(),
+					"fecha_fin" : $("input[name=fecha_fin]").val()
+				}
+			);
+			tarifa={
+				"cod_tarifa" : $("#cod_tarifa").val(),
+				"nombre" : $("#cod_tarifa option[value="+$("#cod_tarifa").val()+"]").html()
+			}
+		}
+		//console.log(tarifa);
+		return respuesta;
+	}
+}
+
+/** FUNCION QUE MUESTRA LA INFORMACION DE TODAS LA RESERVAS QUE SE VAN A REALIZAR **/
+function informacionReserva(){
+	$("#contNuevaReserva").empty();
+	$("#tituloPaso").html("<em>Paso 3 - Información/confirmación de la reserva</em>");
+	$("#contBtn").html("<input type='button' class='btn btn-default' id='reserva4paso' value='Reservar'>");
+	
+	var $div=$("<div id='infoReserva'></div>");
+	
+	//Cargar la informacion de la actividad
+	var $divActividad=$("<div class='well'>"+
+							"<h1 class='text-center'>"+actividad["nombre"]+"</h1>"+	
+						"</div>"
+						);
+	$div.append($divActividad);
+	
+	$tabla=$("<table id='inforReservaTotal'></table>").append($("<tr></tr>")
+											.append($("<th>Fecha Inicio</th>"))
+											.append($("<th>Fecha Fin</th>"))
+											.append($("<th>Horario</th>"))
+											.append($("<th>Tarifa</th>")));
+	
+	//Cargar la informacion de la reserva
+	for(reserva in reservas){
+		$trReserva=$("<tr></tr>").html("<td>"+
+											reservas[reserva]["fecha_inicio"]+
+										"</td>"+
+										"<td>"+
+											reservas[reserva]["fecha_fin"]+
+										"</td>"							
+									);
+		if(typeof reservas[reserva]["horario"]!="undefined"){
+			$trReserva.append($("<td>"+
+								reservas[reserva]["horario"]+
+							"</td>"));
+		}
+		else $trReserva.append($("<td></td>"));
+		
+		$trReserva.append($("<td>"+tarifa["nombre"]+"</td>"));
+		
+		$tabla.append($trReserva);
+	}
+	$div.append($tabla);
+	$div.append($("<div class='well'></div>")
+						.append($("<h3>La reserva se podrá anular hasta 1 día antes de la fecha de inicio</h3>")));
+	$("#contNuevaReserva").append($div);
+	
+	//Evento sobre el boton reservar realiza peticion ajax e inserta las reservas
+	$("#reserva4paso").on("click", finalizarReserva);
+}
+
+/** FUNCION QUE REALIZA UNA PETICION AJAX PARA INSERTAR LA RESERVA **/
+		//Parametros: obJSON reservas y obActividad;
+function finalizarReserva(){
+	$.ajax({
+		url: "index.php?co=reservas&ac=finalizarReserva",
+		data: { reservas: reservas, actividad: actividad, tarifa:tarifa},
+		type: "post",
+		dataType: 'json',
+		success: function(json){
+			console.log(json);			
+		},
+		error: function (xhr, ajaxOptions, thrownError) {
+        alert(xhr.status);
+        alert(thrownError);
+      }
+	});
+}
