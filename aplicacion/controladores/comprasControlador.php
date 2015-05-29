@@ -66,7 +66,17 @@
                         
                         "<page>".                           
                             "<div>".
-                                "<h2>Factura compra</h2>".
+                                "<table>".
+                                    "<tr>".
+                                        "<td><h2>Factura compra</h2><td>";
+                                    if($configuracion->logo!=""){
+                                        $contenido.="<td><img src='imagenes/".$configuracion->logo."' width='200px' height='100px' /></td>";
+                                    }
+                                    else{
+                                        $contenido="<td></td>";   
+                                    }    
+                                    $contenido="</tr>".
+                                "</table>".
                             "</div>".
                             "<table>".
                                  "<tr>".
@@ -214,97 +224,118 @@
                     $reserva -> buscarPorId($compra -> cod_reserva);
                     if ($compra->validar()) {
                         if(!$compra->guardar()){
-                            $this->dibujaVista("anularCompra", array("modelo"=>$compra),"Anular Compra");
-                            exit;
+                            Sistema::app()->paginaError(400, "Error al borrar anular compra");
+                            exit ;
                         }
                         Sistema::app()->irAPagina(array("compras", "listaCompras"), array("cod_usuario"=>$reserva->cod_usuario));
                         exit;
                     }
                     else {
-                        $this -> dibujaVista("anularCompra", array("modelo"=>$compra),"Anular Compra");
-                        exit;
+                        Sistema::app()->paginaError(400, "Error al anular compra");
+                        exit ;
                     }
                 }
                 Sistema::app()->paginaError(400,"La Compra no se encuentra");
             } 
             
-        }
-
-       /* public function accionActualizarCompras(){            
-            $reserva=new Reservas();  
-            
-            //Obtener todas las reservas cuya fecha de inicio es al dia siguiente de la fecha actual, y no está en compras
-            $mañana=date("Y-m-d")+1;
-            $sentSelect=" t.fecha_inicio, t.fecha_fin, t.tarifa ";
-            $sentWhere=" t.fecha_inicio='".$mañana."' and t.cod_reserva not in(select cod_reserva form reservas)";
-            $listaReservas=$reserva->buscarTodos(array("select"=>$sentSelect, "where"=>$sentWhere));
-         
-            $respuesta=array("result"=>"success");
-            foreach ($listaReservas as $datosReserva) {
-                $compra=new Compras();
-                $compra->setValores(array("cod_reserva"=>$datosReserva["cod_reserva"],
-                                            "fecha_compra"=>date("d/m/y"),
-                                            "fecha_inicio"=>CGeneral::fechaMysqlANormal($datosReserva["fecha_inicio"]),
-                                            "fecha_fin"=>CGeneral::fechaMysqlANormal($datosReserva["fecha_fin"]),
-                                            "importe"=>$datosReserva["tarifa"]));
-                if($compra->validar()){
-                    if(!$compra->guardar()){
-                        $respuesta["result"]="error";    
-                    }    
-                } 
-                else{
-                    $respuesta["result"]="error";        
-                }
-            }    
-        }*/
-
+        }    
+        
         public function accionActualizarCompras(){            
             $reserva=new Reservas();  
+            $hoy=new DateTime();
             
-            //Obtener todas las reservas cuya fecha de inicio es al dia siguiente de la fecha actual, y no está en compras
-            $mañana=date("Y-m-d")+1;
-            $sentSelect=" t.fecha_inicio, t.fecha_fin, t.tarifa ";
-            $sentWhere=" t.fecha_inicio='".$mañana."' and t.cod_reserva not in(select cod_reserva form reservas)";
-            $listaReservas=$reserva->buscarTodos(array("select"=>$sentSelect, "where"=>$sentWhere));
-         
-            $respuesta=array("result"=>"success");
-            foreach ($listaReservas as $datosReserva) {
-                //Buscar tarifa
-                $tarifa=new Tarifas();
-                $datosTarifa=$tarifa->buscarTodos(array("select" =>" t.*, tp.*",
-                                            "from"=>" join tipos_cuotas tp using(cod_tipo_cuota)",
-                                            "where"=>" t.cod_tarifa=".intval($datosReserva["cod_tarifa"])));
-                
-                $diaFechaFin; //Calcular dia para añadir compras
-                if($datosTarifa[0]["semanal"]) $diaFechaFin=7;
-                else if($datosTarifa[0]["quincenal"]) $diaFechaFin=15;
-                else if($datosTarifa[0]["mensual"]) $diaFechaFin=30;
-                else if($datosTarifa[0]["diario"]) $diaFechaFin=1;                            
-                 
-                //Inserta compras mientras la fecha fin sea menos o igual a la fecha fin de la reserva, y se va añadiendo diasFechaFin 
-                // 1, 7, 15, 30                             
-                $fecha_inicio=$datosReserva["fecha_inicio"];
-                $fecha_fin=$datosReserva["fecha_inicio"]+$diasFechaFin;
-                while ($fecha_fin<=$datosReserva["fecha_fin"]) {
+            //Si la fecha actual es primero de mes            
+            $primerDiaMes=new DateTime(); $primerDiaMes->modify('first day of this month');
+            $dia16=new DateTime(); $dia16->modify('first day of this month'); $dia16->add(new DateInterval("P15D"));
+            $diaSemana=date("N");
+            //Busca reservas fecha_fin>hoy y tarifa sea mensual o quincenal o diaria
+            if($hoy->format("d/m/Y")==$primerDiaMes->format("d/m/Y")){                
+                $sentFrom=" join tarifas tar using(cod_tarifa) ".
+                            " join tipos_cuotas tc using(cod_tipo_cuota) ";
+                $sentWhere=" t.anulado=0 and (tc.mensual=1 or tc.quincenal=1 or tc.diario=1) and t.fecha_fin>='".$hoy->format("Y-m-d")."'";
+                $listaReservas=$reserva->buscarTodos(array("from"=>$sentFrom, "where"=>$sentWhere));
+                foreach ($listaReservas as $datosReserva) {
                     $compra=new Compras();
+                    //Calcular fecha fin, sea mensual, quincenal, diario
+                    $fecha_fin=new DateTime(); 
+                    if($datosReserva["quincenal"]){ 
+                        $fecha_fin->add(new DateInterval("P14D"));
+                    }
+                    else if($datosReserva["mensual"]){
+                       $fecha_fin->modify('last day of this month');    
+                    }
                     $compra->setValores(array("cod_reserva"=>$datosReserva["cod_reserva"],
-                                            "fecha_compra"=>date("d/m/y"),
-                                            "fecha_inicio"=>CGeneral::fechaMysqlANormal($fecha_inicio),
-                                            "fecha_fin"=>CGeneral::fechaMysqlANormal($fecha_fin),
-                                            "importe"=>$datosReserva["tarifa"]));
+                                                "fecha_compra"=>$hoy->format("d/m/Y"),
+                                                "fecha_inicio"=>$hoy->format("d/m/Y"),
+                                                "fecha_fin"=>$fecha_fin->format("d/m/Y"),
+                                                "importe"=>$datosReserva["precio"]));
                     if($compra->validar()){
-                        if(!$compra->guardar()){
-                            $respuesta["result"]="error";    
-                        }    
-                    } 
-                    else{
-                        $respuesta["result"]="error";        
-                    }                    
-                    $fecha_inicio=$fecha_fin;
-                    $fecha_fin+=$diaFechaFin;                            
+                        $compra->guardar();
+                    }
                 }    
-            }    
-        }
-        
+            }
+            //Si la fecha actual es dia 16, compras tarifa quincenal o diario, y la f_fin sea mayor a hoy
+            else if($hoy->format("d/m/Y")==$dia16->format("d/m/Y")){
+                $sentFrom=" join tarifas tar using(cod_tarifa) ".
+                            " join tipos_cuotas tc using(cod_tipo_cuota) ";
+                $sentWhere=" t.anulado=0 and (tc.quincenal=1 or tc.diario=1) and t.fecha_fin>='".$hoy->format("Y-m-d")."'";
+                $listaReservas=$reserva->buscarTodos(array("from"=>$sentFrom, "where"=>$sentWhere));  
+                foreach ($listaReservas as $datosReserva) {
+                    $compra=new Compras();
+                    $fecha_fin=new DateTime();
+                    if($datosReserva["quincenal"]){
+                        $fecha_fin->modify('last day of this month');
+                    }
+                    $compra->setValores(array("cod_reserva"=>$datosReserva["cod_reserva"],
+                                                "fecha_compra"=>$hoy->format("d/m/Y"),
+                                                "fecha_inicio"=>$hoy->format("d/m/Y"),
+                                                "fecha_fin"=>$fecha_fin->format("d/m/Y"),
+                                                "importe"=>$datosReserva["precio"]));
+                    if($compra->validar()){
+                        $compra->guardar();
+                    }
+                }  
+            }
+            //Si la fecha actual es lunes, reservas tarifa semanal o diario, y la f_fin sea mayor a hoy
+            else if(date("N")=="1"){
+                $sentFrom=" join tarifas tar using(cod_tarifa) ".
+                            " join tipos_cuotas tc using(cod_tipo_cuota) ";
+                $sentWhere=" t.anulado=0 and (tc.semanal=1 or tc.diario=1) and t.fecha_fin>='".$hoy->format("Y-m-d")."'";
+                $listaReservas=$reserva->buscarTodos(array("from"=>$sentFrom, "where"=>$sentWhere));  
+                foreach ($listaReservas as $datosReserva) {
+                    $compra=new Compras();
+                    $fecha_fin=new DateTime();
+                    if($datosReserva["semanal"]){
+                        $fecha_fin->modify('next sunday');
+                    }
+                    $compra->setValores(array("cod_reserva"=>$datosReserva["cod_reserva"],
+                                                "fecha_compra"=>$hoy->format("d/m/Y"),
+                                                "fecha_inicio"=>$hoy->format("d/m/Y"),
+                                                "fecha_fin"=>$fecha_fin->format("d/m/Y"),
+                                                "importe"=>$datosReserva["precio"]));
+                    if($compra->validar()){
+                        $compra->guardar();
+                    }
+                }   
+            }
+            //Si no es ninguna de las anteriores obtener las reservas en las que la tarifa es diaria
+            else{
+                $sentFrom=" join tarifas tar using(cod_tarifa) ".
+                            " join tipos_cuotas tc using(cod_tipo_cuota) ";
+                $sentWhere=" t.anulado=0 and (tc.diario=1) and t.fecha_fin>='".$hoy->format("Y-m-d")."'";
+                $listaReservas=$reserva->buscarTodos(array("from"=>$sentFrom, "where"=>$sentWhere));  
+                foreach ($listaReservas as $datosReserva) {
+                    $compra=new Compras();                    
+                    $compra->setValores(array("cod_reserva"=>$datosReserva["cod_reserva"],
+                                                "fecha_compra"=>$hoy->format("d/m/Y"),
+                                                "fecha_inicio"=>$hoy->format("d/m/Y"),
+                                                "fecha_fin"=>$hoy->format("d/m/Y"),
+                                                "importe"=>$datosReserva["precio"]));
+                    if($compra->validar()){
+                        $compra->guardar();
+                    }
+                }     
+            }              
+        }   
     }
     
