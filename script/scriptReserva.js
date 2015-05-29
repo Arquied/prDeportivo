@@ -90,20 +90,14 @@ $(document).ready(function() {
 										  minDate: fecha.getDate()+"/"+fecha.getMonth()+1+"/"+fecha.getFullYear()
 										});	
 										
-			/*$("input.fecha").on("change", function(){
+			/*$("input[name=fecha_inicio]").on("change", function(){
 				var $this=$(this);
 				if($this.attr("name")=="fecha_inicio"){	
 					console.log($this.val());
-					$("input[name=fecha_fin]").datetimepicker({
-													  format:'d/m/Y',
-													  lang:'es',
-													  timepicker:false,
-													  dayOfWeekStart: 1,
-													  scrollInput: false,
-													  scrollMonth: false,
-													  scrollTime: false,
-													  minDate: $this.val()
-													});	
+					$("input[name=fecha_fin]").setOptions({minDate: $this.val()});
+					$("input[name=fecha_fin]").val($this.val());	
+					
+			
 				}
 			});*/
 			
@@ -181,6 +175,7 @@ function muestraActividadSeleccionada(actividad){
 												  scrollInput: false,
 												  scrollMonth: false,
 											      scrollTime: false,
+												  minDate: fecha.getDate()+"/"+fecha.getMonth()+1+"/"+fecha.getFullYear()
 												});
 			//Evento change sobre el campo fecha horario, realiza la peticion ajax devolviendo el horario de la semana señalada
 			$("input[name='fechaHorario']").on("change", function(){
@@ -231,11 +226,15 @@ function muestraHorarioActividad(calendario){
 			var $td=$("<td></td>");	
 			for(dia in calendario){	
 				if(cont==calendario[dia]["cod_dia"]){
-					var $p=$("<p>"+calendario[dia]["hora_inicio"]+"-"+calendario[dia]["hora_fin"]+"</p>");
+					var fActual=new Date();
+					if(fActual<=fLunes){
+						var $p=$("<p class='fecha_disponible'>"+calendario[dia]["hora_inicio"]+"-"+calendario[dia]["hora_fin"]+"</p>");
+					}
+					else
+						var $p=$("<p>"+calendario[dia]["hora_inicio"]+"-"+calendario[dia]["hora_fin"]+"</p>");
 					//Guardar el cod_calendario y la fecha a la que corresponde ese dia
 					$p.data("cod_calendario", calendario[dia]["cod_calendario"]);
 					$p.data("fecha", fLunes.getDate()+"/"+(fLunes.getMonth()+1)+"/"+fLunes.getFullYear());
-					//console.log($p.data("fecha"));
 					$td.append($p);
 				}		
 			}
@@ -247,7 +246,7 @@ function muestraHorarioActividad(calendario){
 		//EVENTO PARA SELECCIONAR LOS DIAS Y HORAS SI LA ACTIVIDAD ES SELECCIONABLE_HORAS=1
 		if(actividad["seleccionable_horas"]==1){
 			$tabla.addClass('tSeleccionable');
-			$("table#tHorarioAct p").on("click", function(){
+			$("table#tHorarioAct p.fecha_disponible").on("click", function(){
 				$(this).toggleClass("reserva");
 				
 				//Comprobar si existe horario marcado para poder habilitar el boton
@@ -412,16 +411,17 @@ function informacionReserva(){
 		//Parametros: obJSON reservas y obActividad;
 function finalizarReserva(){
 	$.ajax({
-		url: "index.php?co=reservas&ac=finalizarReserva",
+		url: "index.php?co=reservas&ac=finalizarReserva",		
 		data: { reservas: reservas, actividad: actividad, tarifa:tarifa},
 		type: "post",
 		dataType: 'json',
 		success: function(json){
-			console.log(json);			
-		},
-		error: function (xhr, ajaxOptions, thrownError) {
-        alert(xhr.status);
-        alert(thrownError);
-      }
+			if(json["result"]=="success"){
+				window.location="index.php?co=usuarios&ac=miPerfil";
+			}
+			else{
+				$("#modalError").modal("show");
+			}
+		}
 	});
 }
