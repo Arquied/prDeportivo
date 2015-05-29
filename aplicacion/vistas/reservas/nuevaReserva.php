@@ -64,3 +64,19 @@
                 echo CHTML::dibujaEtiquetaCierre("div");
         	echo CHTML::dibujaEtiquetaCierre("div");
     echo CHTML::dibujaEtiquetaCierre("div");
+    
+    
+    
+    //VENTANA MODAL MENSAJE ERROR
+    echo CHTML::dibujaEtiqueta("div", array("id"=>"modalError", "class"=>"modal fade", "tabindex"=>"-1", "role"=>"dialog"));
+        echo CHTML::dibujaEtiqueta("div", array("class"=>"modal-header"));
+            echo CHTML::boton("x", array("class"=>"close btn", "data-dismiss"=>"modal"));
+            echo CHTML::dibujaEtiqueta("h2", array(), "Error en el proceso de reserva", true);
+        echo CHTML::dibujaEtiquetaCierre("div");
+        echo CHTML::dibujaEtiqueta("div", array("class"=>"modal-body"));
+            echo CHTML::dibujaEtiqueta("p", array(), "Ocurrió un error en el proceso de reserva, recargue la pagina", true);
+        echo CHTML::dibujaEtiquetaCierre("div");
+        echo CHTML::dibujaEtiqueta("div", array("class"=>"modal-footer"));
+            echo CHTML::boton("Ok", array("class"=>"btn", "data-dismiss"=>"modal"));
+        echo CHTML::dibujaEtiquetaCierre("div");
+    echo CHTML::dibujaEtiquetaCierre("div");
