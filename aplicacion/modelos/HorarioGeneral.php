@@ -18,7 +18,7 @@
         
         protected function fijarAtributos() {
             return array("cod_horario_general", "cod_temporada", "cod_dia",
-                            "hora_inicio", "hora_fin","fecha_inicio","fecha_fin");
+                            "hora_inicio", "hora_fin","fecha_inicio","fecha_fin", "disponible");
         }
         protected function fijarDescripciones() {
             return array("cod_horario_general" => "Codigo horario general:",
@@ -27,7 +27,8 @@
                             "hora_inicio"=>"Hora de inicio:",
                             "hora_fin"=>"Hora de finalización:",
                             "fecha_inicio"=>"Fecha de inicio:",
-                            "fecha_fin"=>"Fecha de fin:");
+                            "fecha_fin"=>"Fecha de fin:", 
+                            "disponible"=>"Disponible: ");
         }
         protected function fijarRestricciones() {
             Return array(array("ATRI"=>"cod_horario_general","TIPO"=>"REQUERIDO"),
@@ -45,20 +46,21 @@
                          array("ATRI"=>"hora_inicio","TIPO"=>"HORA"),
                          array("ATRI"=>"hora_inicio","TIPO"=>"REQUERIDO"),
                          array("ATRI"=>"hora_fin","TIPO"=>"HORA"),
-                         array("ATRI"=>"hora_fin","TIPO"=>"REQUERIDO"));
+                         array("ATRI"=>"hora_fin","TIPO"=>"REQUERIDO"),
+                         array("ATRI"=>"disponible", "TIPO"=>"ENTERO", "MIN"=>0, "MAX"=>1));
                                 
         }
         protected function afterCreate() {
             $this -> cod_horario_general = 1;
             $this -> cod_temporada = 0;
             $this -> cod_dia = 0;
- 
+            $this -> disponible=1;
+            
             $fech = new DateTime();   
 			         
             $hora = $fech->format("H:i:s");
             $this->hora_inicio = $hora;
             $this->hora_fin = $hora;
-
             $fecha = $fech->format("d/m/Y");
             $this -> fecha_inicio = $fecha;
             $this -> fecha_fin = $fecha;    
@@ -99,12 +101,13 @@
             $fecha_fin=CGeneral::fechaNormalAMysql($this->fecha_fin);
             $hora_inicio=CGeneral::addSlashes($this->hora_inicio);
             $hora_fin=CGeneral::addSlashes($this->hora_fin);
+            $disponible=intval($this->disponible);
             
             return "insert into horarios_generales (".
-                    " cod_temporada, cod_dia, hora_inicio, hora_fin, fecha_inicio, fecha_fin ".
+                    " cod_temporada, cod_dia, hora_inicio, hora_fin, fecha_inicio, fecha_fin, disponible ".
                     " ) values ( ".
                     " $cod_temporada, $cod_dia, '$hora_inicio', ".
-                    " '$hora_fin', '$fecha_inicio', '$fecha_fin' ".
+                    " '$hora_fin', '$fecha_inicio', '$fecha_fin', $disponible ".
                     " ) " ;
         }
         
@@ -115,6 +118,7 @@
             $fecha_fin=CGeneral::fechaNormalAMysql($this->fecha_fin);
             $hora_inicio=CGeneral::addSlashes($this->hora_inicio);
             $hora_fin=CGeneral::addSlashes($this->hora_fin);
+            $disponible=intval($this->disponible);
             
             return "update horarios_generales set ".
                     " cod_temporada=$cod_temporada, ".
@@ -123,6 +127,7 @@
                     " hora_fin='$hora_fin', ".
                     " fecha_inicio='$fecha_inicio', ".
                     " fecha_fin='$fecha_fin' ".
+                    " disponible=$disponible ".
                     " where cod_horario_general={$this->cod_horario_general} ";
         }
         
