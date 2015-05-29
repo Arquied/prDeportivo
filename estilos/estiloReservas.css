@@ -36,7 +36,7 @@
 	padding: 10px 5px;	
 }
 
-#tHorarioAct.tSeleccionable p:hover{
+#tHorarioAct.tSeleccionable p.fecha_disponible:hover{
 	cursor: pointer;
 	background: rgb(163, 4, 23);
 	border-radius: 5px;
