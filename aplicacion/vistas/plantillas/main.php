@@ -26,10 +26,10 @@
                 <div>   
                     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
                       <div>
-                        <div class="navbar-header">
-                          <a class="navbar-brand" href="<?php echo Sistema::app()->generaURL(array("inicial")) ?>">Centro Deportivo</a>
+                        <div class="navbar-header">ass="navbar-brand" href="<?php echo Sistema::app()->generaURL(array("inicial")) ?>"><?php echo $configuracion -> nombre_empresa  ?></a>
                         </div>
                         <?php
+						
                         //Comprobar si se ha iniciado el usuario y si tienen permiso de administrar se mostrar el menu de administracion
                         $nologeado = true;
                         $esAdmin=false;
@@ -64,9 +64,9 @@
                         $temporadas = array("TEXTO"=>"Temporadas","URL"=>Sistema::app()->generaURL(array("temporadas")),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
                         $horarios = array("TEXTO"=>"Horarios","URL"=>Sistema::app()->generaURL(array("horarios")),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
                         $actividadesCrud = array("TEXTO"=>"Actividades","URL"=>Sistema::app()->generaURL(array("actividades","listaActividadesCrud")),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
+                        $configuracion = array("TEXTO"=>"Configuración","URL"=>Sistema::app()->generaURL(array("configuracion")),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
                         
-                        
-                        $administrar = array("TEXTO"=>"Administrar","URL"=>"","SUBMENU"=>true,"ACTIVO"=>true,"ITEMS"=>array($actividadesCrud,$calendarios,$horarios,$instalacionesCrud,$temporadas,$usuarios));
+                        $administrar = array("TEXTO"=>"Administrar","URL"=>"","SUBMENU"=>true,"ACTIVO"=>true,"ITEMS"=>array($actividadesCrud,$calendarios,$horarios,$instalacionesCrud,$temporadas,$usuarios,$configuracion));
                         if($logeado && $esAdmin)
                         	$datos = array($quien, $actividades, $instalaciones, $mostrarCalendario, $reservar, $registra, $login, $perfil, $logout, $administrar);
 						else
