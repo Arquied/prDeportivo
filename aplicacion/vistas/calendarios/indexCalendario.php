@@ -36,23 +36,24 @@
             //DIBUJAR CUERPO DE LA TABLA
             echo CHTML::dibujaEtiqueta("tbody");
 			
-                foreach ($filas as $fila) {
-                    echo CHTML::dibujaEtiqueta("tr");
-                        echo CHTML::dibujaEtiqueta("td", array(), $fila["cod_calendario"], true);
-                        echo CHTML::dibujaEtiqueta("td", array(), $fila["actividad"], true);
-						echo CHTML::dibujaEtiqueta("td", array(), $fila["dia"], true);
-						echo CHTML::dibujaEtiqueta("td", array(), $fila["hora_inicio"], true);
-						echo CHTML::dibujaEtiqueta("td", array(), $fila["hora_fin"], true);
-                        echo CHTML::dibujaEtiqueta("td", array(), CGeneral::fechaMysqlANormal($fila["fecha_inicio"]), true);
-                        echo CHTML::dibujaEtiqueta("td", array(), CGeneral::fechaMysqlANormal($fila["fecha_fin"]), true);
-						if($fila["disponible"]){
+                for ($cont=0;$cont<count($filas);$cont++) {
+             		echo CHTML::dibujaEtiqueta("tr");
+                	    echo CHTML::dibujaEtiqueta("td", array(), $filas[$cont]["cod_calendario"], true);
+                   	    echo CHTML::dibujaEtiqueta("td", array(), $filas[$cont]["actividad"], true);
+					    echo CHTML::dibujaEtiqueta("td", array(), $filas[$cont]["dia"], true);
+				 	    echo CHTML::dibujaEtiqueta("td", array(), $filas[$cont]["hora_inicio"], true);
+				        echo CHTML::dibujaEtiqueta("td", array(), $filas[$cont]["hora_fin"], true);
+                        echo CHTML::dibujaEtiqueta("td", array(), CGeneral::fechaMysqlANormal($filas[$cont]["fecha_inicio"]), true);
+                        echo CHTML::dibujaEtiqueta("td", array(), CGeneral::fechaMysqlANormal($filas[$cont]["fecha_fin"]), true);
+                        echo CHTML::dibujaEtiqueta("td", array(), Instalaciones::listaInstalacion($filas[$cont]["cod_calendario"]),true);
+						if($filas[$cont]["disponible"]){
 							echo CHTML::dibujaEtiqueta("td", array(), "Disponible", true);
 						}
 						else{
 							echo CHTML::dibujaEtiqueta("td", array(), "No disponible", true);
 						}
                         echo CHTML::dibujaEtiqueta("td");
-                            echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("calendarios", "modificaCalendario"), array("cod_calendario"=>$fila["cod_calendario"]))));
+                            echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("calendarios", "modificaCalendario"), array("cod_calendario"=>$filas[$cont]["cod_calendario"]))));
                                 echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico_edit.png"));
                             echo CHTML::dibujaEtiquetaCierre("a");
                             echo CHTML::dibujaEtiqueta("a", array("href"=>"#", "class"=>"btnBorrar"));
