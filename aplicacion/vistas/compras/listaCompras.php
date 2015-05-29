@@ -52,7 +52,10 @@
 							echo CHTML::dibujaEtiqueta("td", array(), "ACTIVO", true);
 						}
                         echo CHTML::dibujaEtiqueta("td");
-                            echo CHTML::dibujaEtiqueta("a", array("href"=>"#", "class"=>"btnPagar"));
+							if ($fila["pendiente"])
+                          	    echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("pagos"), array("cod_compra"=>$fila["cod_compra"]))));
+							else 
+								echo CHTML::dibujaEtiqueta("a", array("disabled"));
                                 echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico_pagar.png"));
                             echo CHTML::dibujaEtiquetaCierre("a");
                             echo CHTML::dibujaEtiqueta("a", array("href"=>"#", "class"=>"btnAnular"));
@@ -66,21 +69,6 @@
     echo CHTML::dibujaEtiquetaCierre("div");
 
     echo CHTML::script("$('#tActividades').dynatable();");
-   
-   	//VENTANA MODAL PAGAR COMPRA
-	echo CHTML::dibujaEtiqueta("div", array("id"=>"modalPagar", "class"=>"modal fade", "tabindex"=>"-1", "role"=>"dialog"));
-		echo CHTML::dibujaEtiqueta("div", array("class"=>"modal-header"));
-			echo CHTML::boton("x", array("class"=>"close btn", "data-dismiss"=>"modal"));
-			echo CHTML::dibujaEtiqueta("h2", array(), "Confirmar Pago", true);
-		echo CHTML::dibujaEtiquetaCierre("div");
-		echo CHTML::dibujaEtiqueta("div", array("class"=>"modal-body"));
-			echo CHTML::dibujaEtiqueta("p", array(), "¿Pago realizado?", true);
-		echo CHTML::dibujaEtiquetaCierre("div");
-		echo CHTML::dibujaEtiqueta("div", array("class"=>"modal-footer"));
-			echo CHTML::boton("Pagar", array("id"=>"seguroPago", "class"=>"btn"));
-			echo CHTML::boton("Cancelar", array("class"=>"btn", "data-dismiss"=>"modal"));
-		echo CHTML::dibujaEtiquetaCierre("div");
-	echo CHTML::dibujaEtiquetaCierre("div");	
 	
 	//VENTANA MODAL MENSAJE BORRADO
 	echo CHTML::dibujaEtiqueta("div", array("id"=>"modalAnular", "class"=>"modal fade", "tabindex"=>"-1", "role"=>"dialog"));
