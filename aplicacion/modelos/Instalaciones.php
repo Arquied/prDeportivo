@@ -106,10 +106,27 @@
                 return $lista;
             }
             
-            if($instalaciones->buscarPorId($codigo))
-                return $instalaciones->nombre;
-                
-            return null;
+            else{
+				$opciones["from"]= "join calendarios_instalaciones c using(cod_instalacion)";
+				$opciones["where"]=" c.cod_calendario = '{$codigo}'";
+				foreach ($instalaciones->buscarTodos($opciones) as $valor) {
+					 return $valor["nombre"];
+				}
+            }
         }
+		
+		public static function listaInstalacion2(){
+			
+			$instalaciones = new Instalaciones();
+			
+			$lista = array();
+			foreach($instalaciones->buscarTodos() as $instalacion){
+				if ($instalacion["cod_instalacion"] !=0)
+					$lista[$instalacion["cod_instalacion"]] = $instalaciones["nombre"];				
+			}
+			
+			return $lista;
+			
+		} 
         
     }
