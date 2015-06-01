@@ -26,7 +26,7 @@ echo CHTML::dibujaEtiqueta("div",array("id"=>"myCarousel","class"=>"carousel sli
 				    		echo CHTML::dibujaEtiqueta("h1",array(),$filas[$cont]["nombre"],true);
 				    		echo CHTML::dibujaEtiqueta("p",array(),$filas[$cont]["mini_descripcion"],true);
 				    		echo CHTML::dibujaEtiqueta("p",array());
-				    			echo CHTML::dibujaEtiqueta("a",array("class"=>"btn btn-lg btn-primary","href"=>"","role"=>"button"),"Apuntate",true);
+				    			echo CHTML::dibujaEtiqueta("a",array("class"=>"btn btn-lg btn-primary","href"=>Sistema::app()->generaURL(array('reservas', 'nuevaReserva'), array("cod_actividad"=>$filas[$cont]["cod_actividad"])), "role"=>"button"),"Apuntate",true);
 				    		echo CHTML::dibujaEtiquetaCierre("p");
 				    	echo CHTML::dibujaEtiquetaCierre("div");
 				    echo CHTML::dibujaEtiquetaCierre("div"); 
