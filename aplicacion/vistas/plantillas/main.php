@@ -26,7 +26,7 @@
                 <div>   
                     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
                       <div>
-                        <div class="navbar-header"><a class="navbar-brand" href="<?php echo Sistema::app()->generaURL(array("inicial")) ?>"><?php echo $configuracion -> nombre_empresa  ?></a>
+                        <div class="navbar-header"><a class="navbar-brand" href="<?php echo Sistema::app()->generaURL(array("inicial")) ?>"><?php echo ($configuracion->logo!="")? "<img class='logo' src='../../imagenes/configuracion/".$configuracion->logo."'  />" :$configuracion -> nombre_empresa  ?></a>
                         </div>
                         <?php
                         
