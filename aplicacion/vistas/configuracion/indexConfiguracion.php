@@ -1,21 +1,18 @@
 <?php
-
-
     echo CHTML::cssFichero("/estilos/estiloFormularios.css");
-	
-	// OBTENER ERRORES
-	$errores=$modelo->getErrores();
-	
+    
+    // OBTENER ERRORES
+    $errores=$modelo->getErrores();
+    
     echo CHTML::dibujaEtiqueta("div", array("class"=>"container contForm"));
                 echo CHTML::dibujaEtiqueta("div", array("class"=>"contTitFormulario"));
-                    echo CHTML::dibujaEtiqueta("h2", array(), "Modifica configuracion", true);                
+                    echo CHTML::dibujaEtiqueta("h2", array(), "Modifica configuración", true);                
                 echo CHTML::dibujaEtiquetaCierre("div");
-
                // FORMULARIO DE MODIFICA CONFIGURACION
                echo CHTML::iniciarForm("", "post", array("role"=>"form", "enctype"=>"multipart/form-data"));
-			   
-			   	echo CHTML::dibujaEtiqueta("div");
-				
+               
+                echo CHTML::dibujaEtiqueta("div");
+                
                         //Campo nombre        
                         echo CHTML::dibujaEtiqueta("div");          
                         echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
@@ -27,7 +24,7 @@
                                                     "nombre_empresa",                   
                                                     array("class"=>"form-control", "maxlength"=>50, "size"=>"50"));
                         echo CHTML::dibujaEtiquetaCierre("div");
-						
+                        
                         //Campo cif                 
                         echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
                             if(isset($errores["cif"])){
@@ -38,7 +35,7 @@
                                                     "cif",                   
                                                     array("class"=>"form-control", "maxlength"=>9, "size"=>"9"));
                         echo CHTML::dibujaEtiquetaCierre("div");
-						
+                        
                         //Campo direccion              
                         echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
                             if(isset($errores["direccion"])){
@@ -49,8 +46,8 @@
                                                     "direccion",                   
                                                     array("class"=>"form-control", "maxlength"=>50, "size"=>"50"));
                         echo CHTML::dibujaEtiquetaCierre("div");
-						echo CHTML::dibujaEtiquetaCierre("div");
-						
+                        echo CHTML::dibujaEtiquetaCierre("div");
+                        
                         //Campo imagen
                         echo CHTML::dibujaEtiqueta("div");
                             if(isset($errores["imagen"])){
@@ -59,7 +56,7 @@
                             echo CHTML::modeloLabel($modelo, "imagen");
                             echo CHTML::modeloFile($modelo, "imagen", array("class"=>"form-control"));
                     echo CHTML::dibujaEtiquetaCierre("div");
-						
+                        
                         //Campo url_facebook                 
                         echo CHTML::dibujaEtiqueta("div");
                         echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
@@ -71,8 +68,8 @@
                                                     "url_facebook",                   
                                                     array("class"=>"form-control", "maxlength"=>100, "size"=>"100"));
                         echo CHTML::dibujaEtiquetaCierre("div");
-						echo CHTML::dibujaEtiquetaCierre("div");
-				
+                        echo CHTML::dibujaEtiquetaCierre("div");
+                
                         //Campo url_twitter                 
                         echo CHTML::dibujaEtiqueta("div");
                         echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
@@ -85,7 +82,7 @@
                                                     array("class"=>"form-control", "maxlength"=>100, "size"=>"100"));
                         echo CHTML::dibujaEtiquetaCierre("div");
                         echo CHTML::dibujaEtiquetaCierre("div");
-						
+                        
                         //Campo correo
                         echo CHTML::dibujaEtiqueta("div");
                         echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
@@ -97,7 +94,7 @@
                                                     "correo",                   
                                                     array("class"=>"form-control", "maxlength"=>30, "size"=>"30"));
                         echo CHTML::dibujaEtiquetaCierre("div");
-						
+                        
                         //Campo telefono     
                         echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
                             if(isset($errores["telefono"])){
@@ -108,15 +105,27 @@
                                                     "telefono",                   
                                                     array("class"=>"form-control", "maxlength"=>9, "size"=>"9"));
                         echo CHTML::dibujaEtiquetaCierre("div");
-						echo CHTML::dibujaEtiquetaCierre("div");
-						
+                        echo CHTML::dibujaEtiquetaCierre("div");
+                        
+                        //Campo descripcion
+                        echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
+                            if(isset($errores["descripcion"])){
+                                echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["descripcion"], true);
+                            }
+                            echo CHTML::modeloLabel($modelo, "descripcion");
+                            echo CHTML::modeloTextArea($modelo, 
+                                                    "descripcion",                   
+                                                    array("class"=>"form-control", "cols"=>50, "rows"=>5));
+                        echo CHTML::dibujaEtiquetaCierre("div");
+                        echo CHTML::dibujaEtiquetaCierre("div"); 
+                        
                         //Boton insertar
                         echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-                            echo CHTML::campoBotonSubmit("Modicia calendario", array("class"=>"btn btn-default"));                 
+                            echo CHTML::campoBotonSubmit("Modificar configuración", array("class"=>"btn btn-default"));                 
                         echo CHTML::dibujaEtiquetaCierre("div");
                     echo CHTML::dibujaEtiquetaCierre("div");
                     
                 echo CHTML::finalizarForm();
                 
     echo CHTML::dibujaEtiquetaCierre("div");
-						
+                        
