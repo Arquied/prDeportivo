@@ -69,8 +69,9 @@
         }
         
         public function accionQuien(){
-            
-            $this->dibujaVista("quien");
+            $configuracion=new Configuracion();
+            $configuracion->buscarPorId(1);
+            $this->dibujaVista("quien", array("configuracion"=>$configuracion));
             
         }
         
