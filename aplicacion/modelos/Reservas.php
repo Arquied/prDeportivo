@@ -63,7 +63,7 @@
            $this->fecha_fin=date("d/m/Y");
            $this->tarifa=0.0;
            $this->anulado=0;
-           $this->fecha_anulacion=date("d/m/Y");
+           $this->fecha_anulacion=null;
               
         }   
         
@@ -80,9 +80,11 @@
             $fecha=CGeneral::fechaMysqlANormal($fecha);
             $this->fecha_fin=$fecha;
             
-            $fecha=$this->fecha_anulacion;
-            $fecha=CGeneral::fechaMysqlANormal($fecha);
-            $this->fecha_anulacion=$fecha;
+            if($this->fecha_anulacion!=null){
+                $fecha=$this->fecha_anulacion;
+                $fecha=CGeneral::fechaMysqlANormal($fecha);
+                $this->fecha_anulacion=$fecha;    
+            }           
         }   
         
         protected function fijarSentenciaInsert(){
@@ -94,8 +96,15 @@
             $fecha_fin=CGeneral::fechaNormalAMysql($this->fecha_fin);
             $tarifa=floatval($this->tarifa);
             $anulado=intval($this->anulado);
-            $fecha_anulacion=CGeneral::fechaNormalAMysql($this->fecha_anulacion);
-                                
+            if($this->fecha_anulacion==null){
+                return "insert into reservas (".
+                        " cod_usuario, cod_tarifa, cod_actividad, fecha_reserva, fecha_inicio, fecha_fin, tarifa, anulado ".
+                        " ) values ( ".
+                        " $cod_usuario, $cod_tarifa, $cod_actividad, '$fecha_reserva', '$fecha_inicio', '$fecha_fin', $tarifa, $anulado ".
+                        " ) " ;    
+            }
+            
+            $fecha_anulacion=CGeneral::fechaNormalAMysql($this->fecha_anulacion);                                
             return "insert into reservas (".
                         " cod_usuario, cod_tarifa, cod_actividad, fecha_reserva, fecha_inicio, fecha_fin, tarifa, anulado, fecha_anulacion ".
                         " ) values ( ".
@@ -112,8 +121,20 @@
             $fecha_fin=CGeneral::fechaNormalAMysql($this->fecha_fin);
             $tarifa=floatval($this->tarifa);
             $anulado=intval($this->anulado);
-            $fecha_anulacion=CGeneral::fechaNormalAMysql($this->fecha_anulacion);
-                
+            if($this->fecha_anulacion==null){
+                return "update reservas set ".
+                            " cod_usuario=$cod_usuario, ".
+                            " cod_tarifa=$cod_tarifa, ".
+                            " cod_actividad=$cod_actividad, ".
+                            " fecha_reserva='$fecha_reserva', ".
+                            " fecha_inicio='$fecha_inicio',".
+                            " fecha_fin='$fecha_fin', ".
+                            " tarifa=$tarifa, ".
+                            " anulado=$anulado ".
+                            " where cod_reserva={$this->cod_reserva} ";    
+            }
+            
+            $fecha_anulacion=CGeneral::fechaNormalAMysql($this->fecha_anulacion);                
             return "update reservas set ".
                             " cod_usuario=$cod_usuario, ".
                             " cod_tarifa=$cod_tarifa, ".
