@@ -26,8 +26,8 @@
 		static private $_app;
 		
 		
-		static public function autoload($clase)
-		{
+		static public function autoload($clase){
+			
 			if (isset(self::$_clasesBase[$clase])) // existe una entrada en $_clasesBase
 			     include(RUTA_FRAMEWORK."/clases".self::$_clasesBase[$clase]);
 				else 
