@@ -319,7 +319,7 @@
 		public function validar()
 		{
 			$this->_errores=array();
-			
+
 			foreach ($this->_restricciones as $campo=>$restric)
 			{
 				foreach ($restric as $res) 
@@ -448,9 +448,11 @@
 		{
 			foreach ($arrayValores as $campo => $valor) 
 			{
+				
 				if (isset($this->$campo))
 					$this->$campo=$valor;	
 			}
+			
 		}
 		
 		
@@ -612,20 +614,20 @@
 		{
 			if ($this->_tabla=="")
 			     return false;
-				
+			
 			if (!$this->_esNuevo)
 			   {  //se guarda un registro modificado
 			   	  $sentencia=$this->fijarSentenciaUpdate();
-				  
+				  echo $sentencia;
 				  if ($sentencia=="")
 				     return false;
-			   	
 				  if (!$this->ejecutarSentencia($sentencia))
 				        return false;
 				  $campo=$this->_id;
 				  $this->buscarPorId($this->$campo);	
 				  return true;	
 			   }
+			   
 			 else
 			   {
 			   	  $sentencia=$this->fijarSentenciaInsert();
@@ -633,7 +635,9 @@
 				  if ($sentencia=="")
 				     return false;
 			   	  
+				  var_dump($sentencia);
 				  $valor=$this->ejecutarSentencia($sentencia,true);
+				  var_dump($valor);
 				  if (!$valor)
 				      return false;
 				      
@@ -690,6 +694,7 @@
 			$sentFrom=" {$this->_tabla} t";
 			$sentWhere="";
 			$sentOrder="";
+			$sentGroup="";
 			$sentLimit="";
 			
 			if (isset($opciones["select"]) &&
@@ -708,6 +713,10 @@
 			          trim($opciones["order"])!="")
 			    $sentOrder.=" ".$opciones["order"];
 			
+			if (isset($opciones["group"])&&
+					  trim($opciones["group"])!="")
+				$sentGroup.=" ".$opciones["group"];
+			
 			if (isset($opciones["limit"]))
 			    $sentLimit.=" ".$opciones["limit"];
 			
@@ -720,9 +729,11 @@
 			if ($sentOrder!="")
 			    $sentencia.="     order by $sentOrder";
 			    
+			if ($sentGroup!="")	
+				$sentencia.=" group by $sentGroup";
+			
 			if ($sentLimit!="")
 			    $sentencia.="  limit $sentLimit";
-				
 			
 			return $sentencia;
 			
