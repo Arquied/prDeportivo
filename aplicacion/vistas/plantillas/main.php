@@ -13,14 +13,19 @@
             <meta name="author" content="">
                 <title><?php echo $titulo;?></title>
                 <!-- definiciones comunes a todo el sitio -->
+                
+                <script src="script/jquery-1.11.3.min.js"></script>
                 <link type="text/css" href="/estilos/bootstrap.min.css" rel="stylesheet" />
-                <link type="text/css" href="/estilos/carousel.css" rel="stylesheet" />
+                <link type="text/css" href="/estilos/carrousel.css" rel="stylesheet" />
                 <link type="text/css" href="/estilos/principal.css" rel="stylesheet"/>
                 <link type="text/css" href="/estilos/jquery.datetimepicker.css" rel="stylesheet"/>
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
                 <script src="script/bootstrap.min.js"></script>
                 <script src="script/obtenerParametroGET.js"></script>
                 <script src="script/jquery.datetimepicker.js"></script>
+                <!--[if lt IE 9]>
+                    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+                    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+                <![endif]-->
             </head>
             <body>
                 <div>   
@@ -85,7 +90,7 @@
                    
                 <footer>
                     <hr class="featurette-divider"/>
-                    <div>
+                    <div class="container">
                         <a href="<?php echo Sistema::app()->generaURL(array("inicial", "privacidad")); ?>">Política de privacidad</a>
                         <a href="<?php echo $configuracion->url_facebook; ?>" class="pull-right"><img src="../../imagenes/ico_facebook.png"></a>
                         <a href="<?php echo $configuracion->url_twitter; ?>" class="pull-right"><img src="../../imagenes/ico_twitter.png"></a>
