@@ -1,0 +1,87 @@
+#slider1_container{
+	display: none; 
+	position: relative; 
+	margin: 0 auto;
+	top: 0px; 
+	left: 0px; 
+	width: 1300px; 
+	height: 500px; 
+	overflow: hidden;
+}
+
+#contSlides{
+	cursor: move; 
+	position: absolute; 
+	left: 0px; 
+	top: 0px; 
+	width: 1300px; 
+	height: 500px; 
+	overflow: hidden;
+}
+
+/* estilo botones de control */
+.jssorb05{
+	bottom: 16px; 
+	right: 6px;
+}
+
+.jssorb05 {
+    position: absolute;
+}
+.jssorb05 div, .jssorb05 div:hover, .jssorb05 .av {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: url(../imagenes/b05.png) no-repeat;
+    overflow: hidden;
+    cursor: pointer;
+}
+.jssorb05 div { 
+	background-position: -7px -7px; 
+}
+.jssorb05 div:hover, .jssorb05 .av:hover { 
+	background-position: -37px -7px; 
+}
+.jssorb05 .av { 
+	background-position: -67px -7px; 
+}
+.jssorb05 .dn, .jssorb05 .dn:hover { 
+	background-position: -97px -7px; 
+}
+/* estilo anterior y siguiente */
+.jssora11l{
+	top: 123px; 
+	left: 8px;
+}
+.jssora11r{
+	top: 123px; 
+	right: 8px;
+}
+
+.jssora11l, .jssora11r {
+    display: block;
+    position: absolute;
+    width: 37px;
+    height: 37px;
+    cursor: pointer;
+    background: url(../imagenes/a11.png) no-repeat;
+    overflow: hidden;
+}
+.jssora11l { 
+	background-position: -11px -41px; 
+}
+.jssora11r { 
+	background-position: -71px -41px; 
+}
+.jssora11l:hover { 
+	background-position: -131px -41px; 
+}
+.jssora11r:hover { 
+	background-position: -191px -41px; 
+}
+.jssora11l.jssora11ldn { 
+	background-position: -251px -41px; 
+}
+.jssora11r.jssora11rdn { 
+	background-position: -311px -41px; 
+}
