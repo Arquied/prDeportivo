@@ -30,50 +30,48 @@
                             $this -> dibujaVista("nuevaActividad", array("modelo" => $actividad), htmlentities("Nueva Actividad"));
                             exit ;
                         }
-						if($actividad->imagen!=""){
-	                        $actividad -> imagen = "act" . substr("0000000000" . $actividad -> cod_actividad, -10);
-	                        //Cargar imagen
-	                        if (isset($_FILES["actividad"]) && $_FILES["actividad"]["error"]["imagen"] != 4) {
-	                            $imagen = "";
-	                            //segun sea la imagen
-	                            switch ($_FILES["actividad"]["type"]["imagen"]) {
-	                                case 'image/jpeg' :
-	                                    $imagen = imagecreatefromjpeg($_FILES["actividad"]["tmp_name"]["imagen"]);
-	                                    $actividad -> imagen .= ".jpg";
-	                                    if (is_resource($imagen)) {
-	                                        $ruta = "/imagenes/actividades/" . $actividad -> imagen;
-	                                        $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
-	                                        imagejpeg($imagen, $ruta);
-	                                    }
-	                                    break;
-	    
-	                                case 'image/gif' :
-	                                    $imagen = imagecreatefromgif($_FILES["actividad"]["tmp_name"]["imagen"]);
-	                                    $actividad -> imagen .= ".gif";
-	                                    if (is_resource($imagen)) {
-	                                        $ruta = "/imagenes/actividades/" . $actividad -> imagen;
-	                                        $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
-	                                        imagegif($imagen, $ruta);
-	                                    }
-	                                    break;
-	    
-	                                case 'image/png' :
-	                                    $imagen = imagecreatefrompng($_FILES["actividad"]["tmp_name"]["imagen"]);
-	                                    $actividad -> imagen .= ".png";
-	                                    if (is_resource($imagen)) {
-	                                        $ruta = "/imagenes/actividades/" . $actividad -> imagen;
-	                                        $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
-	                                        imagepng($imagen, $ruta);
-	                                    }
-	                                    break;
-	                            }
-	                        }
-	                        if (!$actividad -> guardar()) { //vuelve a guardar la imagen despues de modificar la imagen
-	                            $this -> dibujaVista("nuevaActividad", array("modelo" => $actividad), "Nueva Actividad");
-	                            exit ;
-	                        }   
-	                   	}                     
-                        Sistema::app() -> irAPagina(array("inicial", "index"));
+                        $actividad -> imagen = "act" . substr("0000000000" . $actividad -> cod_actividad, -10);
+                        //Cargar imagen
+                        if (isset($_FILES["actividad"]) && $_FILES["actividad"]["error"]["imagen"] != 4) {
+                            $imagen = "";
+                            //segun sea la imagen
+                            switch ($_FILES["actividad"]["type"]["imagen"]) {
+                                case 'image/jpeg' :
+                                    $imagen = imagecreatefromjpeg($_FILES["actividad"]["tmp_name"]["imagen"]);
+                                    $actividad -> imagen .= ".jpg";
+                                    if (is_resource($imagen)) {
+                                        $ruta = "/imagenes/actividades/" . $actividad -> imagen;
+                                        $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
+                                        imagejpeg($imagen, $ruta);
+                                    }
+                                    break;
+    
+                                case 'image/gif' :
+                                    $imagen = imagecreatefromgif($_FILES["actividad"]["tmp_name"]["imagen"]);
+                                    $actividad -> imagen .= ".gif";
+                                    if (is_resource($imagen)) {
+                                        $ruta = "/imagenes/actividades/" . $actividad -> imagen;
+                                        $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
+                                        imagegif($imagen, $ruta);
+                                    }
+                                    break;
+    
+                                case 'image/png' :
+                                    $imagen = imagecreatefrompng($_FILES["actividad"]["tmp_name"]["imagen"]);
+                                    $actividad -> imagen .= ".png";
+                                    if (is_resource($imagen)) {
+                                        $ruta = "/imagenes/actividades/" . $actividad -> imagen;
+                                        $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
+                                        imagepng($imagen, $ruta);
+                                    }
+                                    break;
+                            }
+                        }
+                        if (!$actividad -> guardar()) { //vuelve a guardar la imagen despues de modificar la imagen
+                            $this -> dibujaVista("nuevaActividad", array("modelo" => $actividad), "Nueva Actividad");
+                            exit ;
+                        } 
+						Sistema::app() -> irAPagina(array("inicial", "index"));
                         exit ;
                     } else {
                         $this -> dibujaVista("nuevaActividad", array("modelo" => $actividad), "Nueva Actividad");
@@ -111,56 +109,54 @@
                         if (!$actividad -> guardar()) {
                             $this -> dibujaVista("modificaActividad", array("modelo" => $actividad), "Modificar actividad");
                             exit ;
+                        }                                             
+                        $actividad -> imagen="act".substr("0000000000".$actividad->cod_actividad, -10);
+                        //Cargar imagen
+                        if (isset($_FILES["actividad"]) && $_FILES["actividad"]["error"]["imagen"]!=4){
+                            $imagen="";
+                            //segun sea la imagen
+                            switch ($_FILES["actividad"]["type"]["imagen"]) {
+                                case 'image/jpeg':
+                                    $imagen=imagecreatefromjpeg($_FILES["actividad"]["tmp_name"]["imagen"]);
+                                    $actividad->imagen.=".jpg";  
+                                    imagealphablending($imagen, true);
+                                    imagesavealpha($imagen, true);
+                                    if (is_resource($imagen)){
+                                        $ruta="/imagenes/actividades/".$actividad->imagen;
+                                        $ruta=$_SERVER["DOCUMENT_ROOT"].$ruta;
+                                        imagejpeg($imagen,$ruta);
+                                    }                                   
+                                    break;
+                                    
+                                case 'image/gif':
+                                    $imagen=imagecreatefromgif($_FILES["actividad"]["tmp_name"]["imagen"]);
+                                    $actividad->imagen.=".gif";  
+                                    imagealphablending($imagen, true);
+                                    imagesavealpha($imagen, true);
+                                    if (is_resource($imagen)){
+                                        $ruta="/imagenes/actividades/".$actividad->imagen;
+                                        $ruta=$_SERVER["DOCUMENT_ROOT"].$ruta;
+                                        imagegif($imagen,$ruta);
+                                    }
+                                    break;
+        
+                                case 'image/png':
+                                    $imagen=imagecreatefrompng($_FILES["actividad"]["tmp_name"]["imagen"]);
+                                    $actividad->imagen.=".png";  
+                                    imagealphablending($imagen, true);
+                                    imagesavealpha($imagen, true);
+                                    if (is_resource($imagen)){
+                                        $ruta="/imagenes/actividades/".$actividad->imagen;
+                                        $ruta=$_SERVER["DOCUMENT_ROOT"].$ruta;
+                                        imagepng($imagen,$ruta);
+                                    }
+                                    break;
+                            }
                         }
-                        if($actividad->imagen!=""){                       
-	                        $actividad -> imagen="act".substr("0000000000".$actividad->cod_actividad, -10);
-	                        //Cargar imagen
-	                        if (isset($_FILES["actividad"]) && $_FILES["actividad"]["error"]["imagen"]!=4){
-	                            $imagen="";
-	                            //segun sea la imagen
-	                            switch ($_FILES["actividad"]["type"]["imagen"]) {
-	                                case 'image/jpeg':
-	                                    $imagen=imagecreatefromjpeg($_FILES["actividad"]["tmp_name"]["imagen"]);
-	                                    $actividad->imagen.=".jpg";  
-	                                    imagealphablending($imagen, true);
-	                                    imagesavealpha($imagen, true);
-	                                    if (is_resource($imagen)){
-	                                        $ruta="/imagenes/actividades/".$actividad->imagen;
-	                                        $ruta=$_SERVER["DOCUMENT_ROOT"].$ruta;
-	                                        imagejpeg($imagen,$ruta);
-	                                    }                                   
-	                                    break;
-	                                    
-	                                case 'image/gif':
-	                                    $imagen=imagecreatefromgif($_FILES["actividad"]["tmp_name"]["imagen"]);
-	                                    $actividad->imagen.=".gif";  
-	                                    imagealphablending($imagen, true);
-	                                    imagesavealpha($imagen, true);
-	                                    if (is_resource($imagen)){
-	                                        $ruta="/imagenes/actividades/".$actividad->imagen;
-	                                        $ruta=$_SERVER["DOCUMENT_ROOT"].$ruta;
-	                                        imagegif($imagen,$ruta);
-	                                    }
-	                                    break;
-	        
-	                                case 'image/png':
-	                                    $imagen=imagecreatefrompng($_FILES["actividad"]["tmp_name"]["imagen"]);
-	                                    $actividad->imagen.=".png";  
-	                                    imagealphablending($imagen, true);
-	                                    imagesavealpha($imagen, true);
-	                                    if (is_resource($imagen)){
-	                                        $ruta="/imagenes/actividades/".$actividad->imagen;
-	                                        $ruta=$_SERVER["DOCUMENT_ROOT"].$ruta;
-	                                        imagepng($imagen,$ruta);
-	                                    }
-	                                    break;
-	                            }
-	                        }
-	                  	    if(!$actividad->guardar()){
-	                            $this -> dibujaVista("modificaActividad", array("modelo" => $actividad), "Modificar actividad");
-	                            exit ;
-	                        }
-	                  	}
+                  	    if(!$actividad->guardar()){
+                            $this -> dibujaVista("modificaActividad", array("modelo" => $actividad), "Modificar actividad");
+                            exit ;
+                        }	                  	
                         Sistema::app()->irAPagina(array("actividades", "listaActividadesCrud"));
                         exit ;
                     } 
@@ -195,14 +191,14 @@
 					$actividad -> disponible=0;				
 					if ($actividad -> validar()) {										
 						if(!$actividad->guardar()){
-							$this -> dibujaVista("borraActividad", array("modelo" => $actividad), "Borrar actividad");
+							Sistema::app()->paginaError(400, "Error al borrar la actividad");
 							exit ;
 						}
 						Sistema::app()->irAPagina(array("actividades", "listaActividadesCrud"));
 						exit ;
 					} 
 					else {
-						$this -> dibujaVista("borraActividad", array("modelo" => $actividad), "Borrar actividad");
+						Sistema::app()->paginaError(400, "Error al borrar la actividad");
 						exit ;
 					}		
 				}
@@ -224,10 +220,10 @@
             } 
             else {
                 $actividades=new Actividades();       
-                $filas=$actividades->buscarTodos(array("select"=>" t.*, tem.nombre as temporada",
-                                                    "from"=>" join temporadas tem using(cod_temporada)" 
+                $filas=$actividades->buscarTodos(array("select"=>" t.*, tem.nombre as temporada ",
+                                                    "from"=>" join temporadas tem using(cod_temporada) "
                                                     )
-												);
+												);												
                 
                 $this->dibujaVista("listaActividadesCrud", array("filas"=>$filas), "Lista de Actividades ");
            }
