@@ -61,21 +61,21 @@
                             .datosFactura h3{
                                 color: rgb(140,3,21);
                                 font-size: 15pt;
-                            }                                               
+                            }                                            
                         </style>".
                         
                         "<page>".                           
                             "<div>".
-                                "<table>".
+                                "<table style='width: 100%'>".
                                     "<tr>".
-                                        "<td><h2>Factura compra</h2><td>";
+                                        "<td style='width: 50%'><h2>Factura compra</h2></td>";
                                     if($configuracion->logo!=""){
-                                        $contenido.="<td><img src='imagenes/".$configuracion->logo."' width='200px' height='100px' /></td>";
+                                        $contenido.="<td style='width: 50%; text-align: right;'><img src='imagenes/configuracion/".$configuracion->logo."' width='200px' height='100px' /></td>";
                                     }
                                     else{
-                                        $contenido="<td></td>";   
+                                        $contenido="<td style='width: 50%'> </td>";   
                                     }    
-                                    $contenido="</tr>".
+                                    $contenido.="</tr>".
                                 "</table>".
                             "</div>".
                             "<table>".
@@ -84,24 +84,19 @@
                                         "<h3>$configuracion->nombre_empresa</h3>".
                                         "<p>".
                                             "<p>CIF: $configuracion->cif</p>".
-                                            "<p>Dirección: C/ El Euro 23</p>".
-                                            "<p>Localidad: Antequera</p>".
-                                            "<p>Provincia: Málaga</p>".             
+                                            "<p>Dirección: $configuracion->direccion</p>".             
                                         "</p>".
                                     "</td>".
                                     "<td class='datosFactura'>".
                                         "<h3>{$factura[0]['nombreUsuario']}</h3>".
                                         "<p>".
-                                            "<p>NIF: {$factura[0]['dni']}</p>".             
-                                            "<p>Dirección: C/ El Euro 23</p>".
-                                            "<p>Localidad: Antequera</p>".
-                                            "<p>Provincia: Málaga</p>".             
+                                            "<p>NIF: {$factura[0]['dni']}</p>".               
                                         "</p>".
                                     "</td>".
                                   "</tr>".
                             "</table>".
-                            "<div>".
-                                "Fecha compra: {$factura[0]['fecha_compra']}".
+                            "<div style='font-size: 15pt;'>".
+                                "Fecha compra:".CGeneral::fechaMysqlANormal($factura[0]['fecha_compra']).
                             "</div>".
                             "<table class='tfactura'>".
                                 "<thead>".
@@ -238,104 +233,6 @@
                 Sistema::app()->paginaError(400,"La Compra no se encuentra");
             } 
             
-        }    
-        
-        public function accionActualizarCompras(){            
-            $reserva=new Reservas();  
-            $hoy=new DateTime();
-            
-            //Si la fecha actual es primero de mes            
-            $primerDiaMes=new DateTime(); $primerDiaMes->modify('first day of this month');
-            $dia16=new DateTime(); $dia16->modify('first day of this month'); $dia16->add(new DateInterval("P15D"));
-            $diaSemana=date("N");
-            //Busca reservas fecha_fin>hoy y tarifa sea mensual o quincenal o diaria
-            if($hoy->format("d/m/Y")==$primerDiaMes->format("d/m/Y")){                
-                $sentFrom=" join tarifas tar using(cod_tarifa) ".
-                            " join tipos_cuotas tc using(cod_tipo_cuota) ";
-                $sentWhere=" t.anulado=0 and (tc.mensual=1 or tc.quincenal=1 or tc.diario=1) and t.fecha_fin>='".$hoy->format("Y-m-d")."'";
-                $listaReservas=$reserva->buscarTodos(array("from"=>$sentFrom, "where"=>$sentWhere));
-                foreach ($listaReservas as $datosReserva) {
-                    $compra=new Compras();
-                    //Calcular fecha fin, sea mensual, quincenal, diario
-                    $fecha_fin=new DateTime(); 
-                    if($datosReserva["quincenal"]){ 
-                        $fecha_fin->add(new DateInterval("P14D"));
-                    }
-                    else if($datosReserva["mensual"]){
-                       $fecha_fin->modify('last day of this month');    
-                    }
-                    $compra->setValores(array("cod_reserva"=>$datosReserva["cod_reserva"],
-                                                "fecha_compra"=>$hoy->format("d/m/Y"),
-                                                "fecha_inicio"=>$hoy->format("d/m/Y"),
-                                                "fecha_fin"=>$fecha_fin->format("d/m/Y"),
-                                                "importe"=>$datosReserva["precio"]));
-                    if($compra->validar()){
-                        $compra->guardar();
-                    }
-                }    
-            }
-            //Si la fecha actual es dia 16, compras tarifa quincenal o diario, y la f_fin sea mayor a hoy
-            else if($hoy->format("d/m/Y")==$dia16->format("d/m/Y")){
-                $sentFrom=" join tarifas tar using(cod_tarifa) ".
-                            " join tipos_cuotas tc using(cod_tipo_cuota) ";
-                $sentWhere=" t.anulado=0 and (tc.quincenal=1 or tc.diario=1) and t.fecha_fin>='".$hoy->format("Y-m-d")."'";
-                $listaReservas=$reserva->buscarTodos(array("from"=>$sentFrom, "where"=>$sentWhere));  
-                foreach ($listaReservas as $datosReserva) {
-                    $compra=new Compras();
-                    $fecha_fin=new DateTime();
-                    if($datosReserva["quincenal"]){
-                        $fecha_fin->modify('last day of this month');
-                    }
-                    $compra->setValores(array("cod_reserva"=>$datosReserva["cod_reserva"],
-                                                "fecha_compra"=>$hoy->format("d/m/Y"),
-                                                "fecha_inicio"=>$hoy->format("d/m/Y"),
-                                                "fecha_fin"=>$fecha_fin->format("d/m/Y"),
-                                                "importe"=>$datosReserva["precio"]));
-                    if($compra->validar()){
-                        $compra->guardar();
-                    }
-                }  
-            }
-            //Si la fecha actual es lunes, reservas tarifa semanal o diario, y la f_fin sea mayor a hoy
-            else if(date("N")=="1"){
-                $sentFrom=" join tarifas tar using(cod_tarifa) ".
-                            " join tipos_cuotas tc using(cod_tipo_cuota) ";
-                $sentWhere=" t.anulado=0 and (tc.semanal=1 or tc.diario=1) and t.fecha_fin>='".$hoy->format("Y-m-d")."'";
-                $listaReservas=$reserva->buscarTodos(array("from"=>$sentFrom, "where"=>$sentWhere));  
-                foreach ($listaReservas as $datosReserva) {
-                    $compra=new Compras();
-                    $fecha_fin=new DateTime();
-                    if($datosReserva["semanal"]){
-                        $fecha_fin->modify('next sunday');
-                    }
-                    $compra->setValores(array("cod_reserva"=>$datosReserva["cod_reserva"],
-                                                "fecha_compra"=>$hoy->format("d/m/Y"),
-                                                "fecha_inicio"=>$hoy->format("d/m/Y"),
-                                                "fecha_fin"=>$fecha_fin->format("d/m/Y"),
-                                                "importe"=>$datosReserva["precio"]));
-                    if($compra->validar()){
-                        $compra->guardar();
-                    }
-                }   
-            }
-            //Si no es ninguna de las anteriores obtener las reservas en las que la tarifa es diaria
-            else{
-                $sentFrom=" join tarifas tar using(cod_tarifa) ".
-                            " join tipos_cuotas tc using(cod_tipo_cuota) ";
-                $sentWhere=" t.anulado=0 and (tc.diario=1) and t.fecha_fin>='".$hoy->format("Y-m-d")."'";
-                $listaReservas=$reserva->buscarTodos(array("from"=>$sentFrom, "where"=>$sentWhere));  
-                foreach ($listaReservas as $datosReserva) {
-                    $compra=new Compras();                    
-                    $compra->setValores(array("cod_reserva"=>$datosReserva["cod_reserva"],
-                                                "fecha_compra"=>$hoy->format("d/m/Y"),
-                                                "fecha_inicio"=>$hoy->format("d/m/Y"),
-                                                "fecha_fin"=>$hoy->format("d/m/Y"),
-                                                "importe"=>$datosReserva["precio"]));
-                    if($compra->validar()){
-                        $compra->guardar();
-                    }
-                }     
-            }              
         }   
     }
     
