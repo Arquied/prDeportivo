@@ -1,3 +1,20 @@
+/* ESTILO FILTRADO */
+.contFiltrado{
+	box-shadow: 0 3px 0px #ccc;
+	border-radius: 1px;
+	background: white;
+	padding: 0 0 0 20px;
+}
+
+.contFiltrado h4{
+	color: rgb(140, 3, 21);
+}
+
+.form-group{
+	margin: 0 10px 10px 0;
+}
+
+/* ESTILO CALENDARIO */
 .list {
 	width: 20%;
 }
