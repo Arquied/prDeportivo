@@ -27,134 +27,133 @@
 		
 		public function accionNuevoCalendario(){
 			
-			if (!Sistema::app() -> acceso() -> hayUsuario()) {
-        	   Sistema::app() -> sesion() -> set("pagPrevia", array("calendarios", "nuevoCalendario"));
-           	   Sistema::app() -> sesion() -> set("parametrosAnt", array());
+		if (!Sistema::app() -> acceso() -> hayUsuario()) {
+               Sistema::app() -> sesion() -> set("pagPrevia", array("calendarios", "nuevoCalendario"));
+               Sistema::app() -> sesion() -> set("parametrosAnt", array());
                Sistema::app() -> irAPagina(array("inicial", "login"));
                exit ;
-        	} 
-        	else if (!Sistema::app() -> acceso() -> puedeConfigurar()) {
+            } 
+            else if (!Sistema::app() -> acceso() -> puedeConfigurar()) {
                Sistema::app() -> paginaError(400, "No tiene permiso para acceder");
                exit ;
             } 
-			else {
-			
-				$calendario = new Calendarios();
-				$calendarioInstalacion = new CalendariosInstalaciones();
-				$nombre = $calendario->getNombre();
-				
-				if (isset($_POST[$nombre])){
-						
-					$calendario->setValores($_POST[$nombre]);
-					$calendario->disponible=1;
-					$calendario->cod_actividad = intval($_POST["actividad"]);
-					$calendario->cod_dia = intval($_POST["dia"]);
-					
-					if ($calendario->validar()){
-					
-						if (!$calendario->guardar()){
-							
-							Sistema::app()->paginaError(404,"Se ha producido un error al guardar el calendario");
-							exit;
-						
-						}
-						
-						if (isset($_POST["instalacion"])) {
-							$valores["cod_calendario"]  = $calendario->__get("cod_calendario");
-							$valores["cod_instalacion"] = $_POST["instalacion"];
-							$calendarioInstalacion -> setValores($valores);
-							$calendarioInstalacion->cod_calendario_instalacion=100;
-						
-							if ($calendarioInstalacion->validar()){
-								if (!$calendarioInstalacion->guardar()){
-							
-								echo $calendarioInstalacion->cod_calendario_instalacion;
-							//	Sistema::app()->paginaError(404,"Se ha producido un error al guardar el calendario");
-								exit;
-								
-								}
-						
-							}							
-						}
+            else {
+            
+                $calendario = new Calendarios();
+                $calendarioInstalacion = new CalendariosInstalaciones();
+                $nombre = $calendario->getNombre();
+                
+                if (isset($_POST[$nombre])){
+                        
+                    $calendario->setValores($_POST[$nombre]);
+                    $calendario->disponible=1;
+                    $calendario->cod_actividad = intval($_POST["actividad"]);
+                    $calendario->cod_dia = intval($_POST["dia"]);
+                    
+                    if ($calendario->validar()){
+                    
+                        if (!$calendario->guardar()){
+                            
+                            Sistema::app()->paginaError(404,"Se ha producido un error al guardar el calendario");
+                            exit;
+                        
+                        }
+                        
+                        if (isset($_POST["instalacion"])!=0) {
+                            $valores["cod_calendario"]  = $calendario->__get("cod_calendario");
+                            $valores["cod_instalacion"] = $_POST["instalacion"];
+                            $calendarioInstalacion -> setValores($valores);
+                            $calendarioInstalacion->cod_calendario_instalacion=100;
+                        
+                            if ($calendarioInstalacion->validar()){
+                                if (!$calendarioInstalacion->guardar()){
+                            
+                                echo $calendarioInstalacion->cod_calendario_instalacion;
+                            //  Sistema::app()->paginaError(404,"Se ha producido un error al guardar el calendario");
+                                exit;
+                                
+                                }
+                        
+                            }                           
+                        }
 
-						Sistema::app()->irAPagina(array("calendarios"));
-						exit;	
-
-					}
-				
-					else {
-						$this->dibujaVista("nuevoCalendario", array("modelo"=>$calendariol));
-					}
-				}
-				$this->dibujaVista("nuevoCalendario", array("modelo"=>$calendario));
-			
-			}		
+                        Sistema::app()->irAPagina(array("calendarios"));
+                        exit;   
+                    }
+                
+                    else {
+                        $this->dibujaVista("nuevoCalendario", array("modelo"=>$calendario));
+                    }
+                }
+                $this->dibujaVista("nuevoCalendario", array("modelo"=>$calendario));
+            
+            } 		
 			
 		}
 
 		public function accionModificaCalendario(){
 				
-			if (!Sistema::app() -> acceso() -> hayUsuario()) {
-            	Sistema::app() -> sesion() -> set("pagPrevia", array("calendarios", "modificaCalendario"));
-              	Sistema::app() -> sesion() -> set("parametrosAnt", array());
-              	Sistema::app() -> irAPagina(array("inicial", "login"));
-             	exit ;
-        	} 
-        	else if (!Sistema::app() -> acceso() -> puedeConfigurar()) {
-            	Sistema::app() -> paginaError(400, "No tiene permiso para acceder");
-              	exit ;
+		//Comprobar si se ha iniciado sesion y si el usuario tiene permiso de modificar
+            if (!Sistema::app() -> acceso() -> hayUsuario()) {
+                Sistema::app() -> sesion() -> set("pagPrevia", array("calendarios", "modificaCalendario"));
+                Sistema::app() -> sesion() -> set("parametrosAnt", array("cod_calendario"=>$_GET["cod_calendario"]));
+                Sistema::app() -> irAPagina(array("inicial", "login"));
+                exit ;
             } 
-			else {
-				
-				$calendario = new Calendarios();
-				$calInstalacion = new CalendariosInstalaciones();
-				
-				if ($calendario->buscarPorId($_GET["cod_calendario"])){
-					
-					$nombre = $calendario->getNombre();
-					
-					if (isset($_POST[$nombre])){
-						
-						$calendario->setValores($_POST[$nombre]);
-						
-						$select = "cod_calendario_Instalacion";
-						$where = "cod_calendario=$calendario->cod_calendario";
-						$calInstalacion->buscarTodos(array("select"=>$sentSelect, "where"=>$sentWhere));		
-						$valores["cod_calendario"]=$calendario->cod_calendario;
-						$valoes["cod_instalacion"]=$_POST["instalacion"];
-						
-						$calInstalacion->setValores($valores);
-						if ($calInstalacion->validar()){
-							if (!$calInstalacion->guardar()){
-								Sistema::app()->paginaError(404,"Se ha producido un error al guardar");
-								exit;
-							}	
-						}
-						
-						
-						if ($calendario->validar()){
-							
-							if (!$calendario->guardar()){
-					
-						   	  Sistema::app()->paginaError(404,"Se ha producido un error al guardar");
-						   	  exit;
-							}
-							
-							Sistema::app()->irAPagina(array("calendarios"));
-							exit;
-							
-						}
-						
-						else {
-							$this->dibujaVista("modificaCalendario", array("modelo"=>$calendario),"Modificaci&oacute; de calendario");
-							exit;
-						}
+            else if (!Sistema::app() -> acceso() -> puedeConfigurar()) {
+                Sistema::app() -> paginaError(400, "No tiene permiso para acceder");
+                exit ;
+            } 
+            else {
+               	$calendario=new Calendarios();
+                if($calendario->buscarPorId($_GET["cod_calendario"])){
+                	$calendarioInstalacion=new CalendariosInstalaciones();
+					$codInstalacion=$calendarioInstalacion->buscarTodos(array("where"=>"cod_calendario=".intval($_GET["cod_calendario"])));
+					if($codInstalacion){
+						$calendarioInstalacion->buscarPorId($codInstalacion[0]["cod_calendario_instalacion"]);
 					}
-					
-				}
-				$this->dibujaVista("modificaCalendario", array("modelo"=>$calendario),"Modificaci&oacute; de calendario");
-							
-			}
+                    if(isset($_POST[$calendario->getNombre()])){
+                    $calendario -> setValores($_POST[$calendario->getNombre()]); 
+                   
+                    if ($calendario -> validar()) {                                       
+                        if (!$calendario -> guardar()) { //guarda el calendario
+                            $this -> dibujaVista("modificaCalendario", array("modelo" => $calendario, "calendarioInstalacion"=>$calendarioInstalacion), "Modificar calendario");
+                            exit ;
+                        }
+						//si todo es correcto pasa a guardar la instalacion si la hay
+                        if($_POST["instalacion"]!=""){
+                        	$calendarioInstalacion->setValores(array("cod_calendario"=>$_GET["cod_calendario"], "cod_instalacion"=>$_POST["instalacion"]));
+                        	if($calendarioInstalacion->validar()){
+                        		if(!$calendarioInstalacion->guardar()){
+                        			$this -> dibujaVista("modificaCalendario", array("modelo" => $calendario, "calendarioInstalacion"=>$calendarioInstalacion), "Modificar calendario");
+                            		exit ;
+                        		}
+								else{
+									Sistema::app()->irAPagina(array("calendarios", "index"));
+                        			exit ;	
+								}	
+                        	}
+							else{
+								$this -> dibujaVista("modificaCalendario", array("modelo" => $calendario, "calendarioInstalacion"=>$calendarioInstalacion), "Modificar calendario");
+                            	exit ;	
+							}		
+                        }
+						//si no la hay borra por si se ha querido eliminar
+						$calendarioInstalacion->borrarCalendarioInstalacion(intval($_GET["cod_calendario"]));
+                        Sistema::app()->irAPagina(array("calendarios", "index"));
+                        exit ;
+                    } 
+                    else {
+                        $this -> dibujaVista("modificaCalendario", array("modelo" => $calendario, "calendarioInstalacion"=>$calendarioInstalacion), "Modificar calendario");
+                        exit ;
+                    }       
+                }               
+                $this->dibujaVista("modificaCalendario", array("modelo" => $calendario, "calendarioInstalacion"=>$calendarioInstalacion), "Modificar Calendario");
+                exit;
+            }   
+            Sistema::app()->paginaError(400, "El calendario no se encuentra");
+                
+            }
 		}
 
 	public function accionBorraCalendario(){
