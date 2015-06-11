@@ -4,6 +4,7 @@
     $errores=$modelo->getErrores();
     
     echo CHTML::cssFichero("/estilos/estiloFormularios.css");
+	echo CHTML::scriptFichero("../../script/scriptCrudActividades.js");
     
     echo CHTML::dibujaEtiqueta("div", array("class"=>"container contForm"));
                 echo CHTML::dibujaEtiqueta("div", array("class"=>"contTitFormulario"));
@@ -30,8 +31,8 @@
                             if(isset($errores["cod_categoria"])){
                                 echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["cod_categoria"], true);
                             }
-                            echo CHTML::campoLabel("Categorías", "categoria");                            
-                            echo CHTML::campoListaDropDown("categoria", $modelo->cod_categoria, Categorias::listaCategorias(), array("class"=>"form-control"));
+                            echo CHTML::modeloLabel($modelo, "cod_categoria");                            
+                            echo CHTML::modeloListaDropDown($modelo, "cod_categoria", Categorias::listaCategorias(), array("class"=>"form-control"));
                         echo CHTML::dibujaEtiquetaCierre("div");
                         
                         //Campo temporada
@@ -39,8 +40,8 @@
                             if(isset($errores["cod_temporada"])){
                                 echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["cod_temporada"], true);
                             }
-                            echo CHTML::campoLabel("Temporada", "temporada");                            
-                            echo CHTML::campoListaDropDown("temporada", $modelo->cod_temporada, Temporadas::listaTemporadas(), array("class"=>"form-control"));
+                            echo CHTML::modeloLabel($modelo, "cod_temporada");                            
+                            echo CHTML::modeloListaDropDown($modelo,"cod_temporada", Temporadas::listaTemporadas(), array("class"=>"form-control", "disabled"=>"disabled"));
                         echo CHTML::dibujaEtiquetaCierre("div");                        
                         
                         //Campo novedad
@@ -78,7 +79,7 @@
                                 echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["fecha_inicio"], true);
                             }
                             echo CHTML::modeloLabel($modelo, "fecha_inicio");
-                            echo CHTML::modeloText($modelo, "fecha_inicio", array("class"=>"form-control", "maxlength"=>10, "size"=>10, "placeholder"=>"dd/mm/yyyy"));                        
+                            echo CHTML::modeloText($modelo, "fecha_inicio", array("class"=>"form-control fecha", "maxlength"=>10, "size"=>10, "placeholder"=>"dd/mm/yyyy"));                        
                         echo CHTML::dibujaEtiquetaCierre("div");  
                         
                         //Campo fecha_fin
@@ -87,7 +88,7 @@
                                 echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["fecha_fin"], true);
                             }
                             echo CHTML::modeloLabel($modelo, "fecha_fin");
-                            echo CHTML::modeloText($modelo, "fecha_fin", array("class"=>"form-control", "maxlength"=>10, "size"=>10, "placeholder"=>"dd/mm/yyyy"));                        
+                            echo CHTML::modeloText($modelo, "fecha_fin", array("class"=>"form-control fecha", "maxlength"=>10, "size"=>10, "placeholder"=>"dd/mm/yyyy"));                        
                         echo CHTML::dibujaEtiquetaCierre("div"); 
                                                      
                         //Campo capacidad
@@ -96,8 +97,17 @@
                                 echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["capacidad"], true);
                             }
                             echo CHTML::modeloLabel($modelo, "capacidad");
-                            echo CHTML::modeloText($modelo, "capacidad", array("class"=>"form-control", "placeholder"=>"Capacidad"));
-                        echo CHTML::dibujaEtiquetaCierre("div");                              
+                            echo CHTML::modeloNumber($modelo, "capacidad", array("class"=>"form-control", "placeholder"=>"Capacidad"));
+                        echo CHTML::dibujaEtiquetaCierre("div");   
+						
+						//Campo periodo_anulacion
+						echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
+                            if(isset($errores["periodo_anulacion"])){
+                                echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["periodo_anulacion"], true);
+                            }
+                            echo CHTML::modeloLabel($modelo, "periodo_anulacion");
+							echo CHTML::modeloNumber($modelo, "periodo_anulacion", array("class"=>"form-control", "placeholder"=>"Período de anulación"));
+                        echo CHTML::dibujaEtiquetaCierre("div");                           
                                                      
                     echo CHTML::dibujaEtiquetaCierre("div");
                     
