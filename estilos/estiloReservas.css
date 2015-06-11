@@ -1,3 +1,47 @@
+/* ESTILO FILTRADO */
+.contFiltrado{
+	box-shadow: 0 3px 0px #ccc;
+	border-radius: 1px;
+	background: white;
+	padding: 0 0 0 20px;
+	margin-bottom: 20px;
+}
+
+.contFiltrado h4{
+	color: rgb(140, 3, 21);
+}
+
+.form-group{
+	display: inline-block;
+	margin: 0 10px 10px 0;
+}
+
+/* ESTILO RESERVAS CRUD */
+.contTitulo{
+	margin: 20px 0;
+}
+.contTitulo h1{
+	color: rgb(166, 3, 25);
+}
+
+#tReservas th{
+	background: rgb(166, 3, 25);
+	color: white;	
+}
+
+#tReservas th a{
+	color: white;
+}
+
+#tReservas tbody a{
+	margin: 0 10px;
+}
+
+#tReservas th, #tReservas td{
+	text-align: center;
+}
+
+
 /* ESTILO INFORMACION DE LA ACTIVIDAD */
 #contInformacionAct{
 	display: none;
