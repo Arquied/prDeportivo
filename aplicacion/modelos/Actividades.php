@@ -18,7 +18,8 @@
 		}
 			
 		protected function fijarAtributos(){
-			return array("cod_actividad", "nombre", "mini_descripcion", "descripcion", "imagen", "capacidad", "fecha_inicio", "fecha_fin", "novedad", "disponible", "cod_temporada", "cod_categoria", "seleccionable_horas");
+			return array("cod_actividad", "nombre", "mini_descripcion", "descripcion", "imagen", "capacidad", "fecha_inicio", "fecha_fin", "novedad", 
+							"disponible", "cod_temporada", "cod_categoria", "seleccionable_horas", "periodo_anulacion");
 		}
 		
 		protected function fijarDescripciones(){
@@ -34,7 +35,8 @@
 						"disponible"=>"Está disponible",						
                         "seleccionable_horas" => "¿Puede selecciona horas concretas?",
 						"cod_temporada"=>"Código de la temporada",
-						"cod_categoria" =>"Código de la categoria"
+						"cod_categoria" =>"Código de la categoría",
+						"periodo_anulacion" => "Período de anulación (horas)"
 						);
 		}
 		
@@ -50,12 +52,13 @@
 						array("ATRI"=>"mini_descripcion", "TIPO"=>"CADENA", "TAMANIO"=>50, "MENSAJE"=>"La mini_descripcion no puede ser tan larga"),                       
 						array("ATRI"=>"descripcion", "TIPO"=>"CADENA", "TAMANIO"=>50000, "MENSAJE"=>"La descripcion no puede ser tan larga"),						
 						array("ATRI"=>"imagen", "TIPO"=>"FUNCION", "FUNCION"=>"validaImagen"),
-						array("ATRI"=>"capacidad", "TIPO"=>"ENTERO", "MIN"=>0, "MENSAJE"=>"La capadicdad debe ser positiva"),
+						array("ATRI"=>"capacidad", "TIPO"=>"ENTERO", "MIN"=>0, "MENSAJE"=>"La capacidad debe ser positiva"),
 						array("ATRI"=>"fecha_inicio", "TIPO"=>"FECHA"),
 						array("ATRI"=>"fecha_fin", "TIPO"=>"FECHA"),
 						array("ATRI"=>"novedad", "TIPO"=>"ENTERO", "MIN"=>0, "MAX"=>1),
 						array("ATRI"=>"disponible", "TIPO"=>"ENTERO", "MIN"=>0, "MAX"=>1),
-						array("ATRI"=>"seleccionable_horas", "TIPO"=>"ENTERO", "MIN"=>0, "MAX"=>1)
+						array("ATRI"=>"seleccionable_horas", "TIPO"=>"ENTERO", "MIN"=>0, "MAX"=>1),
+						array("ATRI"=>"periodo_anulacion", "TIPO"=>"ENTERO", "MIN"=>0, "MENSAJE"=>"El período de anulación debe ser positivo", "DEFECTO"=>0)
 						);
 		}
 		
@@ -73,6 +76,7 @@
 			$this->novedad=0;
 			$this->disponible=1;
 			$this->seleccionable_horas=0;
+			$this->periodo_anulacion=0;
 			
 		}	
 		
@@ -99,11 +103,12 @@
             $novedad=intval($this->novedad);
 			$disponible=intval($this->disponible);
             $seleccionable_horas=intval($this->seleccionable_horas);
+			$periodo_anulacion=intval($this->periodo_anulacion);
 								
 			return "insert into actividades (".
-						" nombre, mini_descripcion, descripcion, imagen, capacidad, fecha_inicio, fecha_fin, novedad, disponible, seleccionable_horas, cod_temporada, cod_categoria ".
+						" nombre, mini_descripcion, descripcion, imagen, capacidad, fecha_inicio, fecha_fin, novedad, disponible, seleccionable_horas, periodo_anulacion, cod_temporada, cod_categoria ".
 						" ) values ( ".
-						" '$nombre', '$mini_descripcion', '$descripcion', '$imagen', $capacidad, '$fecha_inicio', '$fecha_fin', $novedad, $disponible, $seleccionable_horas, $cod_temporada, $cod_categoria ".
+						" '$nombre', '$mini_descripcion', '$descripcion', '$imagen', $capacidad, '$fecha_inicio', '$fecha_fin', $novedad, $disponible, $seleccionable_horas, $periodo_anulacion, $cod_temporada, $cod_categoria ".
 						" ) " ;
 		}
 		
@@ -120,6 +125,7 @@
            	$novedad=intval($this->novedad);
 			$disponible=intval($this->disponible);
 			$seleccionable_horas=intval($this->seleccionable_horas);
+			$periodo_anulacion=intval($this->periodo_anulacion);
 			
 			return "update actividades set ".
 							" cod_temporada=$cod_temporada, ".
@@ -133,7 +139,8 @@
 							" fecha_fin='$fecha_fin', ".
 							" novedad=$novedad, ".
 							" disponible=$disponible, ".
-							" seleccionable_horas=$seleccionable_horas ".
+							" seleccionable_horas=$seleccionable_horas, ".
+							" periodo_anulacion=$periodo_anulacion ".
 							" where cod_actividad={$this->cod_actividad} ";																		
 		}
 		
