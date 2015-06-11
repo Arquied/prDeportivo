@@ -21,7 +21,7 @@
                             "fecha_inicio", "fecha_fin");
         }
         protected function fijarDescripciones() {
-            return array("cod_temporada" => "Codigo temporada:",
+            return array("cod_temporada" => "Código temporada:",
                             "nombre"=>"Nombre:",
                             "fecha_inicio"=>"Fecha de inicio:",
                             "fecha_fin"=>"Fecha de finalización:");
@@ -125,5 +125,18 @@
             return null;
             
         }
+		
+		public static function listaTemporadasProximas(){
+			$temporadas=new Temporadas();
+			$listaTemporadas=$temporadas->buscarTodos(array("where"=>" t.fecha_fin>='".date("Y-m-d")."'"));
+			if($listaTemporadas){
+				foreach ($listaTemporadas as $temporada) 
+					$lista[$temporada["cod_temporada"]] = $temporada["nombre"];
+                
+           		return $lista;	
+			}
+			return null;
+			
+		}
         
     }
