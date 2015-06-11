@@ -18,7 +18,7 @@
 		}
 			
 		protected function fijarAtributos(){
-			return array("cod_usuario", "nombre", "dni", "correo", "telefono", "nick", "contrasenia", "fecha_nac", "saldo", "disponible", "cod_role");
+			return array("cod_usuario", "nombre", "dni", "correo", "telefono", "nick", "contrasenia", "fecha_nac", "saldo", "disponible", "web", "cod_role");
 		}
 		
 		protected function fijarDescripciones(){
@@ -32,6 +32,7 @@
 						"fecha_nac"=>"Fecha de nacimiento",
 						"saldo"=>"Saldo disponible",
 						"disponible"=>"Usuario disponible",
+						"web"=>"Usuario con acceso a web",
 						"cod_role"=>"Código del role"
 						);
 		}
@@ -53,7 +54,8 @@
 						array("ATRI"=>"contrasenia", "TIPO"=>"CADENA", "TAMANIO"=>32, "MENSAJE"=>"La contraseña no puede ser tan larga"),
 						array("ATRI"=>"fecha_nac", "TIPO"=>"FECHA"),
 						array("ATRI"=>"saldo", "TIPO"=>"REAL"),
-						array("ATRI"=>"disponible", "TIPO"=>"ENTERO", "MAX"=>1, "MIN"=>0)
+						array("ATRI"=>"disponible", "TIPO"=>"ENTERO", "MAX"=>1, "MIN"=>0),
+						array("ATRI"=>"web", "TIPO"=>"ENTERO", "MAX"=>1, "MIN"=>0)
 						);
 		}
 		
@@ -68,6 +70,7 @@
 			$this->contrasenia="";
 			$this->fecha_nac="";
 			$this->disponible=1;
+			$this->web=1;
             $this->saldo=0;
 		}	
 		
@@ -87,12 +90,13 @@
 			$contrasenia=substr(trim(CGeneral::addSlashes($this->contrasenia)), 0, 30);
 			$fecha_nac=CGeneral::addSlashes(CGeneral::fechaNormalAMysql($this->fecha_nac));
 			$disponible=intval($this->disponible);
+			$web=intval($this->web);
             $saldo=$this->saldo;
 								
 			return "insert into usuarios (".
-						" nombre, dni, correo, telefono, nick, contrasenia, fecha_nac, saldo, disponible, cod_role ".
+						" nombre, dni, correo, telefono, nick, contrasenia, fecha_nac, saldo, disponible, web, cod_role ".
 						" ) values ( ".
-						" '$nombre', '$dni', '$correo', '$telefono', '$nick', md5('$contrasenia'), '$fecha_nac', $saldo, $disponible, $cod_role ".
+						" '$nombre', '$dni', '$correo', '$telefono', '$nick', md5('$contrasenia'), '$fecha_nac', $saldo, $disponible, $web, $cod_role ".
 						" ) " ;
 		}
 		
@@ -106,6 +110,7 @@
 			$nick=CGeneral::addSlashes($this->nick);
 			$fecha_nac=CGeneral::addSlashes(CGeneral::fechaNormalAMysql($this->fecha_nac));
 			$disponible=intval($this->disponible);
+			$web=intval($this->web);
             $saldo=$this->saldo;
 			
 			return "update usuarios set ".
@@ -117,6 +122,7 @@
 							" nick='$nick', ".
 							" fecha_nac='$fecha_nac', ".
 							" disponible=$disponible, ".
+							" web=$web, ".
 							" saldo=$saldo ".
 							" where cod_usuario={$this->cod_usuario} ";																		
 		}
@@ -130,6 +136,15 @@
            
             return $lista;
             
+        }
+		
+		public static function listaUsuarios(){            
+            $usuarios = new Usuarios();                        
+            $lista = array();
+            foreach($usuarios->buscarTodos() as $usuario)
+                $lista[$usuario["cod_usuario"]] = $usuario["nombre"];
+            
+            return $lista;     
         }
         
 		
