@@ -18,21 +18,25 @@
             else {
                 $actividad = new Actividades();
                 $nombre = $actividad -> getNombre();
+				//Obtener el codigo de la temporada actual
+				$temporada=new Temporadas();
+				$datosTemporadaActual=$temporada->buscarTodos(array("where"=>" t.fecha_inicio<='".date("Y-m-d")."' and t.fecha_fin>='".date("Y-m-d")."'"));
+				if($datosTemporadaActual){
+					$actividad->cod_temporada=$datosTemporadaActual[0]["cod_temporada"];
+				}
+				
                 if (isset($_POST[$nombre])) {
                     $actividad -> setValores($_POST[$nombre]);
-					$actividad -> disponible = 1;
-                    $actividad -> cod_categoria = intval($_POST["categoria"]);
-                    $actividad -> cod_temporada = intval($_POST["temporada"]);
                     
                     $actividad -> imagen = $_FILES["actividad"]["name"]["imagen"];
                     if ($actividad -> validar()) {
                         if (!$actividad -> guardar()) { //guarda la actividad
                             $this -> dibujaVista("nuevaActividad", array("modelo" => $actividad), htmlentities("Nueva Actividad"));
                             exit ;
-                        }
-                        $actividad -> imagen = "act" . substr("0000000000" . $actividad -> cod_actividad, -10);
+                        }                        
                         //Cargar imagen
                         if (isset($_FILES["actividad"]) && $_FILES["actividad"]["error"]["imagen"] != 4) {
+                        	$actividad -> imagen = "act" . substr("0000000000" . $actividad -> cod_actividad, -10);
                             $imagen = "";
                             //segun sea la imagen
                             switch ($_FILES["actividad"]["type"]["imagen"]) {
@@ -99,20 +103,16 @@
                 $actividad = new Actividades();
                 if($actividad->buscarPorId($_GET["cod_actividad"])){
                     if(isset($_POST[$actividad->getNombre()])){
-                    $actividad -> setValores($_POST[$actividad->getNombre()]); 
-					$actividad -> cod_categoria = intval($_POST["categoria"]);
-                    $actividad -> cod_temporada = intval($_POST["temporada"]);		
-				  
-                    $actividad -> imagen=$_FILES["actividad"]["name"]["imagen"];
+                    $actividad -> setValores($_POST[$actividad->getNombre()]); 	                   
                                      
                     if ($actividad -> validar()) {                                       
                         if (!$actividad -> guardar()) {
                             $this -> dibujaVista("modificaActividad", array("modelo" => $actividad), "Modificar actividad");
                             exit ;
-                        }                                             
-                        $actividad -> imagen="act".substr("0000000000".$actividad->cod_actividad, -10);
+                        }                                                                 
                         //Cargar imagen
                         if (isset($_FILES["actividad"]) && $_FILES["actividad"]["error"]["imagen"]!=4){
+                        	$actividad -> imagen="act".substr("0000000000".$actividad->cod_actividad, -10);
                             $imagen="";
                             //segun sea la imagen
                             switch ($_FILES["actividad"]["type"]["imagen"]) {
@@ -219,11 +219,29 @@
                 exit ;
             } 
             else {
-                $actividades=new Actividades();       
-                $filas=$actividades->buscarTodos(array("select"=>" t.*, tem.nombre as temporada ",
-                                                    "from"=>" join temporadas tem using(cod_temporada) "
-                                                    )
-												);												
+                $actividades=new Actividades(); 
+				
+				//establezco las opciones de filtrado
+	            $opciones=array();
+	            $cadena=" t.disponible=1 ";
+	            $filtrado=array();
+	            $opciones["select"]=" t.*, tem.nombre as temporada "; 
+	            $opciones["from"]=" join temporadas tem using(cod_temporada) ";
+	            $opciones["order"]= " t.nombre ";
+	            //filtrado 
+	            //si no existe filtrado se muestran todas las actividades				
+				//Filtro temporada
+				if(isset($_REQUEST["temporada"]) && $_REQUEST["temporada"]!==""){
+					$cadena.=" and t.cod_temporada=".intval($_REQUEST["temporada"]);
+				}
+				else{
+					$cadena.=" and tem.fecha_inicio<='".date("Y-m-d")."' and tem.fecha_fin>='".date("Y-m-d")."'";	
+				}
+	            
+	            $opciones["where"]=$cadena;
+				
+				      
+                $filas=$actividades->buscarTodos($opciones);												
                 
                 $this->dibujaVista("listaActividadesCrud", array("filas"=>$filas), "Lista de Actividades ");
            }
@@ -234,7 +252,7 @@
             
             //establezco las opciones de filtrado
             $opciones=array();
-            $cadena=" t.disponible=1  and tem.nombre REGEXP '".date('Y')."$'";
+            $cadena=" t.disponible=1 ";
             $filtrado=array();
             $opciones["select"]=" t.*"; 
             $opciones["from"]=" join temporadas tem using(cod_temporada) ";
@@ -251,6 +269,14 @@
             if(isset($_REQUEST["nombre"]) && $_REQUEST["nombre"]!==""){
                 $cadena.=" and t.nombre='".CGeneral::addSlashes($_REQUEST["nombre"])."'";
             }
+			
+			//Filtro temporada
+			if(isset($_REQUEST["temporada"]) && $_REQUEST["temporada"]!==""){
+				$cadena.=" and t.cod_temporada=".intval($_REQUEST["temporada"]);
+			}
+			else{
+				$cadena.=" and tem.fecha_inicio<='".date("Y-m-d")."' and tem.fecha_fin>='".date("Y-m-d")."'";	
+			}
             
             $opciones["where"]=$cadena;         
 
@@ -296,7 +322,7 @@
                                 "MOSTRAR_TAMANIOS"=>true,
                                 "PAGINAS_MOSTRADAS"=>7,
                             );
-            $this->dibujaVista("listaActividades", array("filas"=>$filas, "paginador"=>$opcPaginador), "Lista de Actividades");
+            $this->dibujaVista("listaActividades", array("filas"=>$filas,  "categoria"=>(isset($_REQUEST["categoria"]) && $_REQUEST["categoria"]!=="")?$_REQUEST["categoria"]: "", "paginador"=>$opcPaginador), "Lista de Actividades");
         }
 
         //Accion que devuelve la informacion de la actividad junto con el horario de esa semana
