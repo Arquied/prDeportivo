@@ -11,6 +11,9 @@
                 exit ;
             }
             else{
+            	if(isset($_GET["cod_usuario"])){
+            		Sistema::app()-> Sesion() ->set("usuarioReserva", $_GET["cod_usuario"]);
+            	}
             	$reserva=new Reservas();
             	if(isset($_GET["cod_actividad"])){
             		$actividad=new Actividades();
@@ -32,11 +35,17 @@
         }		
 
         public function accionFinalizarReserva(){
-            if(isset($_POST["reservas"]) && isset($_POST["actividad"]) && isset($_POST["tarifa"])){              
-                $nickUsuario=Sistema::app()->Acceso()->getNick(); 
-                $usuario=new Usuarios();                
-                $usuario->buscarPor(array("where"=>"nick='".$nickUsuario."'"));
-                
+            if(isset($_POST["reservas"]) && isset($_POST["actividad"]) && isset($_POST["tarifa"])){
+            	$usuario=new Usuarios();
+            	if(Sistema::app()->Sesion()->get("usuarioReserva")!==0){
+            		$usuario->buscarPorId(intval(Sistema::app()->Sesion()->get("usuarioReserva")));	
+            	}              
+				else{					
+					$nickUsuario=Sistema::app()->Acceso()->getNick(); 	
+					$usuario->buscarPor(array("where"=>"nick='".$nickUsuario."'"));
+					Sistema::app()->Sesion()->set("usuarioReserva", $usuario->cod_usuario);
+				}              
+                               
                 //Buscar tarifa
                 $tarifa=new Tarifas();
                 $tarifa->buscarPorId($_POST["tarifa"]["cod_tarifa"]);
@@ -74,15 +83,12 @@
                     }                   
                 }
                 $obJSON=json_encode($respuesta);
-                $error=error_get_last();
                 echo $obJSON;
             }
             else{                
                 $obJSON=json_encode(array("result"=>"error"));
                 echo $obJSON;
-            }
-            
-                
+            }      
         }
 
         public function accionListaReservas(){
@@ -94,18 +100,43 @@
                 exit ;
             }  
             else {
-                $reserva=new Reservas();
-                $nickUsuario=Sistema::app()->Acceso()->getNick(); 
-                $usuario=new Usuarios();                
-                $usuario->buscarPor(array("where"=>"nick='".$nickUsuario."'"));
+            	$reservas=new Reservas(); 
+				
+				//establezco las opciones de filtrado
+	            $opciones=array();
+	            $filtrado=array();
+	            $opciones["select"]=" t.*, act.nombre, act.periodo_anulacion, usu.nombre as usuario "; 
+	            $opciones["from"]=" join actividades act using(cod_actividad) ".
+									" join usuarios usu using(cod_usuario) ";
+	            //filtrado 
+	            //si no existe filtrado se muestran todas las reservas	
+	            //Si se ha pinchado desde el perfil del usuario, busca las reservas del usuario con sesion iniciada
+	            if(isset($_GET["usuario"]) && $_GET["usuario"]=="usu"){
+	            	$nickUsuario=Sistema::app()->Acceso()->getNick();
+					$usuario=new Usuarios(); 	
+					$usuario->buscarPor(array("where"=>"nick='".$nickUsuario."'"));
+	            	$opciones["where"]=" t.cod_usuario=".intval($usuario->cod_usuario);
+					$cod_usuario=$usuario->cod_usuario;
+	            }			
+				//Si se ha realizado una reserva
+				if(Sistema::app()->Sesion()->get("usuarioReserva") && Sistema::app()->Sesion()->get("usuarioReserva")!==0){
+					$opciones["where"]=" t.cod_usuario=".Sistema::app()->Sesion()->get("usuarioReserva");
+					$cod_usuario=Sistema::app()->Sesion()->get("usuarioReserva");
+				}
+				//Filtro usuario
+				if(isset($_POST["usuario"]) && $_POST["usuario"]!==""){
+					$opciones["where"]=" t.cod_usuario=".intval($_POST["usuario"]);
+					$cod_usuario=$_POST["usuario"];
+				}				
+	            
+				
+				      
+                $filas=$reservas->buscarTodos($opciones);												
                 
-                $filas=$reserva->buscarTodos(array("select"=>" t.*, a.nombre ",
-                                                    "from"=>" join actividades a using(cod_actividad) ",
-                                                    "where"=>" cod_usuario=".$usuario->cod_usuario." and t.cod_reserva not in(select cod_reserva from compras)" 
-                                                    )
-                                                );
-                
-                $this->dibujaVista("listaReservas", array("filas"=>$filas), "Lista de Reservas ");
+				//Borrar sesion usuarioReserva una vez comprobada
+				Sistema::app()->Sesion()->set("usuarioReserva", 0);
+				
+                $this->dibujaVista("listaReservas", array("filas"=>$filas, "usuario"=>(isset($cod_usuario))? $cod_usuario: "" ), "Lista de Reservas ");
            }
         }
 
@@ -114,7 +145,7 @@
             //Comprobar si se ha iniciado sesion y si el usuario tiene permiso de modificar
             if (!Sistema::app() -> acceso() -> hayUsuario()) {
                 Sistema::app() -> sesion() -> set("pagPrevia", array("reservas", "anularReserva"));
-                Sistema::app() -> sesion() -> set("parametrosAnt", array("cod_reserva"=>$_GET["id_reserva"]));
+                Sistema::app() -> sesion() -> set("parametrosAnt", array("id"=>$_GET["id"]));
                 Sistema::app() -> irAPagina(array("inicial", "login"));
                 exit ;
             } 
@@ -122,8 +153,7 @@
                 if(isset($_GET["id"])){
                     $reserva=new Reservas();
                     $reserva->buscarPorId(intval($_GET["id"]));
-                    $reserva->anulado=1;
-                    $reserva->fecha_anulacion=date("d/m/Y");
+					$reserva->setValores(array("anulado"=>1, "fecha_anulacion"=>date("d/m/Y")));
                     if($reserva->validar()){
                         if(!$reserva->guardar()){
                             Sistema::app()->paginaError(400, "Error al anular la reserva");    
