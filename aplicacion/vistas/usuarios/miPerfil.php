@@ -24,7 +24,7 @@
                     
                     echo CHTML::dibujaEtiqueta("div", array("class"=>"text-center")); 
                         echo CHTML::dibujaEtiqueta("span", array(), "DNI: ".$modelo->dni, true);
-                        echo CHTML::dibujaEtiqueta("span", array(), "F. nacimiento: ".CGeneral::fechaMysqlANormal($modelo->fecha_nac), true);
+                        echo CHTML::dibujaEtiqueta("span", array(), " F. nacimiento: ".CGeneral::fechaMysqlANormal($modelo->fecha_nac), true);
                     echo CHTML::dibujaEtiquetaCierre("div");
                     
                     echo CHTML::dibujaEtiqueta("div", array("class"=>"text-center"));
@@ -42,7 +42,7 @@
                     echo CHTML::dibujaEtiqueta("div", array("class"=>"text-center"));
                         echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("usuarios", "modificar"), array("cod_usuario"=>$modelo->cod_usuario)), "class"=>"btn btn-default btn-block"), "Modificar mi perfil", true);
                         echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("usuarios", "cambiarContrasena"), array("cod_usuario"=>$modelo->cod_usuario)), "class"=>"btn btn-default btn-block"), "Cambiar contraseña", true);
-                        echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("reservas", "listaReservas"), array("cod_usuario"=>$modelo->cod_usuario)), "class"=>"btn btn-default btn-block"), "Reservas realizadas", true);
+                        echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("reservas", "listaReservas"), array("usuario"=>"usu")), "class"=>"btn btn-default btn-block"), "Reservas realizadas", true);
                         echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("inicial", "cerrarSesion")), "class"=>"btn btn-default btn-block"), "Cerrar sesión", true);
                     echo CHTML::dibujaEtiquetaCierre("div");
             
@@ -51,7 +51,7 @@
             echo CHTML::dibujaEtiquetaCierre("div");
             
             //Compras          
-            echo CHTML::dibujaEtiqueta("div", array("class"=>"col-md-9 col-md-offset-3 main"));               
+            echo CHTML::dibujaEtiqueta("div", array("class"=>"col-md-9 col-md-offset-3 main")); 			              
 				//Titulo
 			    echo CHTML::dibujaEtiqueta("div", array("class"=>"contTitulo"));
 			        echo CHTML::dibujaEtiqueta("H1", array("class"=>"text-center"), "COMPRAS REALIZADAS", TRUE);
@@ -70,7 +70,8 @@
                                 echo CHTML::campoLabel("Temporada Actual", "temporada_actual");
                             echo CHTML::dibujaEtiquetaCierre("div");
                         echo CHTML::finalizarForm();
-                        
+						
+                        //Tabla compras
 				        echo CHTML::dibujaEtiqueta("table", array("class"=>"table table-striped", "id"=>"tCompras"));
 				            //DIBUJAR CABECERA DE LA TABLA
 				            echo CHTML::dibujaEtiqueta("thead");
@@ -115,10 +116,7 @@
 				
 				    echo CHTML::script("$('#tCompras').dynatable();");
 				}
-                
-                
-				
-				
+		
             echo CHTML::dibujaEtiquetaCierre("div");
                         
         echo CHTML::dibujaEtiquetaCierre("div");
