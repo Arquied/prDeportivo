@@ -63,7 +63,7 @@
            $this->fecha_fin=date("d/m/Y");
            $this->tarifa=0.0;
            $this->anulado=0;
-           $this->fecha_anulacion=null;
+          // $this->fecha_anulacion=null;
               
         }   
         
@@ -80,7 +80,7 @@
             $fecha=CGeneral::fechaMysqlANormal($fecha);
             $this->fecha_fin=$fecha;
             
-            if($this->fecha_anulacion!=null){
+            if($this->fecha_anulacion!=""){
                 $fecha=$this->fecha_anulacion;
                 $fecha=CGeneral::fechaMysqlANormal($fecha);
                 $this->fecha_anulacion=$fecha;    
@@ -96,7 +96,7 @@
             $fecha_fin=CGeneral::fechaNormalAMysql($this->fecha_fin);
             $tarifa=floatval($this->tarifa);
             $anulado=intval($this->anulado);
-            if($this->fecha_anulacion==null){
+            if($this->fecha_anulacion==""){
                 return "insert into reservas (".
                         " cod_usuario, cod_tarifa, cod_actividad, fecha_reserva, fecha_inicio, fecha_fin, tarifa, anulado ".
                         " ) values ( ".
@@ -121,7 +121,7 @@
             $fecha_fin=CGeneral::fechaNormalAMysql($this->fecha_fin);
             $tarifa=floatval($this->tarifa);
             $anulado=intval($this->anulado);
-            if($this->fecha_anulacion==null){
+            if($this->fecha_anulacion==""){
                 return "update reservas set ".
                             " cod_usuario=$cod_usuario, ".
                             " cod_tarifa=$cod_tarifa, ".
