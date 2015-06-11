@@ -68,10 +68,11 @@
                         $usuarios = array("TEXTO"=>"Usuarios","URL"=>Sistema::app()->generaURL(array("usuarios", "index")),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
                         $temporadas = array("TEXTO"=>"Temporadas","URL"=>Sistema::app()->generaURL(array("temporadas")),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
                         $horarios = array("TEXTO"=>"Horarios","URL"=>Sistema::app()->generaURL(array("horarios")),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
+                        $reservas = array("TEXTO"=>"Reservas","URL"=>Sistema::app()->generaURL(array("reservas", "listaReservas")),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
                         $actividadesCrud = array("TEXTO"=>"Actividades","URL"=>Sistema::app()->generaURL(array("actividades","listaActividadesCrud")),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
                         $configuracionCrud = array("TEXTO"=>"Configuración","URL"=>Sistema::app()->generaURL(array("configuracion")),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
                         
-                        $administrar = array("TEXTO"=>"Administrar","URL"=>"","SUBMENU"=>true,"ACTIVO"=>true,"ITEMS"=>array($actividadesCrud,$calendarios,$horarios,$instalacionesCrud,$temporadas,$usuarios,$configuracionCrud));
+                        $administrar = array("TEXTO"=>"Administrar","URL"=>"","SUBMENU"=>true,"ACTIVO"=>true,"ITEMS"=>array($actividadesCrud,$calendarios,$horarios,$instalacionesCrud,$temporadas,$usuarios, $reservas, $configuracionCrud));
                         if($logeado && $esAdmin)
                             $datos = array($quien, $actividades, $instalaciones, $mostrarCalendario, $reservar, $registra, $login, $perfil, $logout, $administrar);
                         else
@@ -91,7 +92,7 @@
                 <footer>
                     <hr class="featurette-divider"/>
                     <div class="container">
-                        <a href="<?php echo Sistema::app()->generaURL(array("inicial", "privacidad")); ?>">Política de privacidad</a>
+                        <a href="<?php echo Sistema::app()->generaURL(array("inicial", "privacidad")); ?>" id="privacidad">Política de privacidad</a>
                         <a href="<?php echo $configuracion->url_facebook; ?>" class="pull-right"><img src="../../imagenes/ico_facebook.png"></a>
                         <a href="<?php echo $configuracion->url_twitter; ?>" class="pull-right"><img src="../../imagenes/ico_twitter.png"></a>
                     </div>
