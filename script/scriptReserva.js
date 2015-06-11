@@ -77,7 +77,11 @@ $(document).ready(function() {
 										  scrollInput: false,
 										  scrollMonth: false,
 										  scrollTime: false,
-										  minDate: fecha.getDate()+"/"+fecha.getMonth()+1+"/"+fecha.getFullYear()
+										 // minDate: fecha.getDate()+"/"+fecha.getMonth()+1+"/"+fecha.getFullYear(),
+										  onSelect: function(dateText, inst){
+											  console.log("seleccionado");
+											  $("input[name=fecha_fin]").datetimepicker('option', 'minDate', dateText);
+										  }
 										});
 			$("input[name=fecha_fin]").datetimepicker({
 										  format:'d/m/Y',
@@ -87,14 +91,17 @@ $(document).ready(function() {
 										  scrollInput: false,
 										  scrollMonth: false,
 										  scrollTime: false,
-										  minDate: fecha.getDate()+"/"+fecha.getMonth()+1+"/"+fecha.getFullYear()
+										 // minDate: fecha.getDate()+"/"+fecha.getMonth()+1+"/"+fecha.getFullYear(),
+										  onSelect: function(dateText, inst){
+											  $("input[name=fecha_inicio]").datetimepicker('option', 'maxDate', dateText);
+										  }										  
 										});	
 										
 			/*$("input[name=fecha_inicio]").on("change", function(){
 				var $this=$(this);
 				if($this.attr("name")=="fecha_inicio"){	
 					console.log($this.val());
-					$("input[name=fecha_fin]").setOptions({minDate: $this.val()});
+					$("input[name=fecha_fin]").datetimepicker("option", "minDate", new Date($this.val()));
 					$("input[name=fecha_fin]").val($this.val());	
 					
 			
@@ -273,7 +280,7 @@ function muestraTarifa(){
 			dataType: 'json',
 			success: function(json){
 				//console.log(json);
-				var $comboTarifas=$("<select name='cod_tarifa' id='cod_tarifa' class='form-control'></select>")
+				var $comboTarifas=$("<select name='cod_tarifa' id='cod_tarifa' class='form-control'></select>");
 				for(tarifa in json){
 					if(actividad["seleccionable_horas"]==1){ //Si es seleccionable muestra solo las tarifa diaria
 						if(json[tarifa]["diario"]==1){
@@ -304,7 +311,7 @@ function muestraTarifa(){
 	//	DESHABILITA EL CAMPO FECHA FIN Y LO PONE CON VALOR DE FIN DE ACTIVIDAD
 function eventFinTemporada(){
 	if($(this).prop("checked")==true){
-		var fecha_fin=actividad["fecha_fin"].split("-")
+		var fecha_fin=actividad["fecha_fin"].split("-");
 		$("input[name=fecha_fin]").val(fecha_fin[2]+"/"+fecha_fin[1]+"/"+fecha_fin[0]);
 		$("input[name=fecha_fin]").prop("disabled", true);	
 	}
@@ -321,7 +328,7 @@ function comprobarReserva(){
 		tarifa={
 			"cod_tarifa" : $("#cod_tarifa").val(),
 			"nombre" : $("#cod_tarifa option[value="+$("#cod_tarifa").val()+"]").html()
-		}
+		};
 		return true;
 	}	
 	//Si seleccionable_horas=0, comprueba las fechas y la tarifa y lo guarda en reservas
@@ -350,7 +357,7 @@ function comprobarReserva(){
 			tarifa={
 				"cod_tarifa" : $("#cod_tarifa").val(),
 				"nombre" : $("#cod_tarifa option[value="+$("#cod_tarifa").val()+"]").html()
-			}
+			};
 		}
 		//console.log(tarifa);
 		return respuesta;
@@ -400,7 +407,7 @@ function informacionReserva(){
 	}
 	$div.append($tabla);
 	$div.append($("<div class='well'></div>")
-						.append($("<h3>La reserva se podrá anular hasta 1 día antes de la fecha de inicio</h3>")));
+						.append($("<h3>La reserva se podrá anular hasta "+actividad["periodo_anulacion"]+" horas antes de la fecha de inicio</h3>")));
 	$("#contNuevaReserva").append($div);
 	
 	//Evento sobre el boton reservar realiza peticion ajax e inserta las reservas
@@ -417,11 +424,11 @@ function finalizarReserva(){
 		dataType: 'json',
 		success: function(json){
 			if(json["result"]=="success"){
-				window.location="index.php?co=usuarios&ac=miPerfil";
+				window.location="index.php?co=reservas&ac=listaReservas";
 			}
 			else{
 				$("#modalError").modal("show");
 			}
 		}
-	});
+	});	
 }
