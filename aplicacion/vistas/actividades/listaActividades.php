@@ -13,13 +13,19 @@
                     //Campo categoria           
                     echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
                         echo CHTML::campoLabel("Categorías", "categoria");                            
-                        echo CHTML::campoListaDropDown("categoria", "", Categorias::listaCategorias(), array("class"=>"form-control"));
+                        echo CHTML::campoListaDropDown("categoria", $categoria, Categorias::listaCategorias(), array("class"=>"form-control"));
                     echo CHTML::dibujaEtiquetaCierre("div");
                     
                     //Campo nombre actividad
                     echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
                         echo CHTML::campoLabel("Nombre", "nombre");
                         echo CHTML::campoText("nombre", "", array("class"=>"form-control", "size"=>30));
+                    echo CHTML::dibujaEtiquetaCierre("div");
+					
+					//Campo temporada
+					echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
+                        echo CHTML::campoLabel("Temporada", "temporada");                            
+                        echo CHTML::campoListaDropDown("temporada", (count($filas)>0)?$filas[0]["cod_temporada"]:"", Temporadas::listaTemporadasProximas(), array("class"=>"form-control"));
                     echo CHTML::dibujaEtiquetaCierre("div");
                     
                     //Boton submit
