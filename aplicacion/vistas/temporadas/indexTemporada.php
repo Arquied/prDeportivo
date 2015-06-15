@@ -3,7 +3,9 @@
     echo CHTML::scriptFichero("../../script/jquery.dynatable.js");
 	echo CHTML::scriptFichero("../../script/scriptCrudTemporadas.js");
     echo CHTML::cssFichero("../../estilos/jquery.dynatable.css");
-    echo CHTML::cssFichero("../../estilos/estiloActividades.css");
+    echo CHTML::cssFichero("../../estilos/estiloTemporadas.css");
+	
+    echo CHTML::dibujaEtiqueta("div", array("class"=>"container"), "", false);
 	
     //Titulo
     echo CHTML::dibujaEtiqueta("div", array("class"=>"contTitulo"));
@@ -14,8 +16,8 @@
 	echo CHTML::dibujaEtiqueta("a",array("href"=>Sistema::app()->generaURL(array("temporadas", "nuevaTemporada")), "class"=>"btn btn-default"),"Nuevo");
 	echo CHTML::dibujaEtiquetaCierre("div");
 
-    echo CHTML::dibujaEtiqueta("div", array("id"=>"contActividades"));
-        echo CHTML::dibujaEtiqueta("table", array("class"=>"table table-striped", "id"=>"tActividades"));
+    echo CHTML::dibujaEtiqueta("div", array("id"=>"contTemporadas"));
+        echo CHTML::dibujaEtiqueta("table", array("class"=>"table table-striped", "id"=>"tTemporadas"));
             //DIBUJAR CABECERA DE LA TABLA
             echo CHTML::dibujaEtiqueta("thead");
                 echo CHTML::dibujaEtiqueta("tr");
@@ -56,7 +58,7 @@
         echo CHTML::dibujaEtiquetaCierre("table");
     echo CHTML::dibujaEtiquetaCierre("div");
 
-    echo CHTML::script("$('#tActividades').dynatable();");
+    echo CHTML::script("$('#tTemporadas').dynatable();");
     
 	
 	//VENTANA MODAL MENSAJE BORRADO
@@ -73,3 +75,5 @@
 			echo CHTML::boton("Cancelar", array("class"=>"btn", "data-dismiss"=>"modal"));
 		echo CHTML::dibujaEtiquetaCierre("div");
 	echo CHTML::dibujaEtiquetaCierre("div");	
+	
+	echo CHTML::dibujaEtiquetaCierre("div");
