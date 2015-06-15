@@ -4,14 +4,12 @@
 	
 	echo CHTML::cssFichero("/estilos/estiloFormularios.css");
 	echo CHTML::scriptFichero("../../script/scriptCrudUsuarios.js");
-
 	echo CHTML::dibujaEtiqueta("div", array("class"=>"container contForm"));
                 echo CHTML::dibujaEtiqueta("div", array("class"=>"contTitFormulario"));
                     echo CHTML::dibujaEtiqueta("h2", array(), "Modificar usuario", true);                
                 echo CHTML::dibujaEtiquetaCierre("div");
-
 				//FORMULARIO DE REGISTRO
-				echo CHTML::iniciarForm("", "post", array("role"=>"form"));
+				echo CHTML::iniciarForm("", "post", array("role"=>"form", "enctype"=>"multipart/form-data"));
 				
 					echo CHTML::dibujaEtiqueta("div");
 						//Campo nombre					
@@ -24,7 +22,6 @@
 													"nombre",					
 												 	array("class"=>"form-control", "maxlength"=>80, "size"=>"50"));
 						echo CHTML::dibujaEtiquetaCierre("div");
-
 					echo CHTML::dibujaEtiqueta("div");
 						//Campo correo
 						echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
@@ -56,7 +53,18 @@
 						$lista = array("web","Local");
 						echo CHTML::campoListaRadioButton("tipo", "",$lista );
 					echo CHTML::dibujaEtiquetaCierre("div");
-
+					
+					echo CHTML::dibujaEtiqueta("div");
+						//Campo foto
+						echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
+                            if(isset($errores["foto"])){
+                                echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["foto"], true);
+                            }
+                            echo CHTML::modeloLabel($modelo, "foto");
+                            echo CHTML::modeloFile($modelo, "foto", array("class"=>"form-control"));
+                        echo CHTML::dibujaEtiquetaCierre("div");
+					echo CHTML::dibujaEtiquetaCierre("div");
+					
 					echo CHTML::dibujaEtiqueta("div");
 						//Campo nick					
 						echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
