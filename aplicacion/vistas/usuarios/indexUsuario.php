@@ -45,21 +45,21 @@
     							echo CHTML::dibujaEtiqueta("td", array(), "No disponible", true);
     						}						
                             echo CHTML::dibujaEtiqueta("td");
-                                echo CHTML::dibujaEtiqueta("a", array("href"=>"#", "class"=>"cambiarAdministrador"));
+                                echo CHTML::dibujaEtiqueta("a", array("href"=>"#", "class"=>"cambiarAdministrador", "title"=>"Cambiar rol"));
                                     echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico_rol.png"));
                                 echo CHTML::dibujaEtiquetaCierre("a");
-    							echo CHTML::dibujaEtiqueta("a", array("href"=>"#", "class"=>"btnBorrar"));
+    							echo CHTML::dibujaEtiqueta("a", array("href"=>"#", "class"=>"btnBorrar", "title"=>"Borrar usuario"));
                                     echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico_borrar.png"));
-                                echo CHTML::dibujaEtiquetaCierre("a");
-    							echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("compras","listaCompras"), array("cod_usuario"=>$fila["cod_usuario"])), "title"=>"Ver Compras"));
+                                echo CHTML::dibujaEtiquetaCierre("a");    							
+								echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("usuarios","modificarUsuario"), array("cod_usuario"=>$fila["cod_usuario"])), "title"=>"Modificar Usuario"));
+									echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico_edit.png"));
+								echo CHTML::dibujaEtiquetaCierre("a");
+								echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("compras","listaCompras"), array("cod_usuario"=>$fila["cod_usuario"])), "title"=>"Ver Compras"));
     								echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico_verCompras.png"));
     							echo CHTML::dibujaEtiquetaCierre("a");
 								echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("reservas","nuevaReserva"), array("cod_usuario"=>$fila["cod_usuario"])), "title"=>"Nueva Reserva"));
     								echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico_anadirReserva.png"));
     							echo CHTML::dibujaEtiquetaCierre("a");
-							echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("usuarios","modificarUsuario"), array("cod_usuario"=>$fila["cod_usuario"])), "title"=>"Modificar Usuario"));
-								echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico_edit.png"));
-							echo CHTML::dibujaEtiquetaCierre("a");
                             echo CHTML::dibujaEtiquetaCierre("td");
                         echo CHTML::dibujaEtiquetaCierre("tr");
                     }            
