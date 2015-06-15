@@ -3,8 +3,10 @@
     echo CHTML::scriptFichero("../../script/jquery.dynatable.js");
 	echo CHTML::scriptFichero("../../script/scriptCrudHorarios.js");
     echo CHTML::cssFichero("../../estilos/jquery.dynatable.css");
-    echo CHTML::cssFichero("../../estilos/estiloActividades.css");
+    echo CHTML::cssFichero("../../estilos/estiloHorarios.css");
     
+    echo CHTML::dibujaEtiqueta("div", array("class"=>"container"), "", false);
+	
     //Titulo
     echo CHTML::dibujaEtiqueta("div", array("class"=>"contTitulo"));
         echo CHTML::dibujaEtiqueta("H1", array("class"=>"text-center"), "ADMINISTRACIÓN DE HORARIOS", TRUE);
@@ -14,8 +16,8 @@
 	echo CHTML::dibujaEtiqueta("a",array("href"=>Sistema::app()->generaURL(array("horarios", "nuevoHorario")), "class" => "btn btn-default"),"Nuevo");
 	echo CHTML::dibujaEtiquetaCierre("div");
 	
-    echo CHTML::dibujaEtiqueta("div", array("id"=>".contActividad"));
-        echo CHTML::dibujaEtiqueta("table", array("class"=>"table table-striped", "id"=>"tActividades"));
+    echo CHTML::dibujaEtiqueta("div", array("id"=>".contHorario"));
+        echo CHTML::dibujaEtiqueta("table", array("class"=>"table table-striped", "id"=>"tHorario"));
             //DIBUJAR CABECERA DE LA TABLA
             echo CHTML::dibujaEtiqueta("thead");
                 echo CHTML::dibujaEtiqueta("tr");
@@ -62,7 +64,7 @@
         echo CHTML::dibujaEtiquetaCierre("table");
     echo CHTML::dibujaEtiquetaCierre("div");
 
-    echo CHTML::script("$('#tActividades').dynatable();");
+    echo CHTML::script("$('#tHorario').dynatable();");
     
 	
 	//VENTANA MODAL MENSAJE BORRADO
@@ -78,4 +80,7 @@
 			echo CHTML::boton("Borrar", array("id"=>"seguroBorrar", "class"=>"btn"));
 			echo CHTML::boton("Cancelar", array("class"=>"btn", "data-dismiss"=>"modal"));
 		echo CHTML::dibujaEtiquetaCierre("div");
+		
+	echo CHTML::dibujaEtiquetaCierre("div");		
+		
 	echo CHTML::dibujaEtiquetaCierre("div");	
