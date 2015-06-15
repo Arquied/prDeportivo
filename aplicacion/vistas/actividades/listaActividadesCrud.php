@@ -71,6 +71,9 @@
                                 echo CHTML::dibujaEtiqueta("a", array("href"=>"#", "class"=>"btnBorrar", "title"=>"Borrar actividad"));
                                     echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico_borrar.png"));
                                 echo CHTML::dibujaEtiquetaCierre("a");
+                                echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("usuarios", "ListaUsuarios"), array("cod_actividad"=>$fila["cod_actividad"])), "title"=>"Lista registrados"));
+                                    echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico_grupo.png"));
+                                echo CHTML::dibujaEtiquetaCierre("a");
                             echo CHTML::dibujaEtiquetaCierre("td");
                         echo CHTML::dibujaEtiquetaCierre("tr");
                     }            
