@@ -4,6 +4,7 @@
 	border-radius: 1px;
 	background: white;
 	padding: 0 0 0 20px;
+	margin-bottom: 20px;
 }
 
 .contFiltrado h4{
@@ -11,10 +12,8 @@
 }
 
 .form-group{
-	float:left;
 	display: inline-block;
 	margin: 0 10px 10px 0;
-	width: 50%
 }
 
 /* ESTILO ACTIVIDAD CLIENTES */
