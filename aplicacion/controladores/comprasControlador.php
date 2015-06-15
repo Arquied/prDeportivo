@@ -139,32 +139,50 @@
                 }
             }
         }
-        public function accionListaCompras(){
-                
+        public function accionListaCompras(){                
+            //Comprobar si se ha iniciado sesion y si el usuario tiene permiso de modificar
             if (!Sistema::app() -> acceso() -> hayUsuario()) {
-                  Sistema::app() -> sesion() -> set("pagPrevia", array("compras","listaCompras"));
-                  Sistema::app() -> sesion() -> set("parametrosAnt", array());
-                  Sistema::app() -> irAPagina(array("inicial", "login"));
-                  exit ;
-            } 
-            else if (!Sistema::app() -> acceso() -> puedeConfigurar()) {
-                  Sistema::app() -> paginaError(400, "No tiene permiso para acceder");
-                  exit ;
-            } 
+                Sistema::app() -> sesion() -> set("pagPrevia", array("compras", "listaCompras"));
+                Sistema::app() -> sesion() -> set("parametrosAnt", array());
+                Sistema::app() -> irAPagina(array("inicial", "login"));
+                exit ;
+            }  
             else {
-                $reservas = new Reservas();
-				$compras = new Compras();
-				if (isset($_GET['cod_usuario'])){
-					$filas = $compras -> buscarTodos(array("select t.*","from"=>"inner join reservas as r on r.cod_reserva=t.cod_reserva", "where"=>"r.cod_usuario=$_GET[cod_usuario]"));
-				}
-                	
+            	$compras=new Compras(); 
 				
-				else
-					$filas = $compras -> buscarTodos(array("select t.*", "from"=>"inner join reservas as r on r.cod_reserva=t.cod_reserva"));
-				                    
-                $this->dibujaVista("listaCompras",array("filas"=>$filas), "Lista de Compras");
-                
-            }
+				//establezco las opciones de filtrado
+	            $opciones=array();
+	            $filtrado=array();
+				$cadena="";
+	            $opciones["select"]=" t.*, act.nombre as actividad, usu.nombre as usuario "; 
+	            $opciones["from"]=" join reservas r using(cod_reserva) ".
+	            					" join actividades act using(cod_actividad) ".
+									" join usuarios usu using(cod_usuario) ";
+	            //filtrado 
+	            //Filtro cod_usuario
+	            if(isset($_REQUEST["cod_usuario"]) && $_REQUEST["cod_usuario"]!=""){	            	
+	            	$cadena.=" r.cod_usuario=".intval($_REQUEST["cod_usuario"]);
+					$cod_usuario=$_REQUEST["cod_usuario"];
+	            }
+				//Filtro cod_temporada
+	            if(isset($_POST["cod_temporada"]) && $_POST["cod_temporada"]!=""){
+	            	if(isset($_REQUEST["cod_usuario"]) && $_REQUEST["cod_usuario"]!="") $cadena.=" and ";	            	
+	            	$cadena.=" act.cod_temporada=".intval($_POST["cod_temporada"]);
+					$cod_temporada=$_POST["cod_temporada"];
+	            }
+				//Filtro cod_actividad
+	            if(isset($_POST["cod_actividad"]) && $_POST["cod_actividad"]!=""){            	
+	            	$cadena.=" and act.cod_actividad=".intval($_POST["cod_actividad"]);
+					$cod_actividad=$_POST["cod_actividad"];
+	            }
+				
+							
+		      	$opciones["where"]=$cadena;
+				
+                $filas=$compras->buscarTodos($opciones);												
+                				
+                $this->dibujaVista("listaCompras", array("filas"=>$filas, "usuario"=>(isset($cod_usuario))? $cod_usuario: "", "temporada"=>(isset($cod_temporada))? $cod_temporada: "", "actividad"=>(isset($cod_actividad))? $cod_actividad: "" ), "Lista de Compras ");
+           }
         }
         
         public function accionPagarCompra(){
@@ -240,6 +258,119 @@
                 Sistema::app()->paginaError(400,"La Compra no se encuentra");
             } 
             
-        }   
+        }
+
+		public function accionActualizarCompras(){
+			if(!Sistema::app()->acceso()->hayUsuario()){
+                Sistema::app()->sesion()->set("pagPrevia", array("compras", "actualizarCompras"));
+                Sistema::app()->sesion()->set("parametrosAnt", array());
+                Sistema::app()->irAPagina(array("inicial", "login"));
+                exit;
+            }
+            else if(!Sistema::app()->acceso()->puedeConfigurar()){
+                Sistema::app()->paginaError(400, "No tiene permiso para acceder");  
+                exit;
+            }
+            else{
+            	$reserva=new Reservas();  
+				$hoy=new DateTime();
+				
+				//Si la fecha actual es primero de mes            
+				$primerDiaMes=new DateTime(); $primerDiaMes->modify('first day of this month');
+				$dia16=new DateTime(); $dia16->modify('first day of this month'); $dia16->add(new DateInterval("P15D"));
+				$diaSemana=date("N");
+				//Busca reservas fecha_fin>hoy y tarifa sea mensual o quincenal o diaria
+				if($hoy->format("d/m/Y")==$primerDiaMes->format("d/m/Y")){                
+				    $sentFrom=" join tarifas tar using(cod_tarifa) ".
+				                " join tipos_cuotas tc using(cod_tipo_cuota) ";
+				    $sentWhere=" t.anulado=0 and (tc.mensual=1 or tc.quincenal=1 or tc.diario=1) and t.fecha_fin>='".$hoy->format("Y-m-d")."'";
+				    $listaReservas=$reserva->buscarTodos(array("from"=>$sentFrom, "where"=>$sentWhere));
+				    foreach ($listaReservas as $datosReserva) {
+				        $compra=new Compras();
+				        //Calcular fecha fin, sea mensual, quincenal, diario
+				        $fecha_fin=new DateTime(); 
+				        if($datosReserva["quincenal"]){ 
+				            $fecha_fin->add(new DateInterval("P14D"));
+				        }
+				        else if($datosReserva["mensual"]){
+				           $fecha_fin->modify('last day of this month');    
+				        }
+				        $compra->setValores(array("cod_reserva"=>$datosReserva["cod_reserva"],
+				                                    "fecha_compra"=>$hoy->format("d/m/Y"),
+				                                    "fecha_inicio"=>$hoy->format("d/m/Y"),
+				                                    "fecha_fin"=>$fecha_fin->format("d/m/Y"),
+				                                    "importe"=>$datosReserva["precio"]));
+				        if($compra->validar()){
+				            $compra->guardar();
+				        }
+				    }    
+				}
+				//Si la fecha actual es dia 16, compras tarifa quincenal o diario, y la f_fin sea mayor a hoy
+				else if($hoy->format("d/m/Y")==$dia16->format("d/m/Y")){
+				    $sentFrom=" join tarifas tar using(cod_tarifa) ".
+				                " join tipos_cuotas tc using(cod_tipo_cuota) ";
+				    $sentWhere=" t.anulado=0 and (tc.quincenal=1 or tc.diario=1) and t.fecha_fin>='".$hoy->format("Y-m-d")."'";
+				    $listaReservas=$reserva->buscarTodos(array("from"=>$sentFrom, "where"=>$sentWhere));  
+				    foreach ($listaReservas as $datosReserva) {
+				        $compra=new Compras();
+				        $fecha_fin=new DateTime();
+				        if($datosReserva["quincenal"]){
+				            $fecha_fin->modify('last day of this month');
+				        }
+				        $compra->setValores(array("cod_reserva"=>$datosReserva["cod_reserva"],
+				                                    "fecha_compra"=>$hoy->format("d/m/Y"),
+				                                    "fecha_inicio"=>$hoy->format("d/m/Y"),
+				                                    "fecha_fin"=>$fecha_fin->format("d/m/Y"),
+				                                    "importe"=>$datosReserva["precio"]));
+				        if($compra->validar()){
+				            $compra->guardar();
+				        }
+				    }  
+				}
+				//Si la fecha actual es lunes, reservas tarifa semanal o diario, y la f_fin sea mayor a hoy
+				else if(date("N")=="1"){
+				    $sentFrom=" join tarifas tar using(cod_tarifa) ".
+				                " join tipos_cuotas tc using(cod_tipo_cuota) ";
+				    $sentWhere=" t.anulado=0 and (tc.semanal=1 or tc.diario=1) and t.fecha_fin>='".$hoy->format("Y-m-d")."'";
+				    $listaReservas=$reserva->buscarTodos(array("from"=>$sentFrom, "where"=>$sentWhere));  
+				    foreach ($listaReservas as $datosReserva) {
+				        $compra=new Compras();
+				        $fecha_fin=new DateTime();
+				        if($datosReserva["semanal"]){
+				            $fecha_fin->modify('next sunday');
+				        }
+				        $compra->setValores(array("cod_reserva"=>$datosReserva["cod_reserva"],
+				                                    "fecha_compra"=>$hoy->format("d/m/Y"),
+				                                    "fecha_inicio"=>$hoy->format("d/m/Y"),
+				                                    "fecha_fin"=>$fecha_fin->format("d/m/Y"),
+				                                    "importe"=>$datosReserva["precio"]));
+				        if($compra->validar()){
+				            $compra->guardar();
+				        }
+				    }   
+				}
+				//Si no es ninguna de las anteriores obtener las reservas en las que la tarifa es diaria
+				else{
+				    $sentFrom=" join tarifas tar using(cod_tarifa) ".
+				                " join tipos_cuotas tc using(cod_tipo_cuota) ";
+				    $sentWhere=" t.anulado=0 and (tc.diario=1) and t.fecha_fin>='".$hoy->format("Y-m-d")."'";
+				    $listaReservas=$reserva->buscarTodos(array("from"=>$sentFrom, "where"=>$sentWhere));  
+				    foreach ($listaReservas as $datosReserva) {
+				        $compra=new Compras();                    
+				        $compra->setValores(array("cod_reserva"=>$datosReserva["cod_reserva"],
+				                                    "fecha_compra"=>$hoy->format("d/m/Y"),
+				                                    "fecha_inicio"=>$hoy->format("d/m/Y"),
+				                                    "fecha_fin"=>$hoy->format("d/m/Y"),
+				                                    "importe"=>$datosReserva["precio"]));
+				        if($compra->validar()){
+				            $compra->guardar();
+				        }
+				    }     
+				}  	
+				Sistema::app()->irAPagina(array("compras", "listaCompras"));
+                exit;
+			}		
+		}
+  
     }
     
