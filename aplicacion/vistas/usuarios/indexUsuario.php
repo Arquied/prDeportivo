@@ -10,6 +10,10 @@
         	echo CHTML::dibujaEtiqueta("H1", array("class"=>"text-center"), "ADMINISTRACIÓN DE USUARIOS", TRUE);
         echo CHTML::dibujaEtiquetaCierre("div");
     	
+		echo CHTML::dibujaEtiqueta("div");
+		echo CHTML::dibujaEtiqueta("a",array("href"=>Sistema::app()->generaURL(array("usuarios", "registrarUsuario")), "class" => "btn btn-default"),"Registrar Usuario");
+		echo CHTML::dibujaEtiquetaCierre("div");
+		
         echo CHTML::dibujaEtiqueta("div", array("id"=>"contUsuarios"));
             echo CHTML::dibujaEtiqueta("table", array("class"=>"table table-striped", "id"=>"tUsuarios"));
                 //DIBUJAR CABECERA DE LA TABLA
@@ -50,9 +54,12 @@
     							echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("compras","listaCompras"), array("cod_usuario"=>$fila["cod_usuario"])), "title"=>"Ver Compras"));
     								echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico_verCompras.png"));
     							echo CHTML::dibujaEtiquetaCierre("a");
-								echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("reservas","nuevaReserva"), array("cod_usuario"=>$fila["cod_usuario"])), "title"=>"Nueva reserva"));
+								echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("reservas","nuevaReserva"), array("cod_usuario"=>$fila["cod_usuario"])), "title"=>"Nueva Reserva"));
     								echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico_anadirReserva.png"));
     							echo CHTML::dibujaEtiquetaCierre("a");
+							echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("usuarios","modificarUsuario"), array("cod_usuario"=>$fila["cod_usuario"])), "title"=>"Modificar Usuario"));
+								echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico__edit.jpg"));
+							echo CHTML::dibujaEtiquetaCierre("a");
                             echo CHTML::dibujaEtiquetaCierre("td");
                         echo CHTML::dibujaEtiquetaCierre("tr");
                     }            
