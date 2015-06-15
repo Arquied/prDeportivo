@@ -4,6 +4,7 @@
 	border-radius: 1px;
 	background: white;
 	padding: 0 0 0 20px;
+	margin-bottom: 20px;
 }
 
 .contFiltrado h4{
@@ -44,11 +45,11 @@
 	margin: 20px 0;
 }
 .contTitulo h1{
-	color: rgb(140, 3, 21);
+	color: rgb(166, 3, 25);
 }
 
 #tActividades th{
-	background: rgb(140, 3, 21);	
+	background: rgb(166, 3, 25);	
 }
 
 #tActividades th a{
