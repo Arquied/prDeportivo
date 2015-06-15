@@ -21,7 +21,11 @@
             if (isset($_POST["inputUsuario"])){
                 $usuario=CGeneral::addSlashes($_POST["inputUsuario"]);
                 $contra=$_POST["inputContrasena"];
-                    
+                
+				if ($contra == ""){
+                    $errores=htmlentities("Contraseña no puede estar vacio");
+				}
+				else     
                 if (Sistema::app()->ACL()->esValido($usuario, $contra)){
                     //es valido el usuario
                     //registro el usuario 
@@ -69,9 +73,13 @@
         }
         
         public function accionQuien(){
-            $configuracion=new Configuracion();
-            $configuracion->buscarPorId(1);
-            $this->dibujaVista("quien", array("configuracion"=>$configuracion));
+            
+			$configuraciones = new Configuracion();
+			
+			$configuracion = $configuraciones -> buscarTodos();
+		
+			
+            $this->dibujaVista("quien",array("configuracion"=>$configuracion));
             
         }
         
