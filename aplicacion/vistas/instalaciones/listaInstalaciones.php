@@ -1,6 +1,6 @@
 <?php
 
-    echo CHTML::cssFichero("/estilos/estiloActividades.css");
+    echo CHTML::cssFichero("/estilos/estiloInstalaciones.css");
     
     //FILTRADO
     echo CHTML::dibujaEtiqueta("div", array("class"=>"contFiltrado"));
@@ -27,7 +27,7 @@
     
     //INSTALACIONES
     echo CHTML::dibujaEtiqueta("div", array("class"=>"container marketing"));
-        if(!$filas && count($filas)==0){
+        if(!$filas && count($filas)==0 && $filas || $filas==false){
             echo CHTML::dibujaEtiqueta("div");
                 echo CHTML::dibujaEtiqueta("h2", array(), "No existe resultado de busqueda", true);
             echo CHTML::dibujaEtiquetaCierre("div");
