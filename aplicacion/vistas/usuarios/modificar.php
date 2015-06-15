@@ -3,7 +3,6 @@
     $errores=$modelo->getErrores();
     
     echo CHTML::cssFichero("/estilos/estiloFormularios.css");
-    echo CHTML::scriptFichero("../../script/scriptCrudUsuarios.js");
     
     echo CHTML::dibujaEtiqueta("div", array("class"=>"container contForm"));
                 echo CHTML::dibujaEtiqueta("div", array("class"=>"contTitFormulario"));
@@ -11,7 +10,7 @@
                 echo CHTML::dibujaEtiquetaCierre("div");
 
                 //FORMULARIO DE REGISTRO
-                echo CHTML::iniciarForm("", "post", array("role"=>"form"));
+                echo CHTML::iniciarForm("", "post", array("role"=>"form", "enctype"=>"multipart/form-data"));
                 
                     echo CHTML::dibujaEtiqueta("div");
                         //Campo nombre                    
@@ -66,12 +65,22 @@
                             echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["fecha_nac"], true);
                             }
                             echo CHTML::modeloLabel($modelo, "fecha_nac");
-                            echo CHTML::modeloText($modelo, "fecha_nac", array("class"=>"form-control", "maxlength"=>10, "size"=>12));
+                            echo CHTML::modeloText($modelo, "fecha_nac", array("class"=>"form-control fecha", "maxlength"=>10, "size"=>12));
                         echo CHTML::dibujaEtiquetaCierre("div");
                     echo CHTML::dibujaEtiquetaCierre("div");
+					
+					echo CHTML::dibujaEtiqueta("div");
+						//Campo foto
+						echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
+                            if(isset($errores["foto"])){
+                                echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["foto"], true);
+                            }
+                            echo CHTML::modeloLabel($modelo, "foto");
+                            echo CHTML::modeloFile($modelo, "foto", array("class"=>"form-control"));
+                        echo CHTML::dibujaEtiquetaCierre("div");
+					echo CHTML::dibujaEtiquetaCierre("div");
                     
-                    echo CHTML::dibujaEtiqueta("div");
-                    
+                    echo CHTML::dibujaEtiqueta("div");	
                         //Campo nick                    
                         echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
                             if(isset($errores["nick"])){
@@ -93,3 +102,18 @@
                 echo CHTML::finalizarForm();
                 
     echo CHTML::dibujaEtiquetaCierre("div");
+
+    
+    echo CHTML::script(
+		"//CARGA DATETIMEPICKER
+		$('.fecha').datetimepicker({
+				  format:'d/m/Y',
+				  lang:'es',
+				  timepicker:false,
+				  dayOfWeekStart: 1,
+				  scrollInput: false,
+				  scrollMonth: false,
+				  scrollTime: false
+				});"
+	);
+
