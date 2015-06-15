@@ -23,7 +23,7 @@
 			
 		}
 		
-		public function accionRegistro(){
+		public function accionRegistro(){	           
 			$usuario = new Usuarios();
 			$nombre = $usuario -> getNombre();
 			if (isset($_POST[$nombre])) {
@@ -42,8 +42,49 @@
 							$this -> dibujaVista("registro", array("modelo" => $usuario), htmlentities("Nuevo usuario"));
 							exit ;	
 						} else{
-							Sistema::app() -> irAPagina(array("inicial", "index"));
+			 				//Cargar imagen
+	                    	if (isset($_FILES["usuario"]) && $_FILES["usuario"]["error"]["foto"] != 4) {
+	                    	$usuario -> foto = "usu" . substr("0000000000" . $usuario -> cod_usuario, -10);
+	                        $imagen = "";
+	                        //segun sea la imagen
+	                        switch ($_FILES["usuario"]["type"]["foto"]) {
+	                            case 'image/jpeg' :
+	                                $imagen = imagecreatefromjpeg($_FILES["usuario"]["tmp_name"]["foto"]);
+	                                $usuario -> foto .= ".jpg";
+	                                if (is_resource($imagen)) {
+	                                    $ruta = "/imagenes/usuarios/" . $usuario -> foto;
+	                                    $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
+	                                    imagejpeg($imagen, $ruta);
+	                                }
+	                                break;
+	
+	                            case 'image/gif' :
+	                                $imagen = imagecreatefromgif($_FILES["usuario"]["tmp_name"]["foto"]);
+	                                $usuario -> foto .= ".gif";
+	                                if (is_resource($imagen)) {
+	                                    $ruta = "/imagenes/usuarios/" . $usuario -> foto;
+	                                    $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
+	                                    imagegif($imagen, $ruta);
+	                                }
+	                                break;
+	
+	                            case 'image/png' :
+	                                $imagen = imagecreatefrompng($_FILES["usuario"]["tmp_name"]["foto"]);
+	                                $usuario -> foto .= ".png";
+	                                if (is_resource($imagen)) {
+	                                    $ruta = "/imagenes/usuarios/" . $usuarios -> foto;
+	                                    $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
+	                                    imagepng($imagen, $ruta);
+	                                }
+	                                break;
+	                        }
+	                    }
+	                    if (!$usuario -> guardar()) { //vuelve a guardar la imagen despues de modificar la imagen
+	                        $this -> dibujaVista("registro", array("modelo" => $usuario), htmlentities("Nuevo usuario"));
 							exit ;
+	                    }
+						Sistema::app() -> irAPagina(array("inicial", "index"));
+						exit ;
 						}
 					} else {
 						$errorCont="Las contraseñas no coinciden";
@@ -117,6 +158,47 @@
                                 $this -> dibujaVista("modificar", array("modelo" => $usuario), "Modificar usuario");
                                 exit ;
                             }
+							//Cargar imagen
+	                    	if (isset($_FILES["usuario"]) && $_FILES["usuario"]["error"]["foto"] != 4) {
+	                    	$usuario -> foto = "usu" . substr("0000000000" . $usuario -> cod_usuario, -10);
+	                        $imagen = "";
+	                        //segun sea la imagen
+	                        switch ($_FILES["usuario"]["type"]["foto"]) {
+	                            case 'image/jpeg' :
+	                                $imagen = imagecreatefromjpeg($_FILES["usuario"]["tmp_name"]["foto"]);
+	                                $usuario -> foto .= ".jpg";
+	                                if (is_resource($imagen)) {
+	                                    $ruta = "/imagenes/usuarios/" . $usuario -> foto;
+	                                    $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
+	                                    imagejpeg($imagen, $ruta);
+	                                }
+	                                break;
+	
+	                            case 'image/gif' :
+	                                $imagen = imagecreatefromgif($_FILES["usuario"]["tmp_name"]["foto"]);
+	                                $usuario -> foto .= ".gif";
+	                                if (is_resource($imagen)) {
+	                                    $ruta = "/imagenes/usuarios/" . $usuario -> foto;
+	                                    $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
+	                                    imagegif($imagen, $ruta);
+	                                }
+	                                break;
+	
+	                            case 'image/png' :
+	                                $imagen = imagecreatefrompng($_FILES["usuario"]["tmp_name"]["foto"]);
+	                                $usuario -> foto .= ".png";
+	                                if (is_resource($imagen)) {
+	                                    $ruta = "/imagenes/usuarios/" . $usuarios -> foto;
+	                                    $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
+	                                    imagepng($imagen, $ruta);
+	                                }
+	                                break;
+	                        	}
+	                    	}
+		                    if (!$usuario -> guardar()) { //vuelve a guardar la imagen despues de modificar la imagen
+		                        $this -> dibujaVista("modificar", array("modelo" => $usuario), htmlentities("Modificar usuario"));
+								exit ;
+		                    }
                             //Reiniciar sesion con el nombre de usuario nuevo
                             Sistema::app()->acceso()->quitarRegistroUsuario();
                             $puedeAcceder=false;
@@ -145,7 +227,6 @@
                 Sistema::app()->paginaError(400, "El usuario no se encuentra");
             }
         }
-
         public function accionCambiarContrasena(){
              //Comprobar si se ha iniciado sesion y si el usuario tiene permiso de modificar         
             if(!Sistema::app()->acceso()->hayUsuario()){
@@ -186,7 +267,6 @@
                 }         
             }
         }
-
 		public function accionBorraUsuario(){
 			//Comprobar si se ha iniciado sesion y si el usuario tiene permiso de borrar		
 			if(!Sistema::app()->acceso()->hayUsuario()){
@@ -213,7 +293,6 @@
 				Sistema::app()->paginaError(400, "El usuario no se encuentra");
 			}
 		}
-
 		public function accionCambiarRole(){
 			 //Comprobar si se ha iniciado sesion y si el usuario tiene permiso de modificar         
             if(!Sistema::app()->acceso()->hayUsuario()){
@@ -325,10 +404,50 @@
 								$this -> dibujaVista("registroAdministrador", array("modelo" => $usuario), htmlentities("Nuevo usuario"));
 								exit ;	
 							} else{
-								Sistema::app() -> irAPagina(array("inicial", "index"));
+								//Cargar imagen
+		                    	if (isset($_FILES["usuario"]) && $_FILES["usuario"]["error"]["foto"] != 4) {
+		                    	$usuario -> foto = "usu" . substr("0000000000" . $usuario -> cod_usuario, -10);
+		                        $imagen = "";
+		                        //segun sea la imagen
+		                        switch ($_FILES["usuario"]["type"]["foto"]) {
+		                            case 'image/jpeg' :
+		                                $imagen = imagecreatefromjpeg($_FILES["usuario"]["tmp_name"]["foto"]);
+		                                $usuario -> foto .= ".jpg";
+		                                if (is_resource($imagen)) {
+		                                    $ruta = "/imagenes/usuarios/" . $usuario -> foto;
+		                                    $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
+		                                    imagejpeg($imagen, $ruta);
+		                                }
+		                                break;
+		
+		                            case 'image/gif' :
+		                                $imagen = imagecreatefromgif($_FILES["usuario"]["tmp_name"]["foto"]);
+		                                $usuario -> foto .= ".gif";
+		                                if (is_resource($imagen)) {
+		                                    $ruta = "/imagenes/usuarios/" . $usuario -> foto;
+		                                    $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
+		                                    imagegif($imagen, $ruta);
+		                                }
+		                                break;
+		
+		                            case 'image/png' :
+		                                $imagen = imagecreatefrompng($_FILES["usuario"]["tmp_name"]["foto"]);
+		                                $usuario -> foto .= ".png";
+		                                if (is_resource($imagen)) {
+		                                    $ruta = "/imagenes/usuarios/" . $usuarios -> foto;
+		                                    $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
+		                                    imagepng($imagen, $ruta);
+		                                }
+		                                break;
+		                        }
+		                    }
+		                    if (!$usuario -> guardar()) { //vuelve a guardar la imagen despues de modificar la imagen
+		                        $this -> dibujaVista("registroAdministrador", array("modelo" => $usuario), htmlentities("Nuevo usuario"));
 								exit ;
+		                    }
+							Sistema::app() -> irAPagina(array("usuarios", "index"));
+							exit ;
 							}	
-							
 						}
 	
 					} else
@@ -382,19 +501,58 @@
 							exit ;	
 						}						
 					}
-
 					else{
 					
 						if (!$usuario -> guardar()) { //guarda el usuario
 							$this -> dibujaVista("modificarUsuario", array("modelo" => $usuario), htmlentities("Modificar usuario"));
 							exit ;	
 						} else{
-							Sistema::app() -> irAPagina(array("inicial", "index"));
+							//Cargar imagen
+	                    	if (isset($_FILES["usuario"]) && $_FILES["usuario"]["error"]["foto"] != 4) {
+	                    	$usuario -> foto = "usu" . substr("0000000000" . $usuario -> cod_usuario, -10);
+	                        $imagen = "";
+	                        //segun sea la imagen
+	                        switch ($_FILES["usuario"]["type"]["foto"]) {
+	                            case 'image/jpeg' :
+	                                $imagen = imagecreatefromjpeg($_FILES["usuario"]["tmp_name"]["foto"]);
+	                                $usuario -> foto .= ".jpg";
+	                                if (is_resource($imagen)) {
+	                                    $ruta = "/imagenes/usuarios/" . $usuario -> foto;
+	                                    $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
+	                                    imagejpeg($imagen, $ruta);
+	                                }
+	                                break;
+	
+	                            case 'image/gif' :
+	                                $imagen = imagecreatefromgif($_FILES["usuario"]["tmp_name"]["foto"]);
+	                                $usuario -> foto .= ".gif";
+	                                if (is_resource($imagen)) {
+	                                    $ruta = "/imagenes/usuarios/" . $usuario -> foto;
+	                                    $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
+	                                    imagegif($imagen, $ruta);
+	                                }
+	                                break;
+	
+	                            case 'image/png' :
+	                                $imagen = imagecreatefrompng($_FILES["usuario"]["tmp_name"]["foto"]);
+	                                $usuario -> foto .= ".png";
+	                                if (is_resource($imagen)) {
+	                                    $ruta = "/imagenes/usuarios/" . $usuarios -> foto;
+	                                    $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
+	                                    imagepng($imagen, $ruta);
+	                                }
+	                                break;
+	                        }
+	                    }
+	                    if (!$usuario -> guardar()) { //vuelve a guardar la imagen despues de modificar la imagen
+	                        $this -> dibujaVista("modificarUsuario", array("modelo" => $usuario), htmlentities("Modificar usuario"));
+							exit ;
+	                    }
+							Sistema::app() -> irAPagina(array("usuarios", "index"));
 							exit ;
 						}	
 						
 					}
-
 				}                        
                         else {
                             $this -> dibujaVista("modificarUsuario", array("modelo" => $usuario), "Modificar usuario");
