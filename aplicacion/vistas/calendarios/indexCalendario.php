@@ -3,19 +3,21 @@
     echo CHTML::scriptFichero("../../script/jquery.dynatable.js");
 	echo CHTML::scriptFichero("../../script/scriptCrudActividades.js");
     echo CHTML::cssFichero("../../estilos/jquery.dynatable.css");
-    echo CHTML::cssFichero("../../estilos/estiloActividades.css");
+    echo CHTML::cssFichero("../../estilos/estiloCalendario.css");
     
+    echo CHTML::dibujaEtiqueta("div", array("class"=>"container"), "", false);
+
     //Titulo
     echo CHTML::dibujaEtiqueta("div", array("class"=>"contTitulo"));
         echo CHTML::dibujaEtiqueta("H1", array("class"=>"text-center"), "ADMINISTRACIÓN DE CALENDARIOS", TRUE);
     echo CHTML::dibujaEtiquetaCierre("div");
 	
 	echo CHTML::dibujaEtiqueta("div");
-	echo CHTML::dibujaEtiqueta("a",array("href"=>Sistema::app()->generaURL(array("calendarios", "nuevoCalendario")), "class" => "btn btn-default"),"Nuevo");
+	echo CHTML::dibujaEtiqueta("a",array("href"=>Sistema::app()->generaURL(array("calendarios", "nuevoCalendario")), "class" => "btn btn-default"),"Nuevo calendario");
 	echo CHTML::dibujaEtiquetaCierre("div");
 	
-    echo CHTML::dibujaEtiqueta("div", array("id"=>"contActividades"));
-        echo CHTML::dibujaEtiqueta("table", array("class"=>"table table-striped", "id"=>"tActividades"));
+    echo CHTML::dibujaEtiqueta("div", array("id"=>"contCalendario"));
+        echo CHTML::dibujaEtiqueta("table", array("class"=>"table table-striped", "id"=>"tCalendario"));
             //DIBUJAR CABECERA DE LA TABLA
             echo CHTML::dibujaEtiqueta("thead");
                 echo CHTML::dibujaEtiqueta("tr");
@@ -32,7 +34,9 @@
                     echo CHTML::dibujaEtiqueta("th", array(), "OPCIONES", TRUE);
                 echo CHTML::dibujaEtiquetaCierre("tr");
             echo CHTML::dibujaEtiquetaCierre("thead");
-            
+			
+    echo CHTML::dibujaEtiquetaCierre("div");
+
             //DIBUJAR CUERPO DE LA TABLA
             echo CHTML::dibujaEtiqueta("tbody");
 			
@@ -66,7 +70,7 @@
         echo CHTML::dibujaEtiquetaCierre("table");
     echo CHTML::dibujaEtiquetaCierre("div");
 
-    echo CHTML::script("$('#tActividades').dynatable();");
+    echo CHTML::script("$('#tCalendario').dynatable();");
     
 	
 	//VENTANA MODAL MENSAJE BORRADO
