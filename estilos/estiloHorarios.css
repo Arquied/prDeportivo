@@ -1,0 +1,19 @@
+/* ESTILO HORARIO ADMINISTRACION */
+.contTitulo{
+	margin: 20px 0;
+}
+.contTitulo h1{
+	color: rgb(140, 3, 21);
+}
+
+#tHorario th{
+	background: rgb(140, 3, 21);	
+}
+
+#tHorario th a{
+	color: white;
+}
+
+#tHorario tbody a{
+	margin: 0 10px;
+}
