@@ -480,7 +480,7 @@
 							$usuario -> local = 0;
 						}                                                                                   
 				if ($usuario -> validar()) {
-					if ($usuario -> web == 1){
+					if ($usuario -> web == 1){ //Si el usuario es web
 						if ($usuario -> contrasenia == ""){
 						$errorCont = "La contraseña no puede estar vacio";
 						$this -> dibujaVista("modificarUsuario", array("modelo" => $usuario, "errorCont"=>$errorCont), "Modificar usuario");
@@ -491,8 +491,49 @@
 								$this -> dibujaVista("modificarUsuario", array("modelo" => $usuario), htmlentities("Modificar usuario"));
 								exit ;	
 							} else{
-								Sistema::app() -> irAPagina(array("inicial", "index"));
+								//Cargar imagen
+		                    	if (isset($_FILES["usuario"]) && $_FILES["usuario"]["error"]["foto"] != 4) {
+		                    	$usuario -> foto = "usu" . substr("0000000000" . $usuario -> cod_usuario, -10);
+		                        $imagen = "";
+		                        //segun sea la imagen
+		                        switch ($_FILES["usuario"]["type"]["foto"]) {
+		                            case 'image/jpeg' :
+		                                $imagen = imagecreatefromjpeg($_FILES["usuario"]["tmp_name"]["foto"]);
+		                                $usuario -> foto .= ".jpg";
+		                                if (is_resource($imagen)) {
+		                                    $ruta = "/imagenes/usuarios/" . $usuario -> foto;
+		                                    $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
+		                                    imagejpeg($imagen, $ruta);
+		                                }
+		                                break;
+		
+		                            case 'image/gif' :
+		                                $imagen = imagecreatefromgif($_FILES["usuario"]["tmp_name"]["foto"]);
+		                                $usuario -> foto .= ".gif";
+		                                if (is_resource($imagen)) {
+		                                    $ruta = "/imagenes/usuarios/" . $usuario -> foto;
+		                                    $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
+		                                    imagegif($imagen, $ruta);
+		                                }
+		                                break;
+		
+		                            case 'image/png' :
+		                                $imagen = imagecreatefrompng($_FILES["usuario"]["tmp_name"]["foto"]);
+		                                $usuario -> foto .= ".png";
+		                                if (is_resource($imagen)) {
+		                                    $ruta = "/imagenes/usuarios/" . $usuarios -> foto;
+		                                    $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
+		                                    imagepng($imagen, $ruta);
+		                                }
+		                                break;
+		                        }
+		                    }
+		                    if (!$usuario -> guardar()) { //vuelve a guardar la imagen despues de modificar la imagen
+		                        $this -> dibujaVista("modificarUsuario", array("modelo" => $usuario), htmlentities("Modificar usuario"));
 								exit ;
+		                    }
+							Sistema::app() -> irAPagina(array("usuarios", "index"));
+							exit ;
 							}
 						} 
 						else {
@@ -501,8 +542,7 @@
 							exit ;	
 						}						
 					}
-					else{
-					
+					else{ //Si el usuario es local					
 						if (!$usuario -> guardar()) { //guarda el usuario
 							$this -> dibujaVista("modificarUsuario", array("modelo" => $usuario), htmlentities("Modificar usuario"));
 							exit ;	
