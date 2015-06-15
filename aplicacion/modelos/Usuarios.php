@@ -18,7 +18,7 @@
 		}
 			
 		protected function fijarAtributos(){
-			return array("cod_usuario", "nombre", "dni", "correo", "telefono", "nick", "contrasenia", "fecha_nac", "saldo", "disponible", "web", "cod_role");
+			return array("cod_usuario", "nombre", "dni", "correo", "telefono", "nick", "contrasenia", "foto", "fecha_nac", "saldo", "disponible", "web","local", "cod_role");
 		}
 		
 		protected function fijarDescripciones(){
@@ -29,10 +29,12 @@
 						"telefono"=>"Teléfono",
 						"nick"=>"Nick",
 						"contrasenia"=>"Contraseña",
+						"foto"=>"Foto",
 						"fecha_nac"=>"Fecha de nacimiento",
 						"saldo"=>"Saldo disponible",
 						"disponible"=>"Usuario disponible",
 						"web"=>"Usuario con acceso a web",
+						"local"=>"Usuario con acceso local",
 						"cod_role"=>"Código del role"
 						);
 		}
@@ -47,7 +49,8 @@
 						array("ATRI"=>"dni", "TIPO"=>"CADENA", "TAMANIO"=>9, "MENSAJE"=>"El dni no puede ser tan largo"),
 						array("ATRI"=>"dni", "TIPO"=>"FUNCION", "FUNCION"=>"comprobarDni"),
 						array("ATRI"=>"correo", "TIPO"=>"CADENA", "TAMANIO"=>30, "MENSAJE"=>"El email no puede ser tan largo"),
-						array("ATRI"=>"telefono", "TIPO"=>"CADENA", "TAMANIO"=>9, "MENSAJE"=>"El teléfono no puede ser tan largo"),
+						array("ATRI"=>"telefono", "TIPO"=>"CADENA", "TAMANIO"=>9, "MENSAJE"=>"El teléfono no puede ser tan largo"),			
+						array("ATRI"=>"foto", "TIPO"=>"FUNCION", "FUNCION"=>"validaImagen"),
 						array("ATRI"=>"nick", "TIPO"=>"REQUERIDO"),
 						array("ATRI"=>"nick", "TIPO"=>"CADENA", "TAMANIO"=>30, "MENSAJE"=>"El nick no puede ser tan largo"),
 						array("ATRI"=>"nick", "TIPO"=>"FUNCION", "FUNCION"=>"nickUnico"),
@@ -55,7 +58,8 @@
 						array("ATRI"=>"fecha_nac", "TIPO"=>"FECHA"),
 						array("ATRI"=>"saldo", "TIPO"=>"REAL"),
 						array("ATRI"=>"disponible", "TIPO"=>"ENTERO", "MAX"=>1, "MIN"=>0),
-						array("ATRI"=>"web", "TIPO"=>"ENTERO", "MAX"=>1, "MIN"=>0)
+						array("ATRI"=>"web", "TIPO"=>"ENTERO", "MAX"=>1, "MIN"=>0),
+						array("ATRI"=>"local", "TIPO"=>"ENTERO", "MAX"=>1, "MIN"=>0)
 						);
 		}
 		
@@ -66,11 +70,13 @@
 			$this->dni="";
 			$this->correo="";
 			$this->telefono="";
+			$this->foto="";
 			$this->nick="";
 			$this->contrasenia="";
 			$this->fecha_nac="";
 			$this->disponible=1;
-			$this->web=1;
+			$this->web=0;
+			$this->local=0;
             $this->saldo=0;
 		}	
 		
@@ -86,17 +92,19 @@
 			$dni=CGeneral::addSlashes($this->dni);
 			$correo=CGeneral::addSlashes($this->correo);
 			$telefono=CGeneral::addSlashes($this->telefono);
+            $foto = CGeneral::addSlashes($this->foto);
 			$nick=trim(CGeneral::addSlashes($this->nick));
 			$contrasenia=substr(trim(CGeneral::addSlashes($this->contrasenia)), 0, 30);
 			$fecha_nac=CGeneral::addSlashes(CGeneral::fechaNormalAMysql($this->fecha_nac));
 			$disponible=intval($this->disponible);
 			$web=intval($this->web);
+			$local=intval($this->local);
             $saldo=$this->saldo;
 								
 			return "insert into usuarios (".
-						" nombre, dni, correo, telefono, nick, contrasenia, fecha_nac, saldo, disponible, web, cod_role ".
+						" nombre, dni, correo, telefono, foto, nick, contrasenia, fecha_nac, saldo, disponible, web, local, cod_role ".
 						" ) values ( ".
-						" '$nombre', '$dni', '$correo', '$telefono', '$nick', md5('$contrasenia'), '$fecha_nac', $saldo, $disponible, $web, $cod_role ".
+						" '$nombre', '$dni', '$correo', '$telefono', 'foto', '$nick', md5('$contrasenia'), '$fecha_nac', $saldo, $disponible, $web, $local, $cod_role ".
 						" ) " ;
 		}
 		
@@ -111,6 +119,7 @@
 			$fecha_nac=CGeneral::addSlashes(CGeneral::fechaNormalAMysql($this->fecha_nac));
 			$disponible=intval($this->disponible);
 			$web=intval($this->web);
+			$local=intval($this->local);
             $saldo=$this->saldo;
 			
 			return "update usuarios set ".
@@ -123,6 +132,7 @@
 							" fecha_nac='$fecha_nac', ".
 							" disponible=$disponible, ".
 							" web=$web, ".
+							" local=$local, ".
 							" saldo=$saldo ".
 							" where cod_usuario={$this->cod_usuario} ";																		
 		}
@@ -177,8 +187,13 @@
             } 
         }
 				
+        protected function validaImagen(){
+            $cadena=$this->imagen;
+            $correcto=preg_match('/\.(gif|jpg|png)$/', $cadena);
+            if($correcto===0 || $correcto===false){
+                $this->setError("imagen", "La imagen no es correcta");
+            }       
+        }
 		
 	}
-	
-	
 	
