@@ -2,7 +2,7 @@
     echo CHTML::scriptFichero("../../script/jquery.dynatable.js");
 	echo CHTML::scriptFichero("../../script/scriptCrudInstalaciones.js");
     echo CHTML::cssFichero("../../estilos/jquery.dynatable.css");
-    echo CHTML::cssFichero("../../estilos/estiloActividades.css");
+    echo CHTML::cssFichero("../../estilos/estiloInstalaciones.css");
 	
     echo CHTML::dibujaEtiqueta("div", array("class"=>"container"), "", false);
     
@@ -15,8 +15,8 @@
     	   echo CHTML::dibujaEtiqueta("a",array("href"=>Sistema::app()->generaURL(array("instalaciones", "nuevaInstalacion", )), "class"=>"btn btn-default"),"Nuevo");
     	echo CHTML::dibujaEtiquetaCierre("div");
         
-        echo CHTML::dibujaEtiqueta("div", array("id"=>"contActividades"));
-            echo CHTML::dibujaEtiqueta("table", array("class"=>"table table-striped", "id"=>"tActividades"));
+        echo CHTML::dibujaEtiqueta("div", array("id"=>"contInstalacion"));
+            echo CHTML::dibujaEtiqueta("table", array("class"=>"table table-striped", "id"=>"tInstalaciones"));
                 //DIBUJAR CABECERA DE LA TABLA
                 echo CHTML::dibujaEtiqueta("thead");
                     echo CHTML::dibujaEtiqueta("tr");
@@ -52,7 +52,7 @@
                 echo CHTML::dibujaEtiquetaCierre("tbody");
             echo CHTML::dibujaEtiquetaCierre("table");
         echo CHTML::dibujaEtiquetaCierre("div");
-        echo CHTML::script("$('#tActividades').dynatable();");
+        echo CHTML::script("$('#tInstalaciones').dynatable();");
         
     	
     	//VENTANA MODAL MENSAJE BORRADO
