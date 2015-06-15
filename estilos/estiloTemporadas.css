@@ -1,0 +1,19 @@
+/* ESTILO TEMPORADAS ADMINISTRACION */
+.contTitulo{
+	margin: 20px 0;
+}
+.contTitulo h1{
+	color: rgb(140, 3, 21);
+}
+
+#tTemporadas th{
+	background: rgb(140, 3, 21);	
+}
+
+#tTemporadas th a{
+	color: white;
+}
+
+#tTemporadas tbody a{
+	margin: 0 10px;
+}
