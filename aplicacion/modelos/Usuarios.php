@@ -1,5 +1,4 @@
 <?php
-
 	/**
 	 *  CLASE MODELO USUARIOS
 	 */
@@ -104,7 +103,7 @@
 			return "insert into usuarios (".
 						" nombre, dni, correo, telefono, foto, nick, contrasenia, fecha_nac, saldo, disponible, web, local, cod_role ".
 						" ) values ( ".
-						" '$nombre', '$dni', '$correo', '$telefono', 'foto', '$nick', md5('$contrasenia'), '$fecha_nac', $saldo, $disponible, $web, $local, $cod_role ".
+						" '$nombre', '$dni', '$correo', '$telefono', '$foto', '$nick', md5('$contrasenia'), '$fecha_nac', $saldo, $disponible, $web, $local, $cod_role ".
 						" ) " ;
 		}
 		
@@ -115,6 +114,7 @@
 			$dni=CGeneral::addSlashes($this->dni);
 			$correo=CGeneral::addSlashes($this->correo);
 			$telefono=CGeneral::addSlashes($this->telefono);
+			$foto = CGeneral::addSlashes($this->foto);
 			$nick=CGeneral::addSlashes($this->nick);
 			$fecha_nac=CGeneral::addSlashes(CGeneral::fechaNormalAMysql($this->fecha_nac));
 			$disponible=intval($this->disponible);
@@ -128,6 +128,7 @@
 							" dni='$dni', ".
 							" correo='$correo', ".
 							" telefono='$telefono', ".
+							" foto='$foto', ".
 							" nick='$nick', ".
 							" fecha_nac='$fecha_nac', ".
 							" disponible=$disponible, ".
@@ -181,7 +182,7 @@
         }
        
         protected function nickUnico(){
-            $existe=$this->buscarTodos(array("where"=>"nick='".$this->nick."'"));   
+            $existe=$this->buscarTodos(array("where"=>"nick='".$this->nick."' and cod_usuario<>".$this->cod_usuario));   
             if(count($existe)!=0){
                 $this->setError("nick", "Nick ya existe");    
             } 
