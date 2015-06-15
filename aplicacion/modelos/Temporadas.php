@@ -18,13 +18,14 @@
         
         protected function fijarAtributos() {
             return array("cod_temporada", "nombre",
-                            "fecha_inicio", "fecha_fin");
+                            "fecha_inicio", "fecha_fin", "disponible");
         }
         protected function fijarDescripciones() {
             return array("cod_temporada" => "Código temporada:",
                             "nombre"=>"Nombre:",
                             "fecha_inicio"=>"Fecha de inicio:",
-                            "fecha_fin"=>"Fecha de finalización:");
+                            "fecha_fin"=>"Fecha de finalización:",
+							"disponible"=>"¿Está disponible?");
         }
         protected function fijarRestricciones() {
             Return array(array("ATRI"=>"cod_temporada","TIPO"=>"REQUERIDO"),
@@ -36,12 +37,14 @@
                          array("ATRI"=>"fecha_inicio","TIPO"=>"FUNCTION","FUNCTION"=>"validaFechaInicio"),
                          array("ATRI"=>"fecha_fin","TIPO"=>"FECHA"),
                          array("ATRI"=>"fecha_fin","TIPO"=>"REQUERIDO"),
-                         array("ATRI"=>"fecha_fin","TIPO"=>"FUNCTION", "FUNCTION"=>"validaFechaFin"));
+                         array("ATRI"=>"fecha_fin","TIPO"=>"FUNCTION", "FUNCTION"=>"validaFechaFin"),
+						 array("ATRI"=>"disponible", "TIPO"=>"ENTERO", "MAX"=>1, "MIN"=>0));
                                 
         }
         protected function afterCreate() {
             $this -> cod_temporada = 1;
             $this -> nombre = "";
+			$this ->disponible=1;
             
             $fech = new DateTime();
             $fecha = $fech->format("d/m/Y");
@@ -88,11 +91,12 @@
             $nombre=CGeneral::addSlashes($this->nombre);
             $fecha_inicio=CGeneral::fechaNormalAMysql($this->fecha_inicio);
             $fecha_fin=CGeneral::fechaNormalAMysql($this->fecha_fin);
+			$disponible=intval($this->disponible);
             return "insert into temporadas (".
-                    " nombre, fecha_inicio, fecha_fin ".
+                    " nombre, fecha_inicio, fecha_fin, disponible ".
                     " ) values ( ".
                     " '$nombre', '$fecha_inicio', ".
-                    " '$fecha_fin' ".
+                    " '$fecha_fin', $disponible ".
                     " ) " ;
         }
         
@@ -100,10 +104,12 @@
             $nombre=CGeneral::addSlashes($this->nombre);
             $fecha_inicio=CGeneral::fechaNormalAMysql($this->fecha_inicio);
             $fecha_fin=CGeneral::fechaNormalAMysql($this->fecha_fin);
+			$disponible=intval($this->disponible);
             return "update temporadas set ".
                     " nombre='$nombre', ".
                     " fecha_inicio='$fecha_inicio', ".
-                    " fecha_fin='$fecha_fin' ".
+                    " fecha_fin='$fecha_fin', ".
+                    " disponible=$disponible ".
                     " where cod_temporada={$this->cod_temporada} ";
         }
         
