@@ -46,7 +46,7 @@
     						}						
                             echo CHTML::dibujaEtiqueta("td");
                                 echo CHTML::dibujaEtiqueta("a", array("href"=>"#", "class"=>"cambiarAdministrador"));
-                                    echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico_edit.png"));
+                                    echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico_rol.png"));
                                 echo CHTML::dibujaEtiquetaCierre("a");
     							echo CHTML::dibujaEtiqueta("a", array("href"=>"#", "class"=>"btnBorrar"));
                                     echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico_borrar.png"));
@@ -58,7 +58,7 @@
     								echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico_anadirReserva.png"));
     							echo CHTML::dibujaEtiquetaCierre("a");
 							echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("usuarios","modificarUsuario"), array("cod_usuario"=>$fila["cod_usuario"])), "title"=>"Modificar Usuario"));
-								echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico__edit.jpg"));
+								echo CHTML::dibujaEtiqueta("img", array("src"=>"../../../imagenes/ico_edit.png"));
 							echo CHTML::dibujaEtiquetaCierre("a");
                             echo CHTML::dibujaEtiquetaCierre("td");
                         echo CHTML::dibujaEtiquetaCierre("tr");
