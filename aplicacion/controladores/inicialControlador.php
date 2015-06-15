@@ -74,12 +74,9 @@
         
         public function accionQuien(){
             
-			$configuraciones = new Configuracion();
-			
-			$configuracion = $configuraciones -> buscarTodos();
-		
-			
-            $this->dibujaVista("quien",array("configuracion"=>$configuracion));
+		$configuracion= new Configuracion();			
+			$configuracion -> buscarPorId(1);		
+            $this->dibujaVista("quien",array("configuracion"=>$configuracion));  
             
         }
         
