@@ -3,16 +3,16 @@
     class inicialControlador extends CControlador
     {
         public function accionIndex(){
-            $actividades = new Actividades();
+           $actividades = new Actividades();
             
             $opciones = array();
             $opciones["select"]=" t.*";
-            $opciones["from"]="";
-            $opciones["where"]=" t.novedad= 1 and t.disponible=1";
+            $opciones["from"]=" join temporadas tem using(cod_temporada) ";
+            $opciones["where"]=" t.novedad= 1 and t.disponible=1 and tem.fecha_inicio<='".date("Y-m-d")."' and tem.fecha_fin>='".date("Y-m-d")."'";
             
             $filas=$actividades->buscarTodos($opciones);
              
-            $this->dibujaVista("index",array("filas"=>$filas));      
+            $this->dibujaVista("index",array("filas"=>$filas));     
         }
         
         public function accionLogin(){
