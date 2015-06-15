@@ -17,7 +17,7 @@
 			else {
 				$usuario=new Usuarios();				
 				$filas=$usuario->buscarTodos(array("select"=>"t.*, r.nombre as role ",
-													"from"=>" join roles r using(cod_role)"));				
+													"from"=>" join roles r using(cod_role)"));		
 				$this->dibujaVista("indexUsuario",array("filas"=>$filas));			
 			}
 			
@@ -30,6 +30,12 @@
 				$usuario -> setValores($_POST[$nombre]);
 				$usuario -> cod_role = 2;
 				$usuario -> disponible = 1;
+				$usuario -> web = 1;
+				if ($usuario -> contrasenia == ""){
+					$errorCont = "La contraseña no puede estar vacio";
+					$this -> dibujaVista("registro", array("modelo" => $usuario, "errorCont"=>$errorCont), "Nuevo usuario");
+					exit ;	
+				}
 				if ($usuario -> validar()) {
 					if($usuario->contrasenia==$_POST["con1"]){
 						if (!$usuario -> guardar()) { //guarda el usuario
@@ -242,6 +248,164 @@
 				}
 			}       
                            
-        
+        	public function accionListaUsuarios(){
+	        	if (!Sistema::app() -> acceso() -> hayUsuario()) {
+	            	Sistema::app() -> sesion() -> set("pagPrevia", array("usuarios", "ListaUsuarios"));
+	              	Sistema::app() -> sesion() -> set("parametrosAnt", array());
+	              	Sistema::app() -> irAPagina(array("inicial", "login"));
+			        exit ;
+		        } 
+       			else if (!Sistema::app() -> acceso() -> puedeConfigurar()) {
+             		Sistema::app() -> paginaError(400, "No tiene permiso para acceder");
+             		exit ;
+       			} 
+				else {
+					$usuarios = new Usuarios();
+					$actividad = new Actividades();
+					if ($actividad->buscarPorId($_GET["cod_actividad"])){
+						$filas=$usuarios->buscarTodos(array("select"=>"t.*","from"=>"join reservas r using (cod_usuario)", "where"=>"r.cod_actividad = {$_GET['cod_actividad']} and r.anulado = 0"));
+						$this->dibujaVista("ListaUsuarios",array("filas"=>$filas, "actividad"=>$actividad));
+						
+					}	
+				}
+        	}
+			
+		public function accionRegistrarUsuario(){
+						if(!Sistema::app()->acceso()->hayUsuario()){
+				Sistema::app()->sesion()->set("pagPrevia", array("usuarios", "borraUsuario"));
+				Sistema::app()->sesion()->set("parametrosAnt", array());
+				Sistema::app()->irAPagina(array("inicial", "login"));
+				exit;
+			}
+			else if(!Sistema::app()->acceso()->puedeConfigurar()){
+				Sistema::app()->paginaError(400, "No tiene permiso para acceder");	
+				exit;
+			}
+			else{
+				$usuario = new Usuarios();
+				$nombre = $usuario -> getNombre();
+	
+				if (isset($_POST[$nombre])) {
+					$usuario -> setValores($_POST[$nombre]);
+					$usuario -> disponible = 1;
+					$usuario -> cod_role = $_POST["role"];
+					if ($_POST["tipo"]){
+						$usuario -> local = 1;
+					}
+					else {
+						$usuario -> web = 1;
+					}
+					echo $usuario->web;
+					if ($usuario -> validar()) {
+						if ($usuario -> web == 1){
+							if ($usuario -> contrasenia == ""){
+							$errorCont = "La contraseña no puede estar vacio";
+							$this -> dibujaVista("registroAdministrador", array("modelo" => $usuario, "errorCont"=>$errorCont), "Nuevo usuario");
+							exit ;	
+							}
+							if($usuario->contrasenia==$_POST["con1"]){
+								if (!$usuario -> guardar()) { //guarda el usuario
+									$this -> dibujaVista("registroAministrador", array("modelo" => $usuario), htmlentities("Nuevo usuario"));
+									exit ;	
+								} else{
+									Sistema::app() -> irAPagina(array("inicial", "index"));
+									exit ;
+								}
+							} 
+							else {
+								$errorCont="Las contraseñas no coinciden";
+								$this -> dibujaVista("registroAdministrador", array("modelo" => $usuario, "errorCont"=>$errorCont), "Nuevo usuario");
+								exit ;	
+							}						
+						}
+	
+						else{
+						
+							if (!$usuario -> guardar()) { //guarda el usuario
+								$this -> dibujaVista("registroAdministrador", array("modelo" => $usuario), htmlentities("Nuevo usuario"));
+								exit ;	
+							} else{
+								Sistema::app() -> irAPagina(array("inicial", "index"));
+								exit ;
+							}	
+							
+						}
+	
+					} else
+						$this -> dibujaVista("registroAdministrador", array("modelo" => $usuario), "Nuevo usuario");
+				}
+				else
+						$this -> dibujaVista("registroAdministrador", array("modelo" => $usuario), "Nuevo usuario");
+			}
+		}
+	
+        public function accionModificarUsuario(){
+            //Comprobar si se ha iniciado sesion y si el usuario tiene permiso de modificar         
+            if(!Sistema::app()->acceso()->hayUsuario()){
+                Sistema::app()->sesion()->set("pagPrevia", array("usuarios", "modificarUsuario"));
+                Sistema::app()->sesion()->set("parametrosAnt", array());
+                Sistema::app()->irAPagina(array("inicial", "login"));
+                exit;
+            }
+            else{
+                $usuario=new Usuarios();      
+                if($usuario->buscarPorId($_GET["cod_usuario"])){
+                    if(isset($_POST[$usuario->getNombre()])){
+                        $usuario -> setValores($_POST[$usuario->getNombre()]);
+						if ($_POST["tipo"]){
+							$usuario -> local = 1;
+							$usuario -> web =0;
+						}
+						else {
+							$usuario -> web = 1;
+							$usuario -> local = 0;
+						}                                                                                   
+				if ($usuario -> validar()) {
+					if ($usuario -> web == 1){
+						if ($usuario -> contrasenia == ""){
+						$errorCont = "La contraseña no puede estar vacio";
+						$this -> dibujaVista("modificarUsuario", array("modelo" => $usuario, "errorCont"=>$errorCont), "Modificar usuario");
+						exit ;	
+						}
+						if($usuario->contrasenia==$_POST["con1"]){
+							if (!$usuario -> guardar()) { //guarda el usuario
+								$this -> dibujaVista("modificarUsuario", array("modelo" => $usuario), htmlentities("Modificar usuario"));
+								exit ;	
+							} else{
+								Sistema::app() -> irAPagina(array("inicial", "index"));
+								exit ;
+							}
+						} 
+						else {
+							$errorCont="Las contraseñas no coinciden";
+							$this -> dibujaVista("modificarUsuario", array("modelo" => $usuario, "errorCont"=>$errorCont), "Modificar usuario");
+							exit ;	
+						}						
+					}
+
+					else{
+					
+						if (!$usuario -> guardar()) { //guarda el usuario
+							$this -> dibujaVista("modificarUsuario", array("modelo" => $usuario), htmlentities("Modificar usuario"));
+							exit ;	
+						} else{
+							Sistema::app() -> irAPagina(array("inicial", "index"));
+							exit ;
+						}	
+						
+					}
+
+				}                        
+                        else {
+                            $this -> dibujaVista("modificarUsuario", array("modelo" => $usuario), "Modificar usuario");
+                            exit ;
+                        }       
+                    }               
+                    $this->dibujaVista("modificarUsuario", array("modelo"=>$usuario), "Modificar el usuario");
+                    exit;
+                }
+				Sistema::app()->paginaError(400, "El usuario no se encuentra");
+       		}
+		}
 	
 }
