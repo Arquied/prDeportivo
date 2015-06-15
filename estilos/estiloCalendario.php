@@ -34,3 +34,23 @@
   font-weight: bold;
   font-size: 2em;
 }
+
+/* ESTILO COMPRAS ADMINISTRACION */
+.contTitulo{
+	margin: 20px 0;
+}
+.contTitulo h1{
+	color: rgb(140, 3, 21);
+}
+
+#tCalendario th{
+	background: rgb(140, 3, 21);	
+}
+
+#tCalendario th a{
+	color: white;
+}
+
+#tCalendario tbody a{
+	margin: 0 10px;
+}
