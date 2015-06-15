@@ -1,0 +1,19 @@
+/* ESTILO COMPRAS ADMINISTRACION */
+.contTitulo{
+	margin: 20px 0;
+}
+.contTitulo h1{
+	color: rgb(140, 3, 21);
+}
+
+#tCompras th{
+	background: rgb(140, 3, 21);	
+}
+
+#tCompras th a{
+	color: white;
+}
+
+#tCompras tbody a{
+	margin: 0 10px;
+}
