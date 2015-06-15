@@ -152,9 +152,16 @@
                   exit ;
             } 
             else {
-                
                 $reservas = new Reservas();
-                $filas = $reservas -> buscarTodos(array("select c.*","from"=>"inner join compras as c on c.cod_reserva=t.cod_reserva", "where"=>"t.cod_usuario=$_GET[cod_usuario]"));                                   
+				$compras = new Compras();
+				if (isset($_GET['cod_usuario'])){
+					$filas = $compras -> buscarTodos(array("select t.*","from"=>"inner join reservas as r on r.cod_reserva=t.cod_reserva", "where"=>"r.cod_usuario=$_GET[cod_usuario]"));
+				}
+                	
+				
+				else
+					$filas = $compras -> buscarTodos(array("select t.*", "from"=>"inner join reservas as r on r.cod_reserva=t.cod_reserva"));
+				                    
                 $this->dibujaVista("listaCompras",array("filas"=>$filas), "Lista de Compras");
                 
             }
