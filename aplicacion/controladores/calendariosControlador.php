@@ -1,5 +1,4 @@
 <?php
-
 	class calendariosControlador extends CControlador{
 		
 		public function accionIndex(){
@@ -27,7 +26,7 @@
 		
 		public function accionNuevoCalendario(){
 			
-		if (!Sistema::app() -> acceso() -> hayUsuario()) {
+			if (!Sistema::app() -> acceso() -> hayUsuario()) {
                Sistema::app() -> sesion() -> set("pagPrevia", array("calendarios", "nuevoCalendario"));
                Sistema::app() -> sesion() -> set("parametrosAnt", array());
                Sistema::app() -> irAPagina(array("inicial", "login"));
@@ -90,10 +89,8 @@
             } 		
 			
 		}
-
-		public function accionModificaCalendario(){
-				
-		//Comprobar si se ha iniciado sesion y si el usuario tiene permiso de modificar
+		public function accionModificaCalendario(){				
+			//Comprobar si se ha iniciado sesion y si el usuario tiene permiso de modificar
             if (!Sistema::app() -> acceso() -> hayUsuario()) {
                 Sistema::app() -> sesion() -> set("pagPrevia", array("calendarios", "modificaCalendario"));
                 Sistema::app() -> sesion() -> set("parametrosAnt", array("cod_calendario"=>$_GET["cod_calendario"]));
@@ -155,7 +152,6 @@
                 
             }
 		}
-
 	public function accionBorraCalendario(){
 			
 		if(!Sistema::app()->acceso()->hayUsuario()){
@@ -222,11 +218,11 @@
 			
 	}
 	
-		//Funcion que devuelve un objeto json con el caledanrio de la actividad
+		//Funcion que devuelve un objeto json con el calendario de la actividad utilizado para mostrar el calendario de una actividad en la reserva
 	public function accionCalendarioActividad(){
 		if($_POST["cod_actividad"]){
         	$calendario=new Calendarios();
-			$sentSelect=" t.cod_calendario, t.hora_inicio, t.hora_fin, d.dia, d.cod_dia ";
+			$sentSelect=" t.cod_calendario, t.hora_inicio, t.hora_fin, d.dia, d.cod_dia, '".date("Y-m-d", strtotime("monday this week"))."' as lunes ";
             $sentFrom=" join dias d using(cod_dia) ";
             $sentWhere=" t.cod_actividad=".intval($_POST["cod_actividad"]).
                         " and t.fecha_inicio<='".date("Y-m-d", strtotime("monday this week"))."'".
@@ -241,4 +237,5 @@
 	}
 	
 		
-	}
+}
+
