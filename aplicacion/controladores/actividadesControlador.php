@@ -325,7 +325,7 @@
             $this->dibujaVista("listaActividades", array("filas"=>$filas,  "categoria"=>(isset($_REQUEST["categoria"]) && $_REQUEST["categoria"]!=="")?$_REQUEST["categoria"]: "", "paginador"=>$opcPaginador), "Lista de Actividades");
         }
 
-        //Accion que devuelve la informacion de la actividad junto con el horario de esa semana
+        //Accion que devuelve la informacion de la actividad 
         //en un objeto JSON
         public function accionActividadJSON(){
             if($_POST["cod_actividad"]){
@@ -336,6 +336,17 @@
 				echo $json;				
             }
         }
- 
+ 		
+		//Accion que devuelve las actividades para una temporada en concreto
+        //en un objeto JSON
+        public function accionActividadesTemporadaJSON(){
+            if($_POST["cod_temporada"]){
+            	$actividad=new Actividades();                
+				$datosActividad=$actividad->buscarTodos(array("where"=>"cod_temporada=".intval($_POST["cod_temporada"])));			
+				
+				$json=json_encode($datosActividad);
+				echo $json;				
+            }
+        }
     }
         
