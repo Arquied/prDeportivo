@@ -4,14 +4,12 @@
 	
 	echo CHTML::cssFichero("/estilos/estiloFormularios.css");
 	echo CHTML::scriptFichero("../../script/scriptCrudUsuarios.js");
-
 	echo CHTML::dibujaEtiqueta("div", array("class"=>"container contForm"));
                 echo CHTML::dibujaEtiqueta("div", array("class"=>"contTitFormulario"));
                     echo CHTML::dibujaEtiqueta("h2", array(), "Registrar usuario", true);                
                 echo CHTML::dibujaEtiquetaCierre("div");
-
 				//FORMULARIO DE REGISTRO
-				echo CHTML::iniciarForm("", "post", array("role"=>"form"));
+				echo CHTML::iniciarForm("", "post", array("role"=>"form", "enctype"=>"multipart/form-data"));
 				
 					echo CHTML::dibujaEtiqueta("div");
 						//Campo nombre					
