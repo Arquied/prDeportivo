@@ -120,7 +120,7 @@ class CAclBD extends CAcl
 		    return false;
 		
 		$sentencia="insert into usuarios (".
-					"       nombre_apellidos, nick, contrasenia, cod_role".
+					"       nombre, nick, contrasenia, cod_role".
 					"			) values ( ".
 					"       '$nombre', '$nick', md5('$contrasena'), $codRole".
 					"			)";
@@ -243,7 +243,7 @@ class CAclBD extends CAcl
 		if (!$fila)
 		    return false;		
 		
-		return ($fila["nombre_apellidos"]);
+		return ($fila["nombre"]);
 		
 	}
 	
@@ -260,7 +260,7 @@ class CAclBD extends CAcl
 		
 		
 		$sentencia="update usuarios set ".
-     				"		nombre_apellidos='$nombre'";
+     				"		nombre='$nombre'";
 		
 		$consulta=$this->enlaceBD->crearConsulta($sentencia);
 		if ($consulta->error()!=0)
@@ -275,11 +275,11 @@ class CAclBD extends CAcl
 	{
 		
 		$usu=array();
-		$sentencia="SELECT us.cod_usuario, us.nombre_apellidos, us.dni, us.email, us.tlf, us.nick, us.fecha_nac ".
+		$sentencia="SELECT us.cod_usuario, us.nombre, us.dni, us.email, us.telefono, us.nick, us.fecha_nac ".
 					"		r.nombre as nombre_rol ".
 					"	FROM usuarios us ".
          			"		join roles r using (cod_role)".
-					"	order by nombre_apellidos";
+					"	order by nombre";
 		
 		$consulta=$this->enlaceBD->crearConsulta($sentencia);
 		if ($consulta->error()!=0)
@@ -288,10 +288,10 @@ class CAclBD extends CAcl
 		while ($fila=$consulta->fila())
 		{
 			$usu[]=array("COD_USUARIO"=>$fila["cod_usuario"],
-						 "NOMBRE"=>$fila["nombre_apellidos"],
+						 "NOMBRE"=>$fila["nombre"],
 						 "DNI"=>$fila["dni"],
 						 "EMAIL"=>$fila["email"],
-						 "TLF"=>$fila["tlf"],
+						 "TLF"=>$fila["telefono"],
 						 "FECHA_NAC"=>$fila["fecha_nac"],
 			             "NICK"=>$fila["nick"],
 						 "ROLE"=>$fila["nombre_rol"]);
@@ -304,3 +304,4 @@ class CAclBD extends CAcl
 	}
 	
 }
+
