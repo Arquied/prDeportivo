@@ -14,7 +14,7 @@ a{
 
 #conte{	
 	position: relative;
-	top: 50px;	
+	top: 50px;
 }
 
 .logo{
@@ -101,6 +101,10 @@ footer{
 }
 footer .featurette-divider{
 	border-top: 3px solid #eee;
+}
+
+#contacto{
+	margin: 0 20px;
 }
 
 /* VENTANA MODAL */
