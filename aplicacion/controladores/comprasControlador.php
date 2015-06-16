@@ -12,7 +12,7 @@
             } 
             else if(isset($_REQUEST["cod_compra"])){
                 $compra=new Compras();
-                $sentSelect=" t.*, a.nombre as actividad, u.nombre as nombreUsuario, u.dni, u.telefono ";
+                $sentSelect=" t.*, a.nombre as actividad, u.nombre as nombreUsuario, u.dni, u.telefono, u.direccion as direccionUsuario, u.localidad as localidadUsuario, u.provincia as provinciaUsuario ";
                 $sentFrom=" join reservas r using(cod_reserva) ".
                             " join actividades a using(cod_actividad) ".
                             " join usuarios u using(cod_usuario) ";
@@ -84,13 +84,18 @@
                                         "<h3>$configuracion->nombre_empresa</h3>".
                                         "<p>".
                                             "<p>CIF: $configuracion->cif</p>".
-                                            "<p>Dirección: $configuracion->direccion</p>".             
+                                            "<p>Dirección: $configuracion->direccion</p>".   
+                                            "<p>Localidad: $configuracion->localidad</p>".  
+                                            "<p>Provincia: $configuracion->provincia</p>".              
                                         "</p>".
                                     "</td>".
                                     "<td class='datosFactura'>".
                                         "<h3>{$factura[0]['nombreUsuario']}</h3>".
                                         "<p>".
-                                            "<p>NIF: {$factura[0]['dni']}</p>".               
+                                            "<p>NIF: {$factura[0]['dni']}</p>".  
+                                            "<p>Dirección: {$factura[0]['direccionUsuario']}</p>". 
+                                            "<p>Localidad: {$factura[0]['localidadUsuario']}</p>".
+                                            "<p>Provincia: {$factura[0]['provinciaUsuario']}</p>".               
                                         "</p>".
                                     "</td>".
                                   "</tr>".
