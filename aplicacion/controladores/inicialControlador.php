@@ -3,7 +3,7 @@
     class inicialControlador extends CControlador
     {
         public function accionIndex(){
-           $actividades = new Actividades();
+            $actividades = new Actividades();
             
             $opciones = array();
             $opciones["select"]=" t.*";
@@ -12,7 +12,7 @@
             
             $filas=$actividades->buscarTodos($opciones);
              
-            $this->dibujaVista("index",array("filas"=>$filas));     
+            $this->dibujaVista("index",array("filas"=>$filas));      
         }
         
         public function accionLogin(){
@@ -66,18 +66,23 @@
         }
         
                 
-        public function accionPrivacidad(){
-            
+        public function accionPrivacidad(){            
             $this->dibujaVista("privacidad");
             
         }
         
-        public function accionQuien(){
-            
-		$configuracion= new Configuracion();			
+        public function accionQuien(){            
+			$configuracion= new Configuracion();			
 			$configuracion -> buscarPorId(1);		
-            $this->dibujaVista("quien",array("configuracion"=>$configuracion));  
-            
+            $this->dibujaVista("quien",array("configuracion"=>$configuracion));            
         }
+		
+		public function accionContacto(){
+			$configuracion= new Configuracion();			
+			$configuracion -> buscarPorId(1);		
+            $this->dibujaVista("contacto",array("configuracion"=>$configuracion));  		
+		}
         
-    }
+    }  
+     
+   
