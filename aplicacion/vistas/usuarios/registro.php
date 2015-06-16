@@ -8,7 +8,12 @@
                 echo CHTML::dibujaEtiqueta("div", array("class"=>"contTitFormulario"));
                     echo CHTML::dibujaEtiqueta("h2", array(), "Registrar usuario", true);                
                 echo CHTML::dibujaEtiquetaCierre("div");
-
+				//CONTENEDOR ERRORES
+				echo CHTML::dibujaEtiqueta("div");
+					foreach ($errores as $error) {
+						echo CHTML::dibujaEtiqueta("p", array("class"=>"help-block"), $error, true);	
+					}
+				echo CHTML::dibujaEtiquetaCierre("div");
 				//FORMULARIO DE REGISTRO
 				echo CHTML::iniciarForm("", "post", array("role"=>"form", "enctype"=>"multipart/form-data"));
 				
@@ -68,6 +73,41 @@
 							echo CHTML::modeloText($modelo,
 													"fecha_nac",
 												 	array("class"=>"form-control fecha", "maxlength"=>10, "size"=>12));
+						echo CHTML::dibujaEtiquetaCierre("div");										
+					echo CHTML::dibujaEtiquetaCierre("div");
+					
+					echo CHTML::dibujaEtiqueta("div");
+						//Campo direccion
+						echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
+							if(isset($errores["direccion"])){
+								echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["direccion"], true);
+							}
+							echo CHTML::modeloLabel($modelo, "direccion");
+							echo CHTML::modeloText($modelo, 
+													"direccion",										 	 
+												 	array("class"=>"form-control", "maxlength"=>50, "size"=>50));
+						echo CHTML::dibujaEtiquetaCierre("div");
+						
+						//Campo localidad
+						echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
+							if(isset($errores["localidad"])){
+							echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["localidad"], true);
+							}
+							echo CHTML::modeloLabel($modelo, "localidad");
+							echo CHTML::modeloText($modelo,
+													"localidad",
+												 	array("class"=>"form-control", "maxlength"=>50, "size"=>50));
+						echo CHTML::dibujaEtiquetaCierre("div");
+						
+						//Campo provincia
+						echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
+							if(isset($errores["provincia"])){
+							echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["provincia"], true);
+							}
+							echo CHTML::modeloLabel($modelo, "provincia");
+							echo CHTML::modeloText($modelo,
+													"provincia",
+												 	array("class"=>"form-control", "maxlength"=>50, "size"=>50));
 						echo CHTML::dibujaEtiquetaCierre("div");										
 					echo CHTML::dibujaEtiquetaCierre("div");
 					
