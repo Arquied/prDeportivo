@@ -93,9 +93,10 @@
                 <footer>
                     <hr class="featurette-divider"/>
                     <div class="container">
-                        <a href="<?php echo Sistema::app()->generaURL(array("inicial", "privacidad")); ?>" id="privacidad">Política de privacidad</a>
+                        <a href="<?php echo Sistema::app()->generaURL(array("inicial", "privacidad")); ?>" id="privacidad">Política de privacidad</a>                        
                         <a href="<?php echo $configuracion->url_facebook; ?>" class="pull-right"><img src="../../imagenes/ico_facebook.png"></a>
                         <a href="<?php echo $configuracion->url_twitter; ?>" class="pull-right"><img src="../../imagenes/ico_twitter.png"></a>
+                        <a href="<?php echo Sistema::app()->generaURL(array("inicial", "contacto")); ?>" id="contacto" >Contacto</a>
                     </div>
                 </footer>     
             </body>
