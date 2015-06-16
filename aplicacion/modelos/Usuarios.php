@@ -17,7 +17,7 @@
 		}
 			
 		protected function fijarAtributos(){
-			return array("cod_usuario", "nombre", "dni", "correo", "telefono", "nick", "contrasenia", "foto", "fecha_nac", "saldo", "disponible", "web","local", "cod_role");
+			return array("cod_usuario", "nombre", "dni", "correo", "telefono", "direccion", "provincia", "localidad", "nick", "contrasenia", "foto", "fecha_nac", "saldo", "disponible", "web","local", "cod_role");
 		}
 		
 		protected function fijarDescripciones(){
@@ -26,6 +26,9 @@
 						"dni"=>"DNI",
 						"correo"=>"Correo electrónico",
 						"telefono"=>"Teléfono",
+						"direccion"=>"Dirección",
+						"provincia"=>"Provincia",
+						"localidad"=>"Localidad",
 						"nick"=>"Nick",
 						"contrasenia"=>"Contraseña",
 						"foto"=>"Foto",
@@ -55,10 +58,14 @@
 						array("ATRI"=>"nick", "TIPO"=>"FUNCION", "FUNCION"=>"nickUnico"),
 						array("ATRI"=>"contrasenia", "TIPO"=>"CADENA", "TAMANIO"=>32, "MENSAJE"=>"La contraseña no puede ser tan larga"),
 						array("ATRI"=>"fecha_nac", "TIPO"=>"FECHA"),
+						array("ATRI"=>"fecha_nac", "TIPO"=>"REQUERIDO", "MENSAJE"=>"La fecha de nacimiento es obligatoria"),
 						array("ATRI"=>"saldo", "TIPO"=>"REAL"),
 						array("ATRI"=>"disponible", "TIPO"=>"ENTERO", "MAX"=>1, "MIN"=>0),
 						array("ATRI"=>"web", "TIPO"=>"ENTERO", "MAX"=>1, "MIN"=>0),
-						array("ATRI"=>"local", "TIPO"=>"ENTERO", "MAX"=>1, "MIN"=>0)
+						array("ATRI"=>"local", "TIPO"=>"ENTERO", "MAX"=>1, "MIN"=>0),
+						array("ATRI"=>"direccion", "TIPO"=>"CADENA", "TAMANIO"=>50, "MENSAJE"=>"La dirección no puede ser tan largo"),
+						array("ATRI"=>"provincia", "TIPO"=>"CADENA", "TAMANIO"=>50, "MENSAJE"=>"La provincia no puede ser tan largo"),
+						array("ATRI"=>"localidad", "TIPO"=>"CADENA", "TAMANIO"=>50, "MENSAJE"=>"La localidad no puede ser tan largo"),
 						);
 		}
 		
@@ -77,6 +84,9 @@
 			$this->web=0;
 			$this->local=0;
             $this->saldo=0;
+            $this->direccion="";
+			$this->provincia="";
+			$this->localidad="";
 		}	
 		
 		protected function afterBuscar(){
@@ -99,11 +109,14 @@
 			$web=intval($this->web);
 			$local=intval($this->local);
             $saldo=$this->saldo;
+			$direccion=CGeneral::addSlashes($this->direccion);
+			$provincia=CGeneral::addSlashes($this->provincia);
+			$localidad=CGeneral::addSlashes($this->localidad);
 								
 			return "insert into usuarios (".
-						" nombre, dni, correo, telefono, foto, nick, contrasenia, fecha_nac, saldo, disponible, web, local, cod_role ".
+						" nombre, dni, correo, telefono, direccion, provincia, localidad, foto, nick, contrasenia, fecha_nac, saldo, disponible, web, local, cod_role ".
 						" ) values ( ".
-						" '$nombre', '$dni', '$correo', '$telefono', '$foto', '$nick', md5('$contrasenia'), '$fecha_nac', $saldo, $disponible, $web, $local, $cod_role ".
+						" '$nombre', '$dni', '$correo', '$telefono', '$direccion', '$provincia', '$localidad', '$foto', '$nick', md5('$contrasenia'), '$fecha_nac', $saldo, $disponible, $web, $local, $cod_role ".
 						" ) " ;
 		}
 		
@@ -121,6 +134,9 @@
 			$web=intval($this->web);
 			$local=intval($this->local);
             $saldo=$this->saldo;
+            $direccion=CGeneral::addSlashes($this->direccion);
+			$provincia=CGeneral::addSlashes($this->provincia);
+			$localidad=CGeneral::addSlashes($this->localidad);
 			
 			return "update usuarios set ".
 							" cod_role=$cod_role, ".
@@ -128,6 +144,9 @@
 							" dni='$dni', ".
 							" correo='$correo', ".
 							" telefono='$telefono', ".
+							" direccion='$direccion', ".
+							" provincia='$provincia', ".
+							" localidad='$localidad', ".
 							" foto='$foto', ".
 							" nick='$nick', ".
 							" fecha_nac='$fecha_nac', ".
