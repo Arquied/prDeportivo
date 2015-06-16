@@ -36,6 +36,17 @@
                                                     array("class"=>"form-control", "maxlength"=>9, "size"=>"9"));
                         echo CHTML::dibujaEtiquetaCierre("div");
                         
+						//Campo n_instalacion               
+                        echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
+                            if(isset($errores["n_instalacion"])){
+                                echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["n_instalacion"], true);
+                            }
+                            echo CHTML::modeloLabel($modelo, "n_instalacion");
+                            echo CHTML::modeloText($modelo, 
+                                                    "n_instalacion",                   
+                                                    array("class"=>"form-control", "maxlength"=>20, "size"=>"20"));
+                        echo CHTML::dibujaEtiquetaCierre("div");
+						
                         //Campo direccion              
                         echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
                             if(isset($errores["direccion"])){
@@ -44,6 +55,28 @@
                             echo CHTML::modeloLabel($modelo, "direccion");
                             echo CHTML::modeloText($modelo, 
                                                     "direccion",                   
+                                                    array("class"=>"form-control", "maxlength"=>50, "size"=>"50"));
+                        echo CHTML::dibujaEtiquetaCierre("div");
+						
+						//Campo localidad          
+                        echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
+                            if(isset($errores["localidad"])){
+                                echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["localidad"], true);
+                            }
+                            echo CHTML::modeloLabel($modelo, "localidad");
+                            echo CHTML::modeloText($modelo, 
+                                                    "localidad",                   
+                                                    array("class"=>"form-control", "maxlength"=>50, "size"=>"50"));
+                        echo CHTML::dibujaEtiquetaCierre("div");
+						
+						//Campo provincia            
+                        echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
+                            if(isset($errores["provincia"])){
+                                echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["provincia"], true);
+                            }
+                            echo CHTML::modeloLabel($modelo, "provincia");
+                            echo CHTML::modeloText($modelo, 
+                                                    "provincia",                   
                                                     array("class"=>"form-control", "maxlength"=>50, "size"=>"50"));
                         echo CHTML::dibujaEtiquetaCierre("div");
                         echo CHTML::dibujaEtiquetaCierre("div");
@@ -103,6 +136,17 @@
                             echo CHTML::modeloLabel($modelo, "telefono");
                             echo CHTML::modeloText($modelo, 
                                                     "telefono",                   
+                                                    array("class"=>"form-control", "maxlength"=>9, "size"=>"9"));
+                        echo CHTML::dibujaEtiquetaCierre("div");
+						
+						//Campo movil  
+                        echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
+                            if(isset($errores["movil"])){
+                                echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["movil"], true);
+                            }
+                            echo CHTML::modeloLabel($modelo, "movil");
+                            echo CHTML::modeloText($modelo, 
+                                                    "movil",                   
                                                     array("class"=>"form-control", "maxlength"=>9, "size"=>"9"));
                         echo CHTML::dibujaEtiquetaCierre("div");
                         echo CHTML::dibujaEtiquetaCierre("div");
