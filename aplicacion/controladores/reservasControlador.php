@@ -75,8 +75,77 @@
                                 else{
                                     $respuesta["result"]="error";   
                                 }
-                            }   
-                        }
+                            } 
+                       }
+						//Comprueba la tarifa y la fecha de inicio por si se debe añadir la compra correspondiente
+						$tipoCuota=new TiposCuota();
+						$tipoCuota->buscarPorId($tarifa->cod_tipo_cuota);
+						$fechaInicio=new DateTime(CGeneral::fechaNormalAMysql($inforReserva["fecha_inicio"]));
+						
+							//Si tipo cuota es mensual y la fecha de inicio no es 1
+						if($tipoCuota->mensual && $fechaInicio->format("d")!=1){
+							$compra=new Compras();
+							$fecha_fin=new DateTime();
+							$fecha_fin->modify('last day of this month');
+							$compra->setValores(array("cod_reserva"=>$reserva->cod_reserva,
+														"fecha_inicio"=>$reserva->fecha_inicio,
+														"fecha_fin"=>$fecha_fin->format("d/m/Y"),
+														"importe"=>$reserva->tarifa));
+							if($compra->validar()){
+								$compra->guardar();
+							}
+							else{
+								$respuesta["result"]="error";	
+							}
+						}
+						// Si el tipo de cuota es quincenal y la fecha de inicio no es ni 1 o 16
+						if($tipoCuota->quincenal){
+							if($fechaInicio->format("d")>1 && $fechaInicio->format("d")<16){ //Si la fecha esta entre 2 y 15
+								$compra=new Compras();
+								$fecha_fin=new DateTime($fechaInicio->format("Y")."-".$fechaInicio->format("m")."-30");
+								$compra->setValores(array("cod_reserva"=>$reserva->cod_reserva,
+														"fecha_inicio"=>$reserva->fecha_inicio,
+														"fecha_fin"=>$fecha_fin->format("d/m/Y"),
+														"importe"=>$reserva->tarifa));
+								if($compra->validar()){
+									$compra->guardar();
+								}
+								else{
+									$respuesta["result"]="error";	
+								}	
+							}	
+							else if($fechaInicio->format("d")>16){ //Si la fecha esta entre 17>
+								$compra=new Compras();
+								$fecha_fin=new DateTime();
+								$fecha_fin->modify('last day of this month');
+								$compra->setValores(array("cod_reserva"=>$reserva->cod_reserva,
+															"fecha_inicio"=>$reserva->fecha_inicio,
+															"fecha_fin"=>$fecha_fin->format("d/m/Y"),
+															"importe"=>$reserva->tarifa));
+								if($compra->validar()){
+									$compra->guardar();
+								}
+								else{
+									$respuesta["result"]="error";	
+								}	
+							}							
+						}
+						// Si el tipo de cuota es semanal y la fecha de inicio no es lunes
+						if($tipoCuota->semanal && date("N", strtotime(CGeneral::fechaNormalAMysql($inforReserva["fecha_inicio"])))!="1"){
+							$compra=new Compras();
+							$fecha_fin=new DateTime();
+							$fecha_fin->modify('next sunday');
+							$compra->setValores(array("cod_reserva"=>$reserva->cod_reserva,
+													"fecha_inicio"=>$reserva->fecha_inicio,
+													"fecha_fin"=>$fecha_fin->format("d/m/Y"),
+													"importe"=>$reserva->tarifa));
+							if($compra->validar()){
+								$compra->guardar();
+							}
+							else{
+								$respuesta["result"]="error";	
+							}		
+						}                        
                     }
                     else{
                         $respuesta["result"]="error";
