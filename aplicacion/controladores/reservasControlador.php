@@ -228,6 +228,15 @@
                             Sistema::app()->paginaError(400, "Error al anular la reserva");    
                         }
                         else{
+                        	$compra=new Compras();
+							$listaCompras=$compra->buscarTodos(array("where"=>" cod_reserva=".intval($_GET["id"])));
+							foreach ($listaCompras as $datosCompra) {
+								$compra->buscarPorId($datosCompra["cod_compra"]);
+								$compra->anulado=1;
+								if($compra->validar()){
+									$compra->guardar();
+								}
+							}
                             Sistema::app()->irAPagina(array("reservas", "listaReservas"));
                             exit; 
                         }    
