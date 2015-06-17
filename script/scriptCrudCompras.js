@@ -18,7 +18,7 @@ $(document).ready(function() {
 		});	
 	});	
 	//EVENTO ONCLICK PARA EL BOTON ANULAR, MUESTRA VENTANA MODAL ESTA SEGURO
-	$(".btnAnular").on("click", function(){
+	$(".table").on("click", ".btnAnular", function(){
 		$('#modalAnular').modal({show:true});
 		var id=$(this).parent().siblings().first().html();
 		$("#modalAnular").data('id_compra', id);		
@@ -28,8 +28,8 @@ $(document).ready(function() {
 		window.location="index.php?co=compras&ac=anularCompra&id="+$("#modalAnular").data("id_compra");
 	});
 	
-		//EVENTO ONCLICK PARA EL BOTON PAGAR, MUESTRA VENTANA MODAL ESTA SEGURO
-	$(".btnPagar").on("click", function(){
+	//EVENTO ONCLICK PARA EL BOTON PAGAR, MUESTRA VENTANA MODAL ESTA SEGURO
+	$(".table").on("click", ".btnPagar", function(){
 		$('#modalPagar').modal({show:true});
 		var id=$(this).parent().siblings().first().html();
 		$("#modalPagar").data('id_compra', id);		
