@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	//EVENTO ONCLICK PARA EL BOTON BORRAR, MUESTRA VENTANA MODAL ESTA SEGURO
-	$(".btnAnular").on("click", function(){
+	$(".table").on("click", ".btnBorrar", function(){
 		$('#modalAnulado').modal({show:true});
 		var id=$(this).prop("id");
 		$("#modalAnulado").data('id_reserva', id);		
