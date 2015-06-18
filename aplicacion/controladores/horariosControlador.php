@@ -15,13 +15,28 @@
                 exit ;
             } 
             else {
-                $horarioGeneral=new HorarioGeneral();       
-                $filas=$horarioGeneral->buscarTodos(array("select"=>" t.*, tem.nombre as temporada, d.dia as dia",
-                                                    "from"=>" join temporadas tem using(cod_temporada) join dias d using(cod_dia)" 
-                                                    )
-												);
+                $horarioGeneral=new HorarioGeneral(); 
+				//establezco las opciones de filtrado
+	            $opciones=array();
+	            $cadena="";
+	            $filtrado=array();
+	            $opciones["select"]=" t.*, tem.nombre as temporada, d.dia as dia "; 
+	            $opciones["from"]=" join temporadas tem using(cod_temporada) join dias d using(cod_dia) ";
+	            //filtrado 
+	            //si no existe filtrado se muestran todas las actividades				
+				//Filtro temporada
+				if(isset($_REQUEST["temporada"]) && $_REQUEST["temporada"]!==""){
+					$cadena.=" tem.cod_temporada=".intval($_REQUEST["temporada"]);
+					$temporada=intval($_REQUEST["temporada"]);
+				}
+	            
+	            $opciones["where"]=$cadena;
+				
+				      
+                $filas=$horarioGeneral->buscarTodos($opciones);	      
                 
-                $this->dibujaVista("indexHorario", array("filas"=>$filas), "Lista de Horarios ");
+                
+                $this->dibujaVista("indexHorario", array("filas"=>$filas, "temporada"=>(isset($temporada)? $temporada: "")), "Lista de Horarios ");
            }
 		}
 		
