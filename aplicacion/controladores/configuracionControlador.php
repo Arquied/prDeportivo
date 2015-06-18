@@ -18,7 +18,7 @@
                 if($configuracion->buscarPorId(1)){
                     if(isset($_POST[$configuracion->getNombre()])){
                     $configuracion -> setValores($_POST[$configuracion->getNombre()]);                  
-                    $configuracion -> imagen=$_FILES[$configuracion->getNombre()]["name"]["imagen"];
+                    $configuracion -> imagen=$_FILES[$configuracion->getNombre()]["name"]["logo"];
                                      
                     if ($configuracion -> validar()) {                                       
                         if (!$configuracion -> guardar()) {
@@ -27,12 +27,12 @@
                         }                       
                         $configuracion -> logo="conf".substr("0000000000".$configuracion->cod_configuracion, -10);
                         //Cargar imagen
-                        if (isset($_FILES[$configuracion->getNombre()]) && $_FILES[$configuracion->getNombre()]["error"]["imagen"]!=4){
+                        if (isset($_FILES[$configuracion->getNombre()]) && $_FILES[$configuracion->getNombre()]["error"]["logo"]!=4){
                             $imagen="";
                             //segun sea la imagen
-                            switch ($_FILES[$configuracion->getNombre()]["type"]["imagen"]) {
+                            switch ($_FILES[$configuracion->getNombre()]["type"]["logo"]) {
                                 case 'image/jpeg':
-                                    $imagen=imagecreatefromjpeg($_FILES[$configuracion->getNombre()]["tmp_name"]["imagen"]);
+                                    $imagen=imagecreatefromjpeg($_FILES[$configuracion->getNombre()]["tmp_name"]["logo"]);
                                     $configuracion->logo.=".jpg";  
                                     imagealphablending($imagen, true);
                                     imagesavealpha($imagen, true);
@@ -44,7 +44,7 @@
                                     break;
                                     
                                 case 'image/gif':
-                                    $imagen=imagecreatefromgif($_FILES[$configuracion->getNombre()]["tmp_name"]["imagen"]);
+                                    $imagen=imagecreatefromgif($_FILES[$configuracion->getNombre()]["tmp_name"]["logo"]);
                                     $configuracion->logo.=".gif";  
                                     imagealphablending($imagen, true);
                                     imagesavealpha($imagen, true);
@@ -56,7 +56,7 @@
                                     break;
         
                                 case 'image/png':
-                                    $imagen=imagecreatefrompng($_FILES[$configuracion->getNombre()]["tmp_name"]["imagen"]);
+                                    $imagen=imagecreatefrompng($_FILES[$configuracion->getNombre()]["tmp_name"]["logo"]);
                                     $configuracion->logo.=".png";  
                                     imagealphablending($imagen, true);
                                     imagesavealpha($imagen, true);
