@@ -1,5 +1,4 @@
 <?php
-
     echo CHTML::scriptFichero("../../script/jquery.dynatable.js");
 	echo CHTML::scriptFichero("../../script/scriptCrudActividades.js");
     echo CHTML::cssFichero("../../estilos/jquery.dynatable.css");
@@ -10,7 +9,29 @@
         echo CHTML::dibujaEtiqueta("div", array("class"=>"contTitulo"));
             echo CHTML::dibujaEtiqueta("H1", array("class"=>"text-center"), "ADMINISTRACIÓN DE ACTIVIDADES", TRUE);
         echo CHTML::dibujaEtiquetaCierre("div");
-    
+    	
+		//FILTRADO
+	    echo CHTML::dibujaEtiqueta("div", array("class"=>"contFiltrado"));
+            echo CHTML::dibujaEtiqueta("div", array("class"=>"contTitFormulario"));
+                echo CHTML::dibujaEtiqueta("h4", array(), "Campos de filtrado", true);                
+            echo CHTML::dibujaEtiquetaCierre("div");
+
+            //FORMULARIO DE FILTRADO
+            echo CHTML::iniciarForm("", "post", array("role"=>"form"));
+                //Campo temporada        
+                echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
+                    echo CHTML::campoLabel("Temporadas", "temporada");                            
+                    echo CHTML::campoListaDropDown("temporada", $temporada, Temporadas::listaTemporadas(), array("class"=>"form-control"));
+                echo CHTML::dibujaEtiquetaCierre("div");
+                	                    
+                //Boton submit
+                echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
+                    echo CHTML::campoBotonSubmit("Filtrar", array("class"=>"btn btn-default"));                 
+                echo CHTML::dibujaEtiquetaCierre("div");
+            
+            echo CHTML::finalizarForm();
+	    echo CHTML::dibujaEtiquetaCierre("div");
+			
     	//Bloque nueva actividad
     	echo CHTML::dibujaEtiqueta("div", array());
     		echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array("actividades", "nuevaActividad")), "class"=>"btn btn-default"), "Nueva actividad", true);
@@ -100,5 +121,3 @@
     	echo CHTML::dibujaEtiquetaCierre("div");	
 	
     echo CHTML::dibujaEtiquetaCierre("div");
-
-    
