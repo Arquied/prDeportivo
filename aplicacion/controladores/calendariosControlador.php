@@ -202,9 +202,14 @@
                         " and t.fecha_fin>='".date("Y-m-d", strtotime("sunday this week"))."'";
 		$order = "t.cod_dia, t.hora_inicio";
 		
-		if (isset($_REQUEST["cod_instalacion"])){
+		if (isset($_REQUEST["cod_instalacion"]) && $_REQUEST["cod_instalacion"]!=""){
 			$where .= " and c.cod_instalacion = ".intval($_REQUEST["cod_instalacion"]);
 		}
+		
+		if (isset($_REQUEST["cod_actividad"]) && $_REQUEST["cod_actividad"]!=""){
+			$where .= " and t.cod_actividad = ".intval($_REQUEST["cod_actividad"]);
+		}
+		
 		$filas = $calendario->buscarTodos(array("select"=>$select,"from"=>$from, "where"=>$where, "order"=>$order));
 		
 		if ($filas != null){
