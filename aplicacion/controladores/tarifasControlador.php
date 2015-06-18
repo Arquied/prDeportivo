@@ -1,5 +1,4 @@
 <?php
-
     /**
      * CONTROLADOR TARIFAS
      */
@@ -54,7 +53,7 @@
                 $tarifa=new Tarifas();
                 $tarifasActividad=$tarifa->buscarTodos(array("select"=>" t.cod_tarifa, tc.tipo, t.precio, tc.diario", 
                                             "from"=>" join tipos_cuotas tc using(cod_tipo_cuota) ",
-                                            "where"=>" t.cod_actividad=".intval($_POST["cod_actividad"])));
+                                            "where"=>" t.disponible=1 and t.cod_actividad=".intval($_POST["cod_actividad"])));
                 $obJSON=json_encode($tarifasActividad);
                 echo $obJSON;
             }
@@ -155,7 +154,6 @@
 				
 			}	
 		}
-
 		public function accionBorraTarifa(){
 			//Comprobar si se ha iniciado sesion y si el usuario tiene permiso de borrar		
 			if(!Sistema::app()->acceso()->hayUsuario()){
@@ -190,4 +188,3 @@
 		}
 		
     }
-    
