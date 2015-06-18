@@ -39,7 +39,9 @@
                         $nologeado = true;
                         $esAdmin=false;
                         $logeado=false;
+						$nombre = "";
                         if (Sistema::app()->Acceso()->hayUsuario()){
+                        	$nombre = Sistema::app()->Acceso()->getNombre();
                             $nologeado=false;
                             $logeado=true;
                         }
@@ -56,7 +58,7 @@
                         $quien = array("TEXTO"=>"Quienes Somos","URL"=>Sistema::app()->generaURL(array("inicial","quien")),"SUBMENU"=>false,"ACTIVO"=>true,"DERECHA"=>false,"ITEMS"=>array());
                         $registra = array("TEXTO"=>"Registrate","URL"=>Sistema::app()->generaURL(array("usuarios","registro")),"SUBMENU"=>false,"ACTIVO"=>$nologeado,"DERECHA"=>true,"ITEMS"=>array());
                         $login = array("TEXTO"=>"Login","URL"=>Sistema::app()->generaURL(array("inicial","login")),"SUBMENU"=>false,"ACTIVO"=>$nologeado,"DERECHA"=>true,"ITEMS"=>array());
-                        $perfil = array("TEXTO"=>"Mi Perfil","URL"=>Sistema::app()->generaURL(array("usuarios", "miPerfil")),"SUBMENU"=>false,"ACTIVO"=>$logeado,"DERECHA"=>true,"ITEMS"=>array());                     
+                        $perfil = array("TEXTO"=>$nombre,"URL"=>Sistema::app()->generaURL(array("usuarios", "miPerfil")),"SUBMENU"=>false,"ACTIVO"=>$logeado,"DERECHA"=>true,"ITEMS"=>array());                     
                         $logout = array("TEXTO"=>"Logout","URL"=>Sistema::app()->generaURL(array("inicial","cerrarSesion")),"SUBMENU"=>false,"ACTIVO"=>$logeado,"DERECHA"=>true,"ITEMS"=>array());
                         $actividades = array("TEXTO"=>"Actividades","URL"=>Sistema::app()->generaURL(array("actividades","listaActividades")),"SUBMENU"=>false,"DERECHA"=>false,"ACTIVO","ITEMS"=>array());
                         $mostrarCalendario = array("TEXTO"=>"Calendario","URL"=>Sistema::app()->generaURL(array("calendarios","mostrarCalendario")),"SUBMENU"=>false,"DERECHA"=>false,"ACTIVO","ITEMS"=>array());
