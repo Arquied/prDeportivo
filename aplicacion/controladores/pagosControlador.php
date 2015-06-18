@@ -24,7 +24,7 @@
                 $compra->buscarPorId($_GET["cod_compra"]);
                 $pago->importe_pagado=$compra->importe;
                                 
-                $reserva->buscarPorId($compra -> cod_compra);
+                $reserva->buscarPorId($compra -> cod_reserva);
                 $usuario->buscarPorId($reserva -> cod_usuario);
                 
                 $nombre = $pago->getNombre();
