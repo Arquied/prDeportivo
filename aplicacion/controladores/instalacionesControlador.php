@@ -60,9 +60,9 @@ class instalacionesControlador extends CControlador {
                             switch ($_FILES["instalacion"]["type"]["imagen"]) {
                                 case 'image/jpeg' :
                                     $imagen = imagecreatefromjpeg($_FILES["instalacion"]["tmp_name"]["imagen"]);
-                                    $instalaciones -> imagen .= ".jpg";
+                                    $instalacion -> imagen .= ".jpg";
                                     if (is_resource($imagen)) {
-                                        $ruta = "/imagenes/instalaciones/" . $instalaciones -> imagen;
+                                        $ruta = "/imagenes/instalaciones/" . $instalacion -> imagen;
                                         $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
                                         imagejpeg($imagen, $ruta);
                                     }
