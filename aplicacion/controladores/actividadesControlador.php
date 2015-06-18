@@ -233,6 +233,7 @@
 				//Filtro temporada
 				if(isset($_REQUEST["temporada"]) && $_REQUEST["temporada"]!==""){
 					$cadena.=" and t.cod_temporada=".intval($_REQUEST["temporada"]);
+					$temporada=intval($_REQUEST["temporada"]);
 				}
 				else{
 					$cadena.=" and tem.fecha_inicio<='".date("Y-m-d")."' and tem.fecha_fin>='".date("Y-m-d")."'";	
@@ -243,7 +244,7 @@
 				      
                 $filas=$actividades->buscarTodos($opciones);												
                 
-                $this->dibujaVista("listaActividadesCrud", array("filas"=>$filas), "Lista de Actividades ");
+                $this->dibujaVista("listaActividadesCrud", array("filas"=>$filas, "temporada"=>(isset($temporada)? $temporada: "")) , "Lista de Actividades ");
            }
         }    
     
