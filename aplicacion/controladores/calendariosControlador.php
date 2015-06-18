@@ -15,11 +15,29 @@
             } 
 			else {
 				$calendarios = new Calendarios();
-                $calendario=$calendarios->buscarTodos(array("select"=>" t.*, d.dia as dia, act.nombre as actividad",
-                                                    "from"=>" join dias d using(cod_dia) join actividades act using(cod_actividad)" 
-                                                    )
-												);
-				$this->dibujaVista("indexCalendario",array("filas"=>$calendario), "Lista de Calendarios");
+				
+				//establezco las opciones de filtrado
+	            $opciones=array();
+	            $cadena="";
+	            $filtrado=array();
+	            $opciones["select"]=" t.*, d.dia as dia, act.nombre as actividad "; 
+	            $opciones["from"]=" join dias d using(cod_dia) ".
+	            				" join actividades act using(cod_actividad) ".
+	            				" join temporadas tem using(cod_temporada) ";
+	            //filtrado 
+	            //si no existe filtrado se muestran todas los calendarios			
+				//Filtro temporada
+				if(isset($_REQUEST["temporada"]) && $_REQUEST["temporada"]!==""){
+					$cadena.=" tem.cod_temporada=".intval($_REQUEST["temporada"]);
+					$temporada=intval($_REQUEST["temporada"]);
+				}
+	            
+	            $opciones["where"]=$cadena;
+				
+				      
+                $filas=$calendarios->buscarTodos($opciones);
+                
+				$this->dibujaVista("indexCalendario",array("filas"=>$filas, "temporada"=>(isset($temporada)? $temporada: "")), "Lista de Calendarios");
 			}
 			
 		}
@@ -75,7 +93,6 @@
                         
                             }                           
                         }
-
                         Sistema::app()->irAPagina(array("calendarios"));
                         exit;   
                     }
@@ -243,4 +260,3 @@
 	
 		
 }
-
