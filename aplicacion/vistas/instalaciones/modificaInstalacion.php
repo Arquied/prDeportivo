@@ -17,6 +17,16 @@ echo CHTML::dibujaEtiqueta("div", array("class"=>"container contForm"));
                 echo CHTML::modeloLabel($modelo, "nombre");
                 echo CHTML::modeloText($modelo, "nombre",array("class"=>"form-control","maxlength"=>50,"size"=>51));
             echo CHTML::dibujaEtiquetaCierre("div");
+			
+			//Campo disponible
+            echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
+                if(isset($errores["disponible"])){
+                    echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["disponible"], true);
+                }
+                echo CHTML::modeloLabel($modelo, "disponible");
+                echo CHTML::modeloCheckBox($modelo, "disponible");
+            echo CHTML::dibujaEtiquetaCierre("div"); 
+			
         echo CHTML::dibujaEtiquetaCierre("div");
         echo CHTML::dibujaEtiqueta("div");
             // Campo descripcion
