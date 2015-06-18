@@ -2,7 +2,7 @@
 
     echo CHTML::cssFichero("/estilos/estiloInstalaciones.css");
     
-		//Titulo
+	//Titulo
     echo CHTML::dibujaEtiqueta("div", array("class"=>""));
          echo CHTML::dibujaEtiqueta("h2", array(), "Instalaciones", true);                
     echo CHTML::dibujaEtiquetaCierre("div");
