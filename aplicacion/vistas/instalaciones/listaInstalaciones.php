@@ -2,11 +2,13 @@
 
     echo CHTML::cssFichero("/estilos/estiloInstalaciones.css");
     
+		//Titulo
+    echo CHTML::dibujaEtiqueta("div", array("class"=>""));
+         echo CHTML::dibujaEtiqueta("h2", array(), "Instalaciones", true);                
+    echo CHTML::dibujaEtiquetaCierre("div");
+	
     //FILTRADO
     echo CHTML::dibujaEtiqueta("div", array("class"=>"contFiltrado"));
-                echo CHTML::dibujaEtiqueta("div", array("class"=>"contTitFormulario"));
-                    echo CHTML::dibujaEtiqueta("h4", array(), "Campos de filtrado", true);                
-                echo CHTML::dibujaEtiquetaCierre("div");
 
                 //FORMULARIO DE FILTRADO
                 echo CHTML::iniciarForm("", "post", array("role"=>"form"));
