@@ -82,12 +82,12 @@
                         echo CHTML::dibujaEtiquetaCierre("div");
                         
                         //Campo imagen
-                        echo CHTML::dibujaEtiqueta("div");
-                            if(isset($errores["imagen"])){
-                                echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["imagen"], true);
+                        echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
+                            if(isset($errores["logo"])){
+                                echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["logo"], true);
                             }
-                            echo CHTML::modeloLabel($modelo, "imagen");
-                            echo CHTML::modeloFile($modelo, "imagen", array("class"=>"form-control"));
+                            echo CHTML::modeloLabel($modelo, "logo");
+                            echo CHTML::modeloFile($modelo, "logo", array("class"=>"form-control"));
                     echo CHTML::dibujaEtiquetaCierre("div");
                         
                         //Campo url_facebook                 
