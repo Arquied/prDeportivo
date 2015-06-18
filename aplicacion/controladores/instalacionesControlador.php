@@ -234,15 +234,15 @@ class instalacionesControlador extends CControlador {
             $instalaciones = new Instalaciones();
             
             $opciones=array();
-            $cadena="t.disponible = 1";
+            $cadena=" t.disponible = 1 ";
             $filtrado = array();
             $opciones["select"] = "t.*";
             $opciones["from"] = "";
-            $opciones["where"] = "t.cod_instalacion != 0";
+            $opciones["where"] = " t.cod_instalacion != 0 ";
             $opciones["order"] = "t.nombre";
             
             if (isset($_REQUEST["nombre"]) && $_REQUEST["nombre"] !=="")
-                $cadena.= "and t.nombre='".CGeneral::addSlashes($_REQUEST["nombre"])."'";
+                $cadena.= " and t.nombre='".CGeneral::addSlashes($_REQUEST["nombre"])."'";
             
             $opciones["where"]=$cadena;
             
