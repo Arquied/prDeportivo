@@ -1,3 +1,20 @@
+/* ESTILO FILTRADO */
+.contFiltrado{
+	box-shadow: 0 3px 0px #ccc;
+	border-radius: 1px;
+	background: white;
+	padding: 0 0 0 20px;
+	margin-bottom: 20px;
+}
+
+.contFiltrado h4{
+	color: rgb(140, 3, 21);
+}
+
+.form-group{
+	display: inline-block;
+	margin: 0 10px 10px 0;
+}
 /* ESTILO HORARIO ADMINISTRACION */
 .contTitulo{
 	margin: 20px 0;
