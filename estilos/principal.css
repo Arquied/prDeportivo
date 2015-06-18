@@ -8,6 +8,10 @@ body {
 	min-height: 100%;
 }
 
+.ul{
+	float: right;
+}
+
 a{
 	color: rgb(140, 3, 21);
 }
