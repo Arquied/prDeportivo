@@ -11,7 +11,7 @@ echo CHTML::dibujaEtiqueta("div", array("class"=>"contInstalacion"));
         else 
            echo CHTML::dibujaEtiqueta("div", array("class"=>"col-md-7 col-md-push-5")); 
             echo CHTML::dibujaEtiqueta("div", array("class"=>"contBtn"));
-                echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array('', ''), array("cod_instalacion"=>$fila["cod_instalacion"])),
+                echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array('calendarios', 'mostrarCalendario'), array("cod_instalacion"=>$fila["cod_instalacion"])),
                                                     "class"=>"btn btn-default btn-lg"), "Ver");
             echo CHTML::dibujaEtiquetaCierre("div");
             echo CHTML::dibujaEtiqueta("div", array("class"=>"lead"), $fila["descripcion"], true);
