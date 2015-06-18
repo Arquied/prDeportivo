@@ -16,6 +16,10 @@ echo CHTML::dibujaEtiqueta("div", array("class"=>"contActividad"));
                 echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array('reservas', 'nuevaReserva'), array("cod_actividad"=>$fila["cod_actividad"])),
                                                     "class"=>"btn btn-default btn-lg"), "Apuntarse");
             echo CHTML::dibujaEtiquetaCierre("div");
+            echo CHTML::dibujaEtiqueta("div", array("class"=>"contBtn"));
+                echo CHTML::dibujaEtiqueta("a", array("href"=>Sistema::app()->generaURL(array('calendarios', 'mostrarCalendario'), array("cod_actividad"=>$fila["cod_actividad"])),
+                                                    "class"=>"btn btn-default btn-lg"), "Horario");
+            echo CHTML::dibujaEtiquetaCierre("div");
             echo CHTML::dibujaEtiqueta("div", array("class"=>"lead"), $fila["descripcion"], true);
         echo CHTML::dibujaEtiquetaCierre("div");
         
