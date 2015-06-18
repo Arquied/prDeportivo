@@ -25,7 +25,7 @@
                     $nombre = $tarifa -> getNombre();
                     if (isset($_POST[$nombre])) {
                         $tarifa -> setValores($_POST[$nombre]);
-                        $tarifa -> cod_actividad= intval($_GET["cod_actividad"]);                                 
+                        $tarifa -> cod_actividad = intval($_GET["cod_actividad"]);                                 
                         if ($tarifa -> validar()) {
                             if (!$tarifa -> guardar()) { //guarda la tarifa
                                 $this -> dibujaVista("nuevaTarifa", array("modelo" => $tarifa), htmlentities("Nueva Tarifa"));
@@ -59,5 +59,135 @@
                 echo $obJSON;
             }
         }
+		
+		public function accionListaTarifas(){
+	         if (!Sistema::app() -> acceso() -> hayUsuario()) {
+	              Sistema::app() -> sesion() -> set("pagPrevia", array("tarifas", "listaTarifas"));
+	              Sistema::app() -> sesion() -> set("parametrosAnt", array());
+	              Sistema::app() -> irAPagina(array("inicial", "login"));
+	              exit ;
+	        } 
+	        else if (!Sistema::app() -> acceso() -> puedeConfigurar()) {
+	             Sistema::app() -> paginaError(400, "No tiene permiso para acceder");
+	             exit ;
+	       	} 
+			else {
+				$tarifas = new Tarifas();
+				
+				$filas = $tarifas -> buscarTodos(array("select"=>"t.*, tc.tipo as tipo, a.nombre as actividad","from"=>"join tipos_cuotas tc using(cod_tipo_cuota) join actividades a using(cod_actividad)"));
+				
+				$this->dibujaVista("listaTarifas",array("filas"=>$filas), "Lista de Tarifas");
+			}	
+		}
+		
+		public function accionCrudNuevaTarifa(){
+			if (!Sistema::app() -> acceso() -> hayUsuario()) {
+	              Sistema::app() -> sesion() -> set("pagPrevia", array("tarifas", "listaTarifas"));
+	              Sistema::app() -> sesion() -> set("parametrosAnt", array());
+	              Sistema::app() -> irAPagina(array("inicial", "login"));
+	              exit ;
+	        } 
+	        else if (!Sistema::app() -> acceso() -> puedeConfigurar()) {
+	             Sistema::app() -> paginaError(400, "No tiene permiso para acceder");
+	             exit ;
+	       	} 
+			else {
+				$tarifa = new Tarifas();
+				
+				$nombre = $tarifa->getNombre();
+				
+				if(isset($_POST[$nombre])){
+					$tarifa->setValores($_POST[$nombre]);
+					if ($tarifa -> validar()){
+						if (!$tarifa -> guardar()) { //guarda la tarifa
+                            $this -> dibujaVista("nuevaTarifa", array("modelo" => $tarifa), htmlentities("Nueva Tarifa"));
+                            exit ;
+						}
+						Sistema::app()->irAPagina(array("tarifas", "listaTarifas"));
+						exit;
+					}
+					else {
+                        $this -> dibujaVista("nuevaTarifa", array("modelo" => $tarifa), "Nueva Tarifa");
+                        exit ;
+					}
+				}
+				else 
+                    $this -> dibujaVista("nuevaTarifa", array("modelo" => $tarifa), "Nueva Tarifa");
+			}
+		}
+		
+		public function accionModificaTarifa(){
+			if (!Sistema::app() -> acceso() -> hayUsuario()) {
+	              Sistema::app() -> sesion() -> set("pagPrevia", array("tarifas", "listaTarifas"));
+	              Sistema::app() -> sesion() -> set("parametrosAnt", array());
+	              Sistema::app() -> irAPagina(array("inicial", "login"));
+	              exit ;
+	        } 
+	        else if (!Sistema::app() -> acceso() -> puedeConfigurar()) {
+	             Sistema::app() -> paginaError(400, "No tiene permiso para acceder");
+	             exit ;
+	       	} 
+			else {
+				$tarifa = new Tarifas();
+				
+				if ($tarifa->buscarPorId(isset($_GET["cod_tarifa"]))){
+					$nombre = $tarifa->getNombre();
+					if (isset($_POST[$nombre])){
+						$tarifa->setValores($_POST[$nombre]);
+							
+						if ($tarifa -> validar()){
+							if (!$tarifa -> guardar()) { //guarda la tarifa
+	                            $this -> dibujaVista("modificaTarifa", array("modelo" => $tarifa), htmlentities("Modifica Tarifa"));
+	                            exit ;
+							}
+							Sistema::app()->irAPagina(array("tarifas", "listaTarifas"));
+							exit;
+						}
+						else {
+	                        $this -> dibujaVista("modificaTarifa", array("modelo" => $tarifa), "Modifica Tarifa");
+	                        exit ;
+						}
+						
+					}	
+					else 
+	                    $this -> dibujaVista("modificaTarifa", array("modelo" => $tarifa), "Modifica Tarifa");
+				}
+				
+			}	
+		}
+
+		public function accionBorraTarifa(){
+			//Comprobar si se ha iniciado sesion y si el usuario tiene permiso de borrar		
+			if(!Sistema::app()->acceso()->hayUsuario()){
+				Sistema::app()->sesion()->set("pagPrevia", array("tarifas", "borraTarifa"));
+				Sistema::app()->sesion()->set("parametrosAnt", array("id"=>$_REQUEST["id"]));
+				Sistema::app()->irAPagina(array("inicial", "login"));
+				exit;
+			}
+			else if(!Sistema::app()->acceso()->puedeConfigurar()){
+				Sistema::app()->paginaError(400, "No tiene permiso para acceder");	
+				exit;
+			}
+			else{
+				$tarifa=new Tarifas();		
+				if($tarifa->buscarPorId($_REQUEST["id"])){					
+					$tarifa -> disponible=0;				
+					if ($tarifa -> validar()) {										
+						if(!$tarifa->guardar()){
+							Sistema::app()->paginaError(400, "Error al borrar la tarifa");
+							exit ;
+						}
+						Sistema::app()->irAPagina(array("tarifas", "listaTarifas"));
+						exit ;
+					} 
+					else {
+						Sistema::app()->paginaError(400, "Error al borrar la tarifa");
+						exit ;
+					}		
+				}
+				Sistema::app()->paginaError(400, "La tarifa no se encuentra");
+			}
+		}
+		
     }
     
