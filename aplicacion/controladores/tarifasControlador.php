@@ -129,7 +129,7 @@
 			else {
 				$tarifa = new Tarifas();
 				
-				if ($tarifa->buscarPorId(isset($_GET["cod_tarifa"]))){
+				if ($tarifa->buscarPorId($_GET["cod_tarifa"])){
 					$nombre = $tarifa->getNombre();
 					if (isset($_POST[$nombre])){
 						$tarifa->setValores($_POST[$nombre]);
@@ -150,7 +150,9 @@
 					}	
 					else 
 	                    $this -> dibujaVista("modificaTarifa", array("modelo" => $tarifa), "Modifica Tarifa");
+						exit;
 				}
+				Sistema::app()->paginaError(400, "La tarifa no se encuentra");
 				
 			}	
 		}
