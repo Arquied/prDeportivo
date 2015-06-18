@@ -21,9 +21,6 @@
 					echo CHTML::dibujaEtiqueta("div");
 						//Campo nombre					
 						echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-							if(isset($errores["nombre"])){
-							echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["nombre"], true);
-							}
 							echo CHTML::modeloLabel($modelo, "nombre");
 							echo CHTML::modeloText($modelo, 
 													"nombre",					
@@ -32,9 +29,6 @@
 						
 						//Campo dni
 						echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-							if(isset($errores["dni"])){
-							echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["dni"], true);
-							}
 							echo CHTML::modeloLabel($modelo, "dni");
 							echo CHTML::modeloText($modelo, 
 													"dni",	
@@ -45,9 +39,6 @@
 					echo CHTML::dibujaEtiqueta("div");
 						//Campo correo
 						echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-							if(isset($errores["correo"])){
-								echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["correo"], true);
-							}
 							echo CHTML::modeloLabel($modelo, "correo");
 							echo CHTML::modeloEmail($modelo, 
 													"correo",										 	 
@@ -56,9 +47,6 @@
 						
 						//Campo telefono
 						echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-							if(isset($errores["telefono"])){
-							echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["telefono"], true);
-							}
 							echo CHTML::modeloLabel($modelo, "telefono");
 							echo CHTML::modeloText($modelo,
 													"telefono",
@@ -67,9 +55,6 @@
 						
 						//Campo fecha_nac
 						echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-							if(isset($errores["fecha_nac"])){
-							echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["fecha_nac"], true);
-							}
 							echo CHTML::modeloLabel($modelo, "fecha_nac");
 							echo CHTML::modeloText($modelo,
 													"fecha_nac",
@@ -80,9 +65,6 @@
 					echo CHTML::dibujaEtiqueta("div");
 						//Campo direccion
 						echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-							if(isset($errores["direccion"])){
-								echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["direccion"], true);
-							}
 							echo CHTML::modeloLabel($modelo, "direccion");
 							echo CHTML::modeloText($modelo, 
 													"direccion",										 	 
@@ -91,9 +73,6 @@
 						
 						//Campo localidad
 						echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-							if(isset($errores["localidad"])){
-							echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["localidad"], true);
-							}
 							echo CHTML::modeloLabel($modelo, "localidad");
 							echo CHTML::modeloText($modelo,
 													"localidad",
@@ -102,9 +81,6 @@
 						
 						//Campo provincia
 						echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-							if(isset($errores["provincia"])){
-							echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["provincia"], true);
-							}
 							echo CHTML::modeloLabel($modelo, "provincia");
 							echo CHTML::modeloText($modelo,
 													"provincia",
@@ -130,9 +106,6 @@
 						echo CHTML::dibujaEtiqueta("div");
 						//Campo nick					
 						echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-							if(isset($errores["nick"])){
-								echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["nick"], true);
-							}
 							echo CHTML::modeloLabel($modelo, "nick");
 							echo CHTML::modeloText($modelo, 
 													"nick",
@@ -141,9 +114,6 @@
 						
 						//Campo contraseña
 						echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-							if(isset($errores["contrasenia"])){
-							echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["contrasenia"], true);
-							}
 							if(isset($errorCont)){
 							echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errorCont, true);
 							}
@@ -165,9 +135,6 @@
 				echo CHTML::dibujaEtiqueta("div");
 		           // Campo foto
 		            echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-		            if (isset($errores["foto"])){
-		            	echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["foto"],true);
-		            }
 		                echo CHTML::modeloLabel($modelo, "foto");
 		                echo CHTML::modeloFile($modelo, "foto", array("class"=>"form-control"));
 		            echo CHTML::dibujaEtiquetaCierre("div");
