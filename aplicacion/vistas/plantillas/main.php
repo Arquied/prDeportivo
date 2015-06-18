@@ -67,15 +67,16 @@
                         
                         $calendarios = array("TEXTO"=>"Calendarios","URL"=>Sistema::app()->generaURL(array("calendarios")),"SUBMENU"=>false,"ACTIVO"=>true,"DERECHA"=>false,"ITEMS"=>array());
 						$compras = array("TEXTO"=>"Compras", "URL"=>Sistema::app()->generaURL(array("compras","listaCompras")),"SUBMENU"=>false,"ACTIVO"=>true,"DERECHA"=>false,"ITEMS"=>array());
+                        $horarios = array("TEXTO"=>"Horarios","URL"=>Sistema::app()->generaURL(array("horarios")),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
                         $instalacionesCrud = array("TEXTO"=>"Instalaciones","URL"=>Sistema::app()->generaURL(array("instalaciones")),"SUBMENU"=>false,"ACTIVO"=>true,"DERECHA"=>false,"ITEMS"=>array());
                         $usuarios = array("TEXTO"=>"Usuarios","URL"=>Sistema::app()->generaURL(array("usuarios", "index")),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
+						$tarifas = array("TEXTO"=>"Tarifas", "URL"=>Sistema::app()->generaURL(array("tarifas", "listaTarifas", "SUBMENU"=>false, "ACTIVO", "DERECHA"=>false, "ITEMS"=>array())));
                         $temporadas = array("TEXTO"=>"Temporadas","URL"=>Sistema::app()->generaURL(array("temporadas")),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
-                        $horarios = array("TEXTO"=>"Horarios","URL"=>Sistema::app()->generaURL(array("horarios")),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
                         $reservas = array("TEXTO"=>"Reservas","URL"=>Sistema::app()->generaURL(array("reservas", "listaReservas")),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
                         $actividadesCrud = array("TEXTO"=>"Actividades","URL"=>Sistema::app()->generaURL(array("actividades","listaActividadesCrud")),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
                         $configuracionCrud = array("TEXTO"=>"Configuración","URL"=>Sistema::app()->generaURL(array("configuracion")),"SUBMENU"=>false,"ACTIVO","DERECHA"=>false,"ITEMS"=>array());
                         
-                        $administrar = array("TEXTO"=>"Administrar","URL"=>"","SUBMENU"=>true,"ACTIVO"=>true,"ITEMS"=>array($actividadesCrud,$calendarios,$compras,$horarios,$instalacionesCrud,$temporadas,$usuarios, $reservas, $configuracionCrud));
+                        $administrar = array("TEXTO"=>"Administrar","URL"=>"","SUBMENU"=>true,"ACTIVO"=>true,"ITEMS"=>array($actividadesCrud,$calendarios,$compras,$horarios,$instalacionesCrud,$reservas,$tarifas,$temporadas,$usuarios, $configuracionCrud));
                         if($logeado && $esAdmin)
                             $datos = array($quien, $actividades, $instalaciones, $mostrarCalendario, $reservar, $registra, $login, $perfil, $logout, $administrar);
                         else
