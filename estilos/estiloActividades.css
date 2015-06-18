@@ -39,6 +39,9 @@
 	 max-width: 100%;
 	 height: 300px;
 }
+.contBtn{
+	margin-bottom: 20px; 
+}
 
 /* ESTILO ACTIVIDAD ADMINISTRACION */
 .contTitulo{
