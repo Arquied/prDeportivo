@@ -36,7 +36,7 @@
     echo CHTML::dibujaEtiqueta("div", array());
         if(!$filas && count($filas)==0){
             echo CHTML::dibujaEtiqueta("div");
-                echo CHTML::dibujaEtiqueta("h2", array(), "No existe Calendario para esa instalación", true);
+                echo CHTML::dibujaEtiqueta("h2", array(), "No existe Calendario para esa instalación o actividad", true);
             echo CHTML::dibujaEtiquetaCierre("div");
         }
         else{
