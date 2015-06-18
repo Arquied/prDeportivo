@@ -40,6 +40,15 @@
                             echo CHTML::campoListaDropDown("dia", $modelo->cod_dia, Dias::listaDias(), array("class"=>"form-control"));
                         echo CHTML::dibujaEtiquetaCierre("div");                     
                          
+						//Campo disponible
+                        echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
+                            if(isset($errores["disponible"])){
+                                echo CHTML::dibujaEtiqueta("span", array("class"=>"help-block"), $errores["disponible"], true);
+                            }
+                            echo CHTML::modeloLabel($modelo, "disponible");
+                            echo CHTML::modeloCheckBox($modelo, "disponible");
+                        echo CHTML::dibujaEtiquetaCierre("div"); 
+						 
                          //Campo hora_inicio
                         echo CHTML::dibujaEtiqueta("div");
                         echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
