@@ -223,7 +223,7 @@
 				
 				//establezco las opciones de filtrado
 	            $opciones=array();
-	            $cadena=" t.disponible=1 ";
+	            $cadena="";
 	            $filtrado=array();
 	            $opciones["select"]=" t.*, tem.nombre as temporada "; 
 	            $opciones["from"]=" join temporadas tem using(cod_temporada) ";
@@ -232,11 +232,11 @@
 	            //si no existe filtrado se muestran todas las actividades				
 				//Filtro temporada
 				if(isset($_REQUEST["temporada"]) && $_REQUEST["temporada"]!==""){
-					$cadena.=" and t.cod_temporada=".intval($_REQUEST["temporada"]);
+					$cadena.=" t.cod_temporada=".intval($_REQUEST["temporada"]);
 					$temporada=intval($_REQUEST["temporada"]);
 				}
 				else{
-					$cadena.=" and tem.fecha_inicio<='".date("Y-m-d")."' and tem.fecha_fin>='".date("Y-m-d")."'";	
+					$cadena.=" tem.fecha_inicio<='".date("Y-m-d")."' and tem.fecha_fin>='".date("Y-m-d")."'";	
 				}
 	            
 	            $opciones["where"]=$cadena;
