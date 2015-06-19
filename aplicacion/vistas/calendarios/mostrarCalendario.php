@@ -18,11 +18,12 @@
 					
 						// Campo instalación
                         echo CHTML::campoLabel("Instalaciones", "cod_instalacion");
-                   		echo CHTML::campoListaDropDown("cod_instalacion", "", Instalaciones::listaInstalacion2(), array("class"=>"form-control list"));
-
+                   		echo CHTML::campoListaDropDown("cod_instalacion", "", Instalaciones::listaInstalacion2(), array("class"=>"form-control "));
+					echo CHTML::dibujaEtiquetaCierre("div");
 						// 	Campo actividad
+						echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
                         echo CHTML::campoLabel("Actividades", "cod_actividad");
-                   		echo CHTML::campoListaDropDown("cod_actividad", "", Actividades::listaActividades(), array("class"=>"form-control list"));
+                   		echo CHTML::campoListaDropDown("cod_actividad", "", Actividades::listaActividades(), array("class"=>"form-control "));
 					echo CHTML::dibujaEtiquetaCierre("div");			
                     
                     //Boton submit
