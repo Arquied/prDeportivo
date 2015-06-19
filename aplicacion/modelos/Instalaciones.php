@@ -122,7 +122,7 @@
 			$lista = array();
 			foreach($instalaciones->buscarTodos() as $instalacion){
 				if ($instalacion["cod_instalacion"] !=0)
-					$lista[$instalacion["cod_instalacion"]] = $instalaciones["nombre"];				
+					$lista[$instalacion["cod_instalacion"]] = $instalacion["nombre"];				
 			}
 			
 			return $lista;
