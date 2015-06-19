@@ -72,7 +72,7 @@
 	                                $imagen = imagecreatefrompng($_FILES["usuario"]["tmp_name"]["foto"]);
 	                                $usuario -> foto .= ".png";
 	                                if (is_resource($imagen)) {
-	                                    $ruta = "/imagenes/usuarios/" . $usuarios -> foto;
+	                                    $ruta = "/imagenes/usuarios/" . $usuario -> foto;
 	                                    $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
 	                                    imagepng($imagen, $ruta);
 	                                }
@@ -188,7 +188,7 @@
 	                                $imagen = imagecreatefrompng($_FILES["usuario"]["tmp_name"]["foto"]);
 	                                $usuario -> foto .= ".png";
 	                                if (is_resource($imagen)) {
-	                                    $ruta = "/imagenes/usuarios/" . $usuarios -> foto;
+	                                    $ruta = "/imagenes/usuarios/" . $usuario -> foto;
 	                                    $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
 	                                    imagepng($imagen, $ruta);
 	                                }
@@ -434,7 +434,7 @@
 		                                $imagen = imagecreatefrompng($_FILES["usuario"]["tmp_name"]["foto"]);
 		                                $usuario -> foto .= ".png";
 		                                if (is_resource($imagen)) {
-		                                    $ruta = "/imagenes/usuarios/" . $usuarios -> foto;
+		                                    $ruta = "/imagenes/usuarios/" . $usuario -> foto;
 		                                    $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
 		                                    imagepng($imagen, $ruta);
 		                                }
@@ -521,7 +521,7 @@
 		                                $imagen = imagecreatefrompng($_FILES["usuario"]["tmp_name"]["foto"]);
 		                                $usuario -> foto .= ".png";
 		                                if (is_resource($imagen)) {
-		                                    $ruta = "/imagenes/usuarios/" . $usuarios -> foto;
+		                                    $ruta = "/imagenes/usuarios/" . $usuario -> foto;
 		                                    $ruta = $_SERVER["DOCUMENT_ROOT"] . $ruta;
 		                                    imagepng($imagen, $ruta);
 		                                }
