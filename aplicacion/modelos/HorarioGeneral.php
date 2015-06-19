@@ -126,7 +126,7 @@
                     " hora_inicio='$hora_inicio', ".
                     " hora_fin='$hora_fin', ".
                     " fecha_inicio='$fecha_inicio', ".
-                    " fecha_fin='$fecha_fin' ".
+                    " fecha_fin='$fecha_fin', ".
                     " disponible=$disponible ".
                     " where cod_horario_general={$this->cod_horario_general} ";
         }
