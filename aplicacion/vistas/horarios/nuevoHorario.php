@@ -20,20 +20,21 @@ $errores=$modelo->getErrores();
                 // FORMULARIO DE NUEVO HORARIO
                 echo CHTML::iniciarForm("", "post", array("role"=>"form", "enctype"=>"multipart/form-data"));
                 
-                    echo CHTML::dibujaEtiqueta("div");
+                   
                               
-                        //Campo temporada               
+                    //Campo temporada   
+					echo CHTML::dibujaEtiqueta("div");            
                         echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-                            echo CHTML::campoLabel("Temporadas", "temporada");                            
-                            echo CHTML::campoListaDropDown("temporada", "", Temporadas::listaTemporadas(), array("class"=>"form-control"));
+                            echo CHTML::modeloLabel($modelo, "cod_temporada");                            
+                            echo CHTML::modeloListaDropDown($modelo, "cod_temporada", Temporadas::listaTemporadas(), array("class"=>"form-control"));
                         echo CHTML::dibujaEtiquetaCierre("div");                  
                         
                         // Campo dia
-                        echo CHTML::dibujaEtiqueta("div");
                         echo CHTML::dibujaEtiqueta("div", array("class"=>"form-group"));
-                            echo CHTML::campoListaCheckBox("dia", "", Dias::listaDias(),"  ",array("class"=>""));
-                        echo CHTML::dibujaEtiquetaCierre("div");
-                        echo CHTML::dibujaEtiquetaCierre("div");
+							echo CHTML::modeloLabel($modelo, "cod_dia");
+							echo CHTML::modeloListaDropDown($modelo, "cod_dia", Dias::listaDias(),array("class"=>"form-control"));
+						echo CHTML::dibujaEtiquetaCierre("div");
+					echo CHTML::dibujaEtiquetaCierre("div");
                         
                         //Campo hora_inicio
                         echo CHTML::dibujaEtiqueta("div");
