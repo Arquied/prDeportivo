@@ -77,11 +77,7 @@ $(document).ready(function() {
 										  scrollInput: false,
 										  scrollMonth: false,
 										  scrollTime: false,
-										 // minDate: fecha.getDate()+"/"+fecha.getMonth()+1+"/"+fecha.getFullYear(),
-										  onSelect: function(dateText, inst){
-											  console.log("seleccionado");
-											  $("input[name=fecha_fin]").datetimepicker('option', 'minDate', dateText);
-										  }
+										  minDate: fecha.getDate()+"/"+fecha.getMonth()+1+"/"+fecha.getFullYear()
 										});
 			$("input[name=fecha_fin]").datetimepicker({
 										  format:'d/m/Y',
@@ -91,22 +87,8 @@ $(document).ready(function() {
 										  scrollInput: false,
 										  scrollMonth: false,
 										  scrollTime: false,
-										 // minDate: fecha.getDate()+"/"+fecha.getMonth()+1+"/"+fecha.getFullYear(),
-										  onSelect: function(dateText, inst){
-											  $("input[name=fecha_inicio]").datetimepicker('option', 'maxDate', dateText);
-										  }										  
+										  minDate: fecha.getDate()+"/"+fecha.getMonth()+1+"/"+fecha.getFullYear()										 								  
 										});	
-										
-			/*$("input[name=fecha_inicio]").on("change", function(){
-				var $this=$(this);
-				if($this.attr("name")=="fecha_inicio"){	
-					console.log($this.val());
-					$("input[name=fecha_fin]").datetimepicker("option", "minDate", new Date($this.val()));
-					$("input[name=fecha_fin]").val($this.val());	
-					
-			
-				}
-			});*/
 			
 			//Evento change para reserva hasta fin de temporada, deshabilita el campo fecha fin
 			$("input[name=finTemporada]").on("change", eventFinTemporada);	
@@ -146,8 +128,7 @@ function obtenerActividad(cod_actividad){
 
 /** FUNCION PETICION AJAX OBTIENE EL HORARIO SEMANAL DE UNA DETERMINADA ACTIVIDAD **/
 function obtenerHorario(cod_actividad){
-	fechaSenalada = (fecha.getMonth()+1)+"/"+fecha.getDate()+"/"+fecha.getFullYear();
-	//console.log(fechaSenalada);
+	fechaSenalada = fecha.getDate()+"/"+(fecha.getMonth()+1)+"/"+fecha.getFullYear();
 	$.ajax({
 		url: "index.php?co=calendarios&ac=calendarioActividad",
 		data: { cod_actividad: cod_actividad, fechaSenalada: fechaSenalada},
@@ -228,19 +209,22 @@ function muestraHorarioActividad(calendario){
 		//Cuerpo
 		var $cuerpo=$("<tbody></tbody>");
 		var $tr=$("<tr></tr>");
+		console.log(calendario);
 		var fLunes=new Date(calendario[0]["lunes"]);
 		for(cont=1; cont<=7; cont++){
 			var $td=$("<td></td>");	
 			for(dia in calendario){	
 				if(cont==calendario[dia]["cod_dia"]){
+					//console.log(fLunes.getDate());
 					var fActual=new Date();
-					if(fActual<=fLunes){
+					//console.log(fActual);
+					if(fActual.getDate()<=fLunes.getDate()){						
 						var $p=$("<p class='fecha_disponible'>"+calendario[dia]["hora_inicio"]+"-"+calendario[dia]["hora_fin"]+"</p>");
 					}
 					else
 						var $p=$("<p>"+calendario[dia]["hora_inicio"]+"-"+calendario[dia]["hora_fin"]+"</p>");
 					//Guardar el cod_calendario y la fecha a la que corresponde ese dia
-					$p.data("cod_calendario", calendario[dia]["cod_calendario"]);
+					$p.data("cod_calendario", calendario[dia]["cod_calendario"]);					
 					$p.data("fecha", fLunes.getDate()+"/"+(fLunes.getMonth()+1)+"/"+fLunes.getFullYear());
 					$td.append($p);
 				}		
