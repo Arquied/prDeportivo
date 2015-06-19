@@ -54,39 +54,28 @@
                 } 
     		else {
     			$horarioGeneral = new HorarioGeneral();
-    			$dias = new Dias();
     			
     			$nombre = $horarioGeneral->getNombre();
-    			$nomDias = $dias->getNombre();
     			if(isset($_POST[$nombre])){
-            		$creado = false;
-    						
-    				for ($cont=0; $cont < count($_POST["dia"]);$cont++){
-        				$horarioGeneral -> cod_dia = intval($_POST["dia"][$cont]);
-        				$horarioGeneral  -> setValores($_POST[$nombre]);
-        				$horarioGeneral -> cod_temporada = intval($_POST["temporada"]);
-    					
-    					if ($horarioGeneral -> validar()){
-    						if (!$horarioGeneral -> guardar()){
-    							Sistema::app()->paginaError(404, "Se ha producido un error al guardar el horario");
-    							exit;
-    						}
-    						else {
-    							$creado = true;
-    						}
-    					}		
-    					else {
-    						$this->dibujaVista("nuevoHorario", array("modelo" => $horarioGeneral), "Nuevo horario");
-    						exit;
-    					}				
-    					$horarioGeneral = new HorarioGeneral();	
-    			     }
-        			 if ($creado == true){
-        			    Sistema::app() -> irAPagina(array("horarios"));
-        				exit;
-        		     }		
-    	       }
-           $this -> dibujaVista("nuevoHorario", array("modelo" => $horarioGeneral,"dias"=>$dias), "Nuevo horario");
+	        		$horarioGeneral  -> setValores($_POST[$nombre]);
+	    			if ($horarioGeneral -> validar()){
+						if (!$horarioGeneral -> guardar()){
+							Sistema::app()->paginaError(404, "Se ha producido un error al guardar el horario");
+							exit;
+						}
+						else {
+						    Sistema::app() -> irAPagina(array("horarios"));
+							exit;
+						}
+					}		
+				else {
+					$this->dibujaVista("nuevoHorario", array("modelo" => $horarioGeneral), "Nuevo horario");
+					exit;
+				}				
+				$horarioGeneral = new HorarioGeneral();	
+    				}
+    	       
+           $this -> dibujaVista("nuevoHorario", array("modelo" => $horarioGeneral), "Nuevo horario");
     	   }
 		}
 		
@@ -107,9 +96,6 @@
     			if ($horarioGeneral->buscarPorId($_GET["cod_horario_general"])){
     				if (isset($_POST[$horarioGeneral->getNombre()])){
     					$horarioGeneral -> setValores($_POST[$horarioGeneral->getNombre()]);
-    					$horarioGeneral ->cod_dia = intval($_POST["dia"]);
-    					$horarioGeneral -> cod_temporada = intval($_POST["temporada"]);
-    					
     					if ($horarioGeneral -> validar()){
     						if (!$horarioGeneral -> guardar()){
     							$this -> dibujaVista("modificaHorario", array("modelo" => $horarioGeneral), "Modificar Horario");
