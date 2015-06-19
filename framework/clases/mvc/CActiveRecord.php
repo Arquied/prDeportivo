@@ -635,9 +635,7 @@
 				  if ($sentencia=="")
 				     return false;
 			   	  
-				  var_dump($sentencia);
 				  $valor=$this->ejecutarSentencia($sentencia,true);
-				  var_dump($valor);
 				  if (!$valor)
 				      return false;
 				      
