@@ -242,13 +242,18 @@
 	
 		//Funcion que devuelve un objeto json con el calendario de la actividad utilizado para mostrar el calendario de una actividad en la reserva
 	public function accionCalendarioActividad(){
-		if($_POST["cod_actividad"]){
+		if($_POST["cod_actividad"] && isset($_POST["fechaSenalada"])){
+			$cadFecha=addslashes($_POST["fechaSenalada"]);
+		    $fecha=new DateTime(CGeneral::fechaNormalAMysql($cadFecha));
+		    $lunes=new DateTime(CGeneral::fechaNormalAMysql($cadFecha)); $lunes->modify("monday this week");
+			$domingo=new DateTime(CGeneral::fechaNormalAMysql($cadFecha)); $domingo->modify("sunday this week");
+		   
         	$calendario=new Calendarios();
-			$sentSelect=" t.cod_calendario, t.hora_inicio, t.hora_fin, d.dia, d.cod_dia, '".date("Y-m-d", strtotime("monday this week"))."' as lunes ";
+			$sentSelect=" t.cod_calendario, t.hora_inicio, t.hora_fin, d.dia, d.cod_dia, '".$lunes->format("Y-m-d")."' as lunes ";
             $sentFrom=" join dias d using(cod_dia) ";
             $sentWhere=" t.cod_actividad=".intval($_POST["cod_actividad"]).
-                        " and t.fecha_inicio<='".date("Y-m-d", strtotime("monday this week"))."'".
-                        " and t.fecha_fin>='".date("y-m-d", strtotime("sunday next week"))."'";
+                        " and t.fecha_inicio<='".$lunes->format("Y-m-d")."'".
+                        " and t.fecha_fin>='".$domingo->format("Y-m-d")."'";
 			$sentOrder=" d.cod_dia, t.hora_inicio ";
             
 			$datosCalendario=$calendario->buscarTodos(array("select"=>$sentSelect, "from"=>$sentFrom, "where"=>$sentWhere, "order"=>$sentOrder));			
