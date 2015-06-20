@@ -1,239 +1,118 @@
 <?php
-	 
-	class comprasControlador extends CControlador{
-		
-		public function accionFacturaPDF(){
-			//Comprobar si se ha iniciado sesion y si el usuario tiene permiso de modificar
-            if (!Sistema::app() -> acceso() -> hayUsuario()) {
-                Sistema::app() -> sesion() -> set("pagPrevia", array("compras", "facturaPDF"));
-                Sistema::app() -> sesion() -> set("parametrosAnt", array($_REQUEST["cod_compra"]));
-                Sistema::app() -> irAPagina(array("inicial", "login"));
-                exit ;
-            } 
-			else if(isset($_REQUEST["cod_compra"])){
-				$compra=new Compras();
-				$sentSelect=" t.*, a.nombre as actividad, u.nombre as nombreUsuario, u.dni, u.telefono ";
-				$sentFrom=" join reservas r using(cod_reserva) ".
-							" join actividades a using(cod_actividad) ".
-							" join usuarios u using(cod_usuario) ";
-				$sentWhere=" cod_compra=".intval($_REQUEST["cod_compra"]);
-				
-				$factura=$compra->buscarTodos(array("select"=>$sentSelect, "from"=>$sentFrom, "where"=>$sentWhere));
-				
-				if($factura){
-					//var_dump($factura[0]['nombreUsuario']);
-					$configuracion=new Configuracion();
-					$configuracion->buscarPorId(1);
-					
-					$contenido=
-						"<style>
-							*{
-								margin: 0;
-								padding: 0;
-								font-family: Arial;
-							}
-							.datosFactura{
-								width: 50%;
-							}
-							table{
-								width: 100%;
-                                margin: 20px 0;
-							}							
-                            .tFactura td{
-                               text-align:center; 
-                               font-size: 14pt;
-                            }
-							.tFactura th{
-								padding: 10px 20px;
-								border-bottom: 1px solid white;
-								background:  rgb(140, 3, 21);
-								color: white;
-                                text-align:center;
-							}                           
-                            .tFactura tbody td{
-                                padding: 10px 0;
-                                font-size: 14pt;
-                                border-bottom: 1px solid rgb(140, 3, 21);
-                            }
-                            .tFactura tfoot td{
-                                text-align: right;
-                            }
-							.datosFactura h3{
-								color: rgb(140,3,21);
-								font-size: 15pt;
-							}												
-						</style>".
-						
-						"<page>".							
-							"<div>".
-								"<h2>Factura compra</h2>".
-							"</div>".
-							"<table>".
-							     "<tr>".
-    								"<td class='datosFactura'>".
-    									"<h3>$configuracion->nombre_empresa</h3>".
-    									"<p>".
-    										"<p>CIF: $configuracion->cif</p>".
-    										"<p>Dirección: C/ El Euro 23</p>".
-    										"<p>Localidad: Antequera</p>".
-    										"<p>Provincia: Málaga</p>".				
-    									"</p>".
-    								"</td>".
-    								"<td class='datosFactura'>".
-    									"<h3>{$factura[0]['nombreUsuario']}</h3>".
-    									"<p>".
-    										"<p>NIF: {$factura[0]['dni']}</p>".				
-    										"<p>Dirección: C/ El Euro 23</p>".
-    										"<p>Localidad: Antequera</p>".
-    										"<p>Provincia: Málaga</p>".				
-    									"</p>".
-    								"</td>".
-    						      "</tr>".
-							"</table>".
-							"<div>".
-								"Fecha compra: {$factura[0]['fecha_compra']}".
-							"</div>".
-							"<table class='tfactura'>".
-								"<thead>".
-									"<tr>".
-										"<th style='width:33%'>ACTIVIDAD</th>".
-										"<th style='width:33%'>FECHA DE INICIO</th>".
-										"<th style='width:33%'>FECHA DE FIN</th>".
-									"</tr>".
-								"</thead>".
-								"<tbody>".
-									"<tr class='datos'>".
-										"<td style='width:33%'>{$factura[0]['actividad']}</td>".
-										"<td style='width:33%'>".CGeneral::fechaMysqlANormal($factura[0]['fecha_inicio'])."</td>".
-										"<td style='width:33%'>".CGeneral::fechaMysqlANormal($factura[0]['fecha_fin'])."</td>".
-									"</tr>".
-								"</tbody>".
-								"<tfoot>".
-									"<tr>".
-										"<td colspan=2>Importe Total</td>".
-										"<td>{$factura[0]['importe']}</td>".					
-									"</tr>".
-									"<tr>".
-										"<td colspan=2>Pagado</td>".
-										"<td>{$factura[0]['importe_pagado']}</td>".
-									"</tr>".										
-								"</tfoot>".
-							"</table>".								
-						"</page>";
-						
-						// convert to PDF
-					   
-					        $html2pdf = new HTML2PDF('P', 'A4', 'es');
-					        $html2pdf->pdf->SetDisplayMode('fullpage');
-					        $html2pdf->writeHTML($contenido);
-					        $html2pdf->Output('f.pdf');
-					   	
-				}
-				else{
-					Sistema::app()->paginaError(400, "La factura no se encuentra");
-				}
-			}
-		}
 
-		public function accionListaCompras(){
-				
-			if (!Sistema::app() -> acceso() -> hayUsuario()) {
-        	      Sistema::app() -> sesion() -> set("pagPrevia", array("compras","listaCompras"));
-        	      Sistema::app() -> sesion() -> set("parametrosAnt", array());
-        	      Sistema::app() -> irAPagina(array("inicial", "login"));
-        	      exit ;
-        	} 
-        	else if (!Sistema::app() -> acceso() -> puedeConfigurar()) {
-        	      Sistema::app() -> paginaError(400, "No tiene permiso para acceder");
-            	  exit ;
-            } 
-			else {
-				$compras = new Compras();
-			
-				$filas = $compras->buscarTodos(array("select t.* ",
-													"from"=>"join reservas r using(cod_reserva)",
-													"where"=>"r.cod_usuario=$_GET[cod_usuario]"));
-													
-				$this->dibujaVista("listaCompras",array("filas"=>$filas), "Lista de Compras");
-				
-			}
-		}
-		
-		public function accionpagarCompra(){
-			
-			//Comprobar si se ha iniciado sesion y si el usuario tiene permiso de modificar         
-            if(!Sistema::app()->acceso()->hayUsuario()){
-                Sistema::app()->sesion()->set("pagPrevia", array("compras", "CompraPagado"));
-                Sistema::app()->sesion()->set("parametrosAnt", array());
-                Sistema::app()->irAPagina(array("inicial", "login"));
-                exit;
-            }
-			
-        	else if (!Sistema::app() -> acceso() -> puedeConfigurar()) {
-        	      Sistema::app() -> paginaError(400, "No tiene permiso para acceder");
-            	  exit ;
-            } 
-            else{
-                if(isset($_POST["cod_compra"])){
-                	//Comprobar si existe usuario
-                	$compra = new Compras();
-                	if($compra->buscarPorId(intval($_POST["cod_compra"]))){
-                		echo "asdfsf";
-                		$sentencia=" update compras set ".
-                                        " pendiente=".intval($_POST["pendiente"]).",".
-                                        " importe_pagado=".$compra["importe"].
-                                        " where cod_compra=".intval($_GET["id_compra"]);
-                       	$resultado=Sistema::app()->BD()->crearConsulta($sentencia);
-						if($resultado){
-                       //     Sistema::app()->irAPagina(array("compras", "listaCompras"));
-                            exit;
-                       	}
-						else{
-						//	Sistema::app()->paginaError(400, "Error al pagar la compra");
-							exit;
-						}
-                	}
-					else{
-						Sistema::app()->irAPagina(array("compras", "listaCompras"));
-                        exit;
-					}			
-				 } 
-			}
-		}
-
-		public function accionAnularCompra(){
-			
-			if(!Sistema::app()->acceso()->hayUsuario()){
-				Sistema::app()->sesion()->set("pagPrevia", array("compras", "AnularCompra"));
-				Sistema::app()->sesion()->set("parametrosAnt", array());
-				Sistema::app()->irAPagina(array("inicial", "login"));
-				exit;
-			}
-			else if(!Sistema::app()->acceso()->puedeConfigurar()){
-				Sistema::app()->paginaError(400, "No tiene permiso para acceder");	
-				exit;
-			}
-			else{
-				$compra = new Compras();
-				if ($compra->buscarPorId($_REQUEST["id"])){
-					$compra -> anulado=0;
-					if ($compra->validar()) {
-						if(!$compra->guardar()){
-							$this->dibujaVista("anularCompra", array("modelo"=>$compra),"Anular Compra");
-							exit;
-						}
-						Sistema::app()->irAPagina(array("compras", "listaCompras"));
-						exit;
-					}
-					else {
-						$this -> dibujaVista("anularCompra", array("modelo"=>$compra),"Anular Compra");
-						exit;
-					}
-				}
-				Sistema::app()->paginaError(400,"La Compra no se encuentra");
-			} 
-			
-		}
-		
-	}
-			
+    /**
+     *  CLASE MODELO COMPRAS
+     */
+    class Compras extends CActiveRecord {
+                
+        protected function fijarNombre(){
+            return "compra";
+        }   
+        
+        public function fijarTabla(){
+            return "compras";
+        }
+        
+        public function fijarId(){
+            return "cod_compra";
+        }
+            
+        protected function fijarAtributos(){
+            return array("cod_compra", "cod_reserva", "importe_pagado", "pendiente", "fecha_compra", "fecha_inicio", "fecha_fin", "importe", "anulado");
+        }
+        
+        protected function fijarDescripciones(){
+            return array("cod_compra"=>"Código de la compra",
+                        "cod_reserva"=>"Código de reserva",
+                        "importe_pagado"=>"Importe pagado",
+                        "pendiente"=>"Compra pendiente o pagado",
+                        "fecha_compra"=>"Fecha de la compra",
+                        "fecha_inicio"=>"Fecha inicio",
+                        "fecha_fin"=>"Fecha fin",
+                        "importe"=>"Importe total de la compra",
+                        "anulado"=>"Anular reserva"
+                        );
+        }
+        
+        protected function fijarRestricciones(){
+            return array(array("ATRI"=>"cod_compra", "TIPO"=>"REQUERIDO"),
+                        array("ATRI"=>"cod_compra", "TIPO"=>"ENTERO", "MIN"=>0, "MENSAJE"=>"El código de la compra debe ser positivo", "DEFECTO"=>0),
+                        array("ATRI"=>"cod_reserva", "TIPO"=>"REQUERIDO"),
+                        array("ATRI"=>"cod_reserva", "TIPO"=>"ENTERO", "MIN"=>0, "MENSAJE"=>"El código de la reserva debe ser positivo", "DEFECTO"=>0),
+                        array("ATRI"=>"importe_pagado", "TIPO"=>"REAL", "MIN"=>0.0),
+                        array("ATRI"=>"pendiente", "TIPO"=>"ENTERO", "MIN"=>0, "MAX"=>1),
+                        array("ATRI"=>"fecha_compra", "TIPO"=>"FECHA"),
+                        array("ATRI"=>"fecha_inicio", "TIPO"=>"FECHA"),
+                        array("ATRI"=>"fecha_fin", "TIPO"=>"FECHA"),
+                        array("ATRI"=>"importe", "TIPO"=>"REAL", "MIN"=>0.0, "MENSAJE"=>"El importe total debe ser positivo"),
+                        array("ATRI"=>"anulado", "TIPO"=>"ENTERO", "MIN"=>0, "MAX"=>1)
+                        );
+        }
+        
+        protected function afterCreate(){
+           $this->cod_compra=1;
+           $this->cod_reserva=0;
+           $this->importe_pagado=0;
+           $this->pendiente=1;
+           $this->fecha_compra=date("d/m/Y");
+           $this->fecha_inicio=date("d/m/Y");
+           $this->fecha_fin=date("d/m/Y");
+           $this->importe=0.0;
+           $this->anulado=0;
+              
+        }   
+        
+        protected function afterBuscar(){
+            $fecha=$this->fecha_compra;
+            $fecha=CGeneral::fechaMysqlANormal($fecha);
+            $this->fecha_compra=$fecha;        
+                
+            $fecha=$this->fecha_inicio;
+            $fecha=CGeneral::fechaMysqlANormal($fecha);
+            $this->fecha_inicio=$fecha;        
+        
+            $fecha=$this->fecha_fin;
+            $fecha=CGeneral::fechaMysqlANormal($fecha);
+            $this->fecha_fin=$fecha;
+        }   
+        
+        protected function fijarSentenciaInsert(){
+            $cod_reserva=intval($this->cod_reserva);
+            $importe_pagado=intval($this->importe_pagado);
+            $pendiente=intval($this->pendiente);
+            $fecha_compra=CGeneral::fechaNormalAMysql($this->fecha_compra);
+            $fecha_inicio=CGeneral::fechaNormalAMysql($this->fecha_inicio);
+            $fecha_fin=CGeneral::fechaNormalAMysql($this->fecha_fin);
+            $importe=floatval($this->importe);
+            $anulado=intval($this->anulado);
+                             
+            return "insert into compras (".
+                        " cod_reserva, importe_pagado, pendiente, fecha_compra, fecha_inicio, fecha_fin, importe, anulado ".
+                        " ) values ( ".
+                        " $cod_reserva, $importe_pagado, $pendiente, '$fecha_compra', '$fecha_inicio', '$fecha_fin', $importe, $anulado ".
+                        " ) " ;
+        }
+        
+        protected function fijarSentenciaUpdate(){
+            $cod_reserva=intval($this->cod_reserva);
+            $importe_pagado=intval($this->importe_pagado);
+            $pendiente=intval($this->pendiente);
+            $fecha_compra=CGeneral::fechaNormalAMysql($this->fecha_compra);
+            $fecha_inicio=CGeneral::fechaNormalAMysql($this->fecha_inicio);
+            $fecha_fin=CGeneral::fechaNormalAMysql($this->fecha_fin);
+            $importe=floatval($this->importe);
+            $anulado=intval($this->anulado);
+                
+            return "update compras set ".
+                            " cod_reserva=$cod_reserva, ".
+                            " importe_pagado=$importe_pagado, ".
+                            " pendiente=$pendiente, ".
+                            " fecha_compra='$fecha_compra', ".
+                            " fecha_inicio='$fecha_inicio',".
+                            " fecha_fin='$fecha_fin', ".
+                            " importe=$importe, ".
+                            " anulado=$anulado ".
+                            " where cod_compra={$this->cod_compra} ";                                                                       
+        }           
+        
+    }
